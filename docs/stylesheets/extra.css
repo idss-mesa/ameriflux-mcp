@@ -1,0 +1,9 @@
+/* ameriflux-mcp documentation — small tweaks on top of Zensical's defaults.
+   The palette (primary teal / accent amber, light + dark) lives in
+   zensical.toml; keep site-wide styling there and reserve this file for
+   the few things the theme cannot express. */
+
+/* Tables quote many paths, variable names and env vars; keep code in cells on one line. */
+.md-typeset table:not([class]) td code {
+  white-space: nowrap;
+}

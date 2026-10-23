@@ -4,6 +4,7 @@
 
 [![MCP 2026-07-28](https://img.shields.io/badge/MCP-2026--07--28-blue)](https://modelcontextprotocol.io/specification/2026-07-28)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Docs](https://img.shields.io/badge/docs-idss--mesa.github.io%2Fameriflux--mcp-teal)](https://idss-mesa.github.io/ameriflux-mcp/)
 
 A [Model Context Protocol](https://modelcontextprotocol.io) server (spec **2026-07-28**)
 for [AmeriFlux](https://ameriflux.lbl.gov) and [FLUXNET](https://fluxnet.org)
@@ -12,9 +13,40 @@ years exist, understand FLUXNET variable names and QC flags, cite data under the
 data policy, and preview files: AmeriFlux BASE and BADM, the AmeriFlux FLUXNET
 (FLUXNET-1F) product, and FLUXNET2015 FULLSET and SUBSET.
 
-> **Status: under construction (build step 1 of 8).** No tools work yet. See
-> [DESIGN.md](DESIGN.md) for decisions, [RESEARCH.md](RESEARCH.md) for verified API
-> facts, and `research/2026-10-22-plan.md` for the build plan.
+> **Status: under construction (build step 1 of 8).** No tools work yet, and the
+> `ameriflux-mcp` command starts from build step 2. See [DESIGN.md](DESIGN.md) for
+> decisions, [RESEARCH.md](RESEARCH.md) for verified API facts, and
+> `research/2026-10-22-plan.md` for the build plan.
+
+## Installation
+
+Full instructions for macOS, Linux and Windows are in the documentation:
+[docs/getting-started/install.md](docs/getting-started/install.md) (published at
+<https://idss-mesa.github.io/ameriflux-mcp/> once the repository is public).
+
+Prerequisites: [uv](https://docs.astral.sh/uv/), git, and read access to this private
+repository (for example through `gh auth login`).
+
+```bash
+git clone https://github.com/idss-mesa/ameriflux-mcp.git
+cd ameriflux-mcp
+scripts/install.sh                  # registers the server with every agent it finds
+scripts/install.sh --with-identity  # ... and stores your AmeriFlux download identity
+```
+
+`scripts/install.sh` creates the environment with `uv sync`, checks that
+`ameriflux-mcp --version` runs (until build step 2 it does not, so the script stops
+without registering anything), and registers the server with Claude Code, Claude
+Desktop, OpenAI Codex CLI, Gemini CLI, Goose and OpenCode. On Windows run it from Git
+Bash. `--dry-run` previews every change; `--uninstall` removes them.
+
+Manual registration, for Claude Code:
+
+```bash
+claude mcp add ameriflux -s user -- /absolute/path/to/ameriflux-mcp/.venv/bin/ameriflux-mcp
+```
+
+[Clients](docs/getting-started/clients.md) has the entries for every other client.
 
 ## Planned tools (v0.1)
 

@@ -14,9 +14,10 @@ provenance (`generated`, `sources`) and lifecycle (`status`, `stale_after`)
 fields. Section `index.md` files are OKF §8 directory listings (no
 frontmatter); `docs/log.md` is the OKF §9 dated change log.
 
-> **Status (build step 1).** Only `docs/log.md` exists so far. The site, its
-> scripts and the server commands below arrive with build step 2 (core port) and the
-> `docs/site` PR; the rules apply from the first page written.
+> **Status (build step 1).** The site covers installation, clients, identity,
+> configuration and the roadmap. The server commands below, the generated tool reference
+> and the generated configuration table arrive with build step 2; until then
+> `docs/getting-started/configuration.md` is hand-written between the generator markers.
 
 ## Reading the corpus
 

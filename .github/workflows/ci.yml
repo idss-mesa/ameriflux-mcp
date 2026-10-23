@@ -1,0 +1,30 @@
+name: CI
+
+# Build step 1 scope: lint and the tests that exist (the probe guard and the installer).
+# Build step 2 replaces this with the full matrix (types, conformance, macOS, live).
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+      - run: uvx ruff check scripts tests src
+      - run: uvx ruff format --check scripts tests src
+      - run: python3 scripts/probe_api.py --selftest
+      - run: bash -n scripts/install.sh
+      - run: uv run --no-project --python 3.12 --with pytest --with pyyaml python -m pytest tests -o addopts=""

@@ -1,0 +1,1621 @@
+# ameriflux-mcp documentation — full corpus
+
+Each page below begins with its canonical URL followed by its original Markdown, OKF frontmatter included.
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/getting-started/clients/
+
+---
+title: "Clients"
+description: "Register ameriflux-mcp with Claude Code, Claude Desktop, Codex CLI, Gemini CLI, Goose, OpenCode and VS Code, or a hosted server over HTTP."
+type: Guide
+tags:
+  - getting-started
+  - clients
+  - claude-code
+  - codex
+  - gemini
+  - goose
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-23T00:00:00Z"
+sources:
+  - id: claude-code-mcp
+    resource: "https://docs.claude.com/en/docs/claude-code/mcp"
+    title: "Claude Code — MCP"
+    author: "team:anthropic"
+  - id: codex-mcp
+    resource: "https://developers.openai.com/codex/cli/"
+    title: "OpenAI Codex CLI"
+    author: "team:openai"
+  - id: gemini-mcp
+    resource: "https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md"
+    title: "Gemini CLI — MCP servers"
+    author: "team:google"
+  - id: goose-ext
+    resource: "https://goose-docs.ai/docs/getting-started/using-extensions"
+    title: "Goose — Using extensions"
+    author: "team:block"
+  - id: opencode-mcp
+    resource: "https://opencode.ai/docs/mcp-servers/"
+    title: "OpenCode — MCP servers"
+    author: "team:opencode"
+  - id: vscode-mcp
+    resource: "https://code.visualstudio.com/docs/copilot/chat/mcp-servers"
+    title: "VS Code — Use MCP servers"
+    author: "team:microsoft"
+status: draft
+stale_after: "2027-04-23T00:00:00Z"
+---
+
+# Clients
+
+Local clients start ameriflux-mcp themselves over **stdio**; hosted deployments are
+reached over **Streamable HTTP**. The [install script](install.md#option-1-from-source-with-the-install-script-recommended)
+(`scripts/install.sh`) writes the stdio entries below for Claude Code, Claude Desktop,
+Codex CLI, Gemini CLI, Goose and OpenCode in one step; this page shows them for manual
+setup. The examples use `ameriflux-mcp` on your `PATH` (see [Install](install.md));
+replace it with an absolute path such as
+`/home/me/ameriflux-mcp/.venv/bin/ameriflux-mcp` (Windows:
+`C:\\Users\\me\\ameriflux-mcp\\.venv\\Scripts\\ameriflux-mcp.exe`) when the client does
+not share your shell's `PATH`. JSON-configured clients do not expand `~` or `$HOME`, so
+use absolute paths there.
+
+The examples register the server **without** a download identity, which is all that
+discovery, variables, citations and local previews need. To enable downloads, add the
+variables from [Download identity](identity.md#the-settings) to the same `env` block
+(or `-e` options); keep them in the client's environment settings, never in a shared or
+committed file.
+
+## Claude Code
+
+```bash
+claude mcp add ameriflux -s user -- ameriflux-mcp --transport stdio
+claude mcp list
+```
+
+`-s user` makes the server available in every project[^claude-code-mcp]. Add
+`-e NAME=value` options before `--` for the download identity.
+
+## Claude Desktop
+
+Edit `claude_desktop_config.json` and restart the app:
+
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+- Linux: `~/.config/Claude/claude_desktop_config.json`
+
+```json
+{
+  "mcpServers": {
+    "ameriflux": {
+      "command": "/absolute/path/to/ameriflux-mcp",
+      "args": ["--transport", "stdio"]
+    }
+  }
+}
+```
+
+## Codex CLI
+
+```bash
+codex mcp add ameriflux -- ameriflux-mcp --transport stdio
+codex mcp list
+```
+
+This writes the server into `~/.codex/config.toml`[^codex-mcp]; restart running
+sessions. Without the CLI, add the table yourself:
+
+```toml
+[mcp_servers.ameriflux]
+command = "/absolute/path/to/ameriflux-mcp"
+args = []
+
+# only for downloads:
+# [mcp_servers.ameriflux.env]
+# AMERIFLUX_USER_ID = "your-username"
+```
+
+## Gemini CLI
+
+```bash
+gemini mcp add --scope user ameriflux ameriflux-mcp
+gemini mcp list
+```
+
+or add the entry to `~/.gemini/settings.json`[^gemini-mcp] (`.gemini/settings.json` in a
+project):
+
+```json
+{
+  "mcpServers": {
+    "ameriflux": {
+      "command": "/absolute/path/to/ameriflux-mcp",
+      "args": []
+    }
+  }
+}
+```
+
+## Goose
+
+Add an extension to `~/.config/goose/config.yaml` (Windows:
+`%APPDATA%\Block\goose\config\config.yaml`)[^goose-ext], then restart Goose Desktop or
+start a new CLI session. `goose configure` → *Add Extension* → *Command-line Extension*
+does the same interactively.
+
+```yaml
+extensions:
+  ameriflux:
+    enabled: true
+    type: stdio
+    name: ameriflux
+    cmd: /absolute/path/to/ameriflux-mcp
+    args: []
+    envs: {}
+    timeout: 300
+```
+
+## OpenCode
+
+Add to `~/.config/opencode/opencode.json`[^opencode-mcp]. This is the layout OpenCode's
+documentation shows. The install script writes `"mcp": {"servers": {…}}` instead unless
+`opencode --version` reports 1.x; if your OpenCode does not pick the server up, move the
+entry to the layout its documentation gives.
+
+```json
+{
+  "mcp": {
+    "ameriflux": {
+      "type": "local",
+      "command": ["/absolute/path/to/ameriflux-mcp", "--transport", "stdio"],
+      "enabled": true
+    }
+  }
+}
+```
+
+## VS Code
+
+Add to `.vscode/mcp.json` in a workspace, or to your user configuration[^vscode-mcp].
+For downloads, `inputs` prompts keep your identity out of the file:
+
+```json
+{
+  "inputs": [
+    { "type": "promptString", "id": "amf-user", "description": "AmeriFlux user ID" },
+    { "type": "promptString", "id": "amf-email", "description": "Email registered with AmeriFlux", "password": true }
+  ],
+  "servers": {
+    "ameriflux": {
+      "type": "stdio",
+      "command": "/absolute/path/to/ameriflux-mcp",
+      "args": ["--transport", "stdio"],
+      "env": {
+        "AMERIFLUX_USER_ID": "${input:amf-user}",
+        "AMERIFLUX_USER_EMAIL": "${input:amf-email}"
+      }
+    }
+  }
+}
+```
+
+Leave out `inputs` and `env` to run without downloads.
+
+## Any other stdio client
+
+Run `ameriflux-mcp --transport stdio` (bare `ameriflux-mcp` does the same), with the
+download identity in the environment if you want downloads. The server speaks MCP
+2026-07-28 and still accepts clients on earlier protocol revisions over stdio.
+
+## A hosted server (HTTP)
+
+```bash
+claude mcp add --transport http ameriflux https://ameriflux-mcp.example.org/mcp
+```
+
+A hosted server offers the eight tools that need no identity and read no local files:
+site search, site details, availability, the two variable tools, citations, BADM and
+`amf_ping`. Downloads and the local file tools exist only on stdio, and no identity is
+accepted over HTTP, by header or otherwise.
+
+[^claude-code-mcp]: Claude Code — MCP. <https://docs.claude.com/en/docs/claude-code/mcp>
+[^codex-mcp]: OpenAI Codex CLI. <https://developers.openai.com/codex/cli/>
+[^gemini-mcp]: Gemini CLI — MCP servers. <https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md>
+[^goose-ext]: Goose — Using extensions. <https://goose-docs.ai/docs/getting-started/using-extensions>
+[^opencode-mcp]: OpenCode — MCP servers. <https://opencode.ai/docs/mcp-servers/>
+[^vscode-mcp]: VS Code — Use MCP servers. <https://code.visualstudio.com/docs/copilot/chat/mcp-servers>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/getting-started/configuration/
+
+---
+title: "Configuration"
+description: "Configure ameriflux-mcp with a YAML file, AMERIFLUX_MCP_ environment variables or flags; precedence rules and the planned settings."
+type: Reference
+tags:
+  - getting-started
+  - configuration
+  - environment
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-23T00:00:00Z"
+sources:
+  - id: design
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md"
+    title: "ameriflux-mcp design (decisions D12, D17-D23, D25)"
+    author: "team:idss-mesa"
+  - id: plan
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/research/2026-10-22-plan.md"
+    title: "ameriflux-mcp implementation plan"
+    author: "team:idss-mesa"
+status: draft
+stale_after: "2027-01-23T00:00:00Z"
+---
+
+# Configuration
+
+ameriflux-mcp runs with no configuration at all: the defaults serve stdio, cache
+AmeriFlux API responses, keep tool results small, strip contact emails and confine
+downloads to `~/ameriflux-downloads`. Settings come from four layers; a higher layer
+wins:
+
+1. **Command-line flags** (only a handful of common settings).
+2. **Environment variables** named `AMERIFLUX_MCP_<SECTION>__<FIELD>`, with a double
+   underscore descending into nested sections at any depth, for example
+   `AMERIFLUX_MCP_CACHE__TTL_S__CATALOG=3600`. List settings take a comma-separated
+   value: `AMERIFLUX_MCP_LOCAL__ROOTS=/data/fluxnet2015,/data/shared`. The empty string,
+   `none` and `null` mean "unset".
+3. **A YAML file** passed with `--config path.yaml`, using the same section and field
+   names.
+4. **Built-in defaults** (the table below).
+
+Unknown keys in the YAML file or the environment are ignored with a warning, so a typo
+does not stop the server but is visible in its log. ameriflux-mcp does not load `.env`
+files itself; export the variables (`set -a; . ./.env; set +a`) before starting it.
+
+!!! note "Planned settings"
+
+    The configuration module is part of build step 2. Until then the table below is
+    written from the design[^design] and plan[^plan]; from step 2 on it is generated
+    from the code (`scripts/gen_config_reference.py`) and CI fails if it drifts.
+
+## The download identity
+
+Identity is read from the environment or the YAML file only, never from flags or tool
+arguments, and is used only by the download tool. The plain names
+(`AMERIFLUX_USER_ID`, `AMERIFLUX_USER_EMAIL`, `AMERIFLUX_USER_NAME`,
+`AMERIFLUX_INTENDED_USE`, `AMERIFLUX_DESCRIPTION`) are what other AmeriFlux tools use;
+the namespaced `AMERIFLUX_MCP_IDENTITY__…` forms take precedence when set.
+`AMERIFLUX_MCP_IDENTITY__IS_TEST` has no plain form and no default. See
+[Download identity](identity.md) for what each value is and who sees it.
+
+## Command-line flags
+
+| Flag | Sets |
+| --- | --- |
+| `--config PATH` | YAML file to load |
+| `--transport {stdio,http}` | `server.transport` |
+| `--bind-address`, `--bind-port` | `server.bind_address`, `server.bind_port` |
+| `--log-level` | `server.log_level` |
+| `--download-dir PATH` | `downloads.directory` |
+| `--no-downloads` | `downloads.enabled = false` |
+| `--print-config` | print the effective configuration as YAML (identity shown as `***`) and exit |
+| `--check` | load the configuration, call `amf_ping` in-process (no network request), print a JSON report, exit 0 or 1 |
+| `--version` | print the version |
+
+## A YAML example
+
+```yaml
+# ameriflux-mcp.yaml — pass with: ameriflux-mcp --config ameriflux-mcp.yaml
+identity:
+  profiles:
+    default:
+      intended_use: other_research
+      description: "Comparing drought responses of semi-arid grassland GPP across New Mexico towers."
+downloads:
+  directory: /data/ameriflux-downloads
+local:
+  roots: [/data/fluxnet2015]          # FLUXNET2015 zips you downloaded from fluxnet.org
+cache:
+  disk_dir: /data/cache/ameriflux-mcp
+server:
+  log_level: info
+```
+
+Keep the user ID and email in the environment rather than in a YAML file you share or
+commit.
+
+## Automatic values
+
+* `downloads.enabled`: the download tool exists only on stdio; over HTTP it is never
+  listed, whatever this says. `--no-downloads` (or `false`) removes it on stdio too.
+* `cache.disk_dir`: the on-disk cache is on for stdio and off for HTTP unless a
+  directory is configured, so containers without a writable home still start.
+* `privacy.allow_contact_emails`: off on every transport. Contact emails of tower teams
+  and DOI contributors appear only when this is on **and** a tool call asks for
+  contacts.
+
+## Planned settings
+
+<!-- BEGIN GENERATED CONFIG (scripts/gen_config_reference.py; do not edit) -->
+
+| Setting (YAML path) | Environment variable | Default | Description |
+| --- | --- | --- | --- |
+| `identity.user_id` | `AMERIFLUX_MCP_IDENTITY__USER_ID`<br>(or `AMERIFLUX_USER_ID`) | unset | AmeriFlux username sent with downloads. |
+| `identity.user_email` | `AMERIFLUX_MCP_IDENTITY__USER_EMAIL`<br>(or `AMERIFLUX_USER_EMAIL`) | unset | Email registered with AmeriFlux, sent with downloads. |
+| `identity.user_name` | `AMERIFLUX_MCP_IDENTITY__USER_NAME`<br>(or `AMERIFLUX_USER_NAME`) | unset | Optional name sent with downloads. |
+| `identity.profiles.<name>.intended_use` | `AMERIFLUX_MCP_IDENTITY__PROFILES__DEFAULT__INTENDED_USE`<br>(or `AMERIFLUX_INTENDED_USE`) | unset | Intended-use code 1–6 or key. |
+| `identity.profiles.<name>.description` | `AMERIFLUX_MCP_IDENTITY__PROFILES__DEFAULT__DESCRIPTION`<br>(or `AMERIFLUX_DESCRIPTION`) | unset | 20–1000 characters, your own words; ` [ameriflux-mcp]` is appended. |
+| `identity.is_test` | `AMERIFLUX_MCP_IDENTITY__IS_TEST` | unset | Must be set before any download; no default. |
+| `downloads.enabled` | `AMERIFLUX_MCP_DOWNLOADS__ENABLED` | unset (true on stdio) | Offer the download tool; never available over HTTP. |
+| `downloads.directory` | `AMERIFLUX_MCP_DOWNLOADS__DIRECTORY` | `~/ameriflux-downloads` | Directory every download is confined to. |
+| `downloads.max_files_per_call` | `AMERIFLUX_MCP_DOWNLOADS__MAX_FILES_PER_CALL` | `50` | Most files one download call transfers. |
+| `downloads.max_bytes_per_call` | `AMERIFLUX_MCP_DOWNLOADS__MAX_BYTES_PER_CALL` | `2147483648` | Most bytes one download call transfers (2 GiB). |
+| `downloads.max_file_bytes` | `AMERIFLUX_MCP_DOWNLOADS__MAX_FILE_BYTES` | `1073741824` | Largest single file accepted (1 GiB). |
+| `local.roots` | `AMERIFLUX_MCP_LOCAL__ROOTS` | `[]` | Extra directories the local file tools may read (the download directory is always included). |
+| `privacy.allow_contact_emails` | `AMERIFLUX_MCP_PRIVACY__ALLOW_CONTACT_EMAILS` | `false` | Allow contact emails in results when a call asks for contacts. |
+| `cache.enabled` | `AMERIFLUX_MCP_CACHE__ENABLED` | `true` | Cache AmeriFlux API responses. |
+| `cache.disk_dir` | `AMERIFLUX_MCP_CACHE__DISK_DIR` | `~/.cache/ameriflux-mcp` (stdio) | On-disk cache, personal fields removed; unset over HTTP. |
+| `cache.ttl_s.catalog` | `AMERIFLUX_MCP_CACHE__TTL_S__CATALOG` | `21600` | Site catalog (6 h). |
+| `cache.ttl_s.availability` | `AMERIFLUX_MCP_CACHE__TTL_S__AVAILABILITY` | `21600` | Availability lists (6 h). |
+| `cache.ttl_s.fluxnet2015` | `AMERIFLUX_MCP_CACHE__TTL_S__FLUXNET2015` | `2592000` | Frozen FLUXNET2015 and FLUXNET-CH4 lists (30 d). |
+| `cache.ttl_s.citations` | `AMERIFLUX_MCP_CACHE__TTL_S__CITATIONS` | `86400` | DOI citations (24 h, memory only). |
+| `upstream.requests_per_second` | `AMERIFLUX_MCP_UPSTREAM__REQUESTS_PER_SECOND` | `2.0` | Rate limit towards the AmeriFlux API. |
+| `upstream.max_concurrency` | `AMERIFLUX_MCP_UPSTREAM__MAX_CONCURRENCY` | `4` | Simultaneous upstream requests. |
+| `limits.max_result_bytes` | `AMERIFLUX_MCP_LIMITS__MAX_RESULT_BYTES` | `50000` | Tool results are trimmed (with `page.truncated`) to fit. |
+| `limits.preview_max_rows` | `AMERIFLUX_MCP_LIMITS__PREVIEW_MAX_ROWS` | `500` | Most rows `amf_preview_data` returns. |
+| `limits.preview_scan_max_bytes` | `AMERIFLUX_MCP_LIMITS__PREVIEW_SCAN_MAX_BYTES` | `268435456` | Most bytes a preview scans (256 MiB). |
+| `server.transport` | `AMERIFLUX_MCP_SERVER__TRANSPORT` | `stdio` | `stdio` or `http` (stateless Streamable HTTP at `/mcp`). |
+| `server.bind_address` | `AMERIFLUX_MCP_SERVER__BIND_ADDRESS` | `127.0.0.1` | HTTP bind address. |
+| `server.bind_port` | `AMERIFLUX_MCP_SERVER__BIND_PORT` | `8080` | HTTP bind port. |
+| `server.log_level` | `AMERIFLUX_MCP_SERVER__LOG_LEVEL` | `info` | `debug`, `info`, `warning`, `error` or `critical` (stderr). |
+
+<!-- END GENERATED CONFIG -->
+
+[^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
+[^plan]: ameriflux-mcp implementation plan. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/research/2026-10-22-plan.md>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/getting-started/identity/
+
+---
+title: "Download identity"
+description: "What AmeriFlux downloads disclose, how to create an account, and how to give ameriflux-mcp your user ID, email and intended use."
+type: Guide
+tags:
+  - getting-started
+  - identity
+  - downloads
+  - data-policy
+  - privacy
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-23T00:00:00Z"
+sources:
+  - id: amf-policy
+    resource: "https://ameriflux.lbl.gov/data/data-policy/"
+    title: "AmeriFlux Data Policy"
+    author: "team:ameriflux"
+  - id: amf-account
+    resource: "https://amfcdn.lbl.gov/create"
+    title: "FLUX User Account Creation (AmeriFlux and FLUXNET)"
+    author: "team:ameriflux"
+  - id: fluxnet-policy
+    resource: "https://fluxnet.org/data/data-policy/"
+    title: "FLUXNET Data Policy"
+    author: "team:fluxnet"
+  - id: research
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md"
+    title: "ameriflux-mcp verified research (section 5, downloads)"
+    author: "team:idss-mesa"
+status: draft
+stale_after: "2027-04-23T00:00:00Z"
+---
+
+# Download identity
+
+Most of ameriflux-mcp needs no account at all: finding sites, checking which years
+exist, describing variables, getting citations and previewing files you already have
+all work anonymously. Only **downloading data from AmeriFlux** needs an identity, and
+this page explains why, what is disclosed, and how to configure it.
+
+!!! info "Available from build step 7"
+
+    The download tool (`amf_download_data`) is the seventh build step, and it ships only
+    once AmeriFlux confirms that third-party clients may use its download request. Until
+    then you can store an identity with the installer, but nothing uses it.
+
+## What a download discloses, and to whom
+
+AmeriFlux has no API keys. Every download is a request that carries your AmeriFlux user
+ID, your email, an intended-use category and a short description of how you will use
+the data. AmeriFlux sends that information to the **principal investigators (PIs) of
+each site** you download, and posts it to the AmeriFlux Data Download Log (visible to
+logged-in users)[^amf-policy]. This is how tower teams learn who uses their data and
+offer collaboration, so the text should be accurate and written by you.
+
+ameriflux-mcp therefore follows four rules:
+
+1. **Your words, not the model's.** The identity, intended use and description come only
+   from configuration you wrote. They are never tool arguments, so an AI agent cannot
+   invent or edit them. The server appends ` [ameriflux-mcp]` to the description so
+   AmeriFlux can see which client sent the request.
+2. **See it first.** A download request first returns a *plan*: the exact text that will
+   be sent, the sites it goes to, and the data policy that applies. Nothing is sent.
+3. **Then confirm.** Only a second call with `confirm=true`, naming the data policy you
+   accept, sends the request.
+4. **Only on your machine.** The download tool exists only over stdio, on the computer
+   where your agent runs. A hosted (HTTP) ameriflux-mcp never accepts an identity.
+
+ameriflux-mcp never builds download links itself and never uses unofficial mirrors: every
+file comes through AmeriFlux's logged route, so PIs are notified as they are for
+downloads from the AmeriFlux website.
+
+## Create an AmeriFlux account
+
+AmeriFlux and FLUXNET share one account system. Create an account on the
+[FLUX User Account Creation](https://amfcdn.lbl.gov/create){target=_blank} page[^amf-account]:
+full name, institution, email, and a **username**. The username is your AmeriFlux user
+ID. The same page links to username lookup and password reset.
+
+A registered account matters most for data under the **AmeriFlux Legacy** policy: the
+AmeriFlux website offers Legacy data only to logged-in users. Whether AmeriFlux's API
+checks the user ID against registered accounts has not been confirmed yet[^research] (question Q2
+in the project's [support questions](https://github.com/idss-mesa/ameriflux-mcp/blob/main/research/questions.md){target=_blank}).
+
+## The settings
+
+| Setting | Environment variable | Required | Notes |
+| --- | --- | --- | --- |
+| User ID | `AMERIFLUX_USER_ID` | yes | Your AmeriFlux username. |
+| Email | `AMERIFLUX_USER_EMAIL` | yes | The email registered with AmeriFlux. |
+| Name | `AMERIFLUX_USER_NAME` | no | Shown to PIs alongside your email. |
+| Intended use | `AMERIFLUX_INTENDED_USE` | yes | A code from the table below. |
+| Description | `AMERIFLUX_DESCRIPTION` | yes | 20–1000 characters, in your own words. |
+| Test requests | `AMERIFLUX_MCP_IDENTITY__IS_TEST` | yes | `true` or `false`; no default (see [below](#is_test)). |
+
+Each also has a namespaced form (`AMERIFLUX_MCP_IDENTITY__USER_ID`, …) that wins when
+both are set, for giving ameriflux-mcp a different identity from other AmeriFlux tools
+that read the plain names. Look-alike names such as `AMERIFLUX_EMAIL`,
+`AMERIFLUX_USERNAME`, `AMF_USER_ID`, `AMERIFLUX_TOKEN` or `AMERIFLUX_API_KEY` are
+**not** read; the server warns if one is set.
+
+**Intended use.** The six categories AmeriFlux's download form offers:
+
+| Code | Key | Category sent to AmeriFlux |
+| --- | --- | --- |
+| 1 | `synthesis` | Research - Multi-site synthesis |
+| 2 | `model` | Research - Land model/Earth system model |
+| 3 | `remote_sensing` | Research - Remote sensing |
+| 4 | `other_research` | Research - Other |
+| 5 | `education` | Education (Teacher or Student) |
+| 6 | `other` | Other |
+
+**Profiles.** One description rarely fits every project. A YAML configuration file can
+define named profiles, each with its own intended use and description, and a download
+picks one with `profile="…"`; the environment variables above define the `default`
+profile:
+
+```yaml
+# ameriflux-mcp.yaml — pass with: ameriflux-mcp --config ameriflux-mcp.yaml
+identity:
+  profiles:
+    default:
+      intended_use: other_research
+      description: "Comparing drought responses of semi-arid grassland GPP across New Mexico towers."
+    teaching:
+      intended_use: education
+      description: "Classroom exercises on energy-balance closure for an ecosystem ecology course."
+```
+
+Keep the user ID and email in the environment rather than in a file you might share.
+
+### is_test
+
+AmeriFlux's download request has an `is_test` flag. The AmeriFlux website sends `false`
+for real downloads; other clients behave differently, and exactly what AmeriFlux does
+with test requests (whether they are logged or sent to PIs) is not documented yet.
+ameriflux-mcp therefore gives it **no default**: until you set
+`AMERIFLUX_MCP_IDENTITY__IS_TEST` to `true` (trying things out) or `false` (real
+downloads for your work), the download tool refuses with `auth_required` and
+`reason: is_test_unset`.
+
+## Give it to ameriflux-mcp
+
+=== "Install script"
+
+    ```bash
+    scripts/install.sh --with-identity
+    ```
+
+    The script reads the variables from your environment or asks for each missing one,
+    validates them, and stores them in every agent's server `env`, with owner-only file
+    permissions. See [Install](install.md#the-download-identity-and-the-script).
+
+=== "Claude Code"
+
+    ```bash
+    claude mcp add ameriflux -s user \
+      -e AMERIFLUX_USER_ID=your-username \
+      -e AMERIFLUX_USER_EMAIL=you@example.edu \
+      -e AMERIFLUX_INTENDED_USE=4 \
+      -e AMERIFLUX_DESCRIPTION="Comparing drought responses of semi-arid grassland GPP." \
+      -e AMERIFLUX_MCP_IDENTITY__IS_TEST=false \
+      -- ameriflux-mcp
+    ```
+
+=== "JSON clients"
+
+    ```json
+    {
+      "mcpServers": {
+        "ameriflux": {
+          "command": "/ABSOLUTE/PATH/TO/ameriflux-mcp",
+          "args": [],
+          "env": {
+            "AMERIFLUX_USER_ID": "your-username",
+            "AMERIFLUX_USER_EMAIL": "you@example.edu",
+            "AMERIFLUX_INTENDED_USE": "4",
+            "AMERIFLUX_DESCRIPTION": "Comparing drought responses of semi-arid grassland GPP.",
+            "AMERIFLUX_MCP_IDENTITY__IS_TEST": "false"
+          }
+        }
+      }
+    }
+    ```
+
+Check it with `ameriflux-mcp --check` or by asking your agent to call `amf_ping`: the
+result says which fields are configured, as booleans and profile names, never the values.
+
+## Data policy at download time
+
+Every AmeriFlux site shares its data under the **CC-BY-4.0** license or the more
+restrictive **AmeriFlux Legacy** policy, and combining the two means following Legacy
+for everything[^amf-policy]. FLUXNET2015 uses Tier 1 (CC-BY-4.0) and Tier 2[^fluxnet-policy].
+The download plan states the policy that applies to the sites you chose, and
+`confirm=true` must name it (`accept_data_policy="CCBY4.0"` or `"LEGACY"`), so you
+accept the right terms. The AmeriFlux FLUXNET product exists only for CC-BY sites.
+[Citing AmeriFlux and FLUXNET data](../about/citing-ameriflux.md) lists what each
+policy asks of you.
+
+## FLUXNET2015
+
+FLUXNET2015 files are downloaded through a login-protected form on fluxnet.org that
+also asks for an intended-use statement. ameriflux-mcp does not automate that form.
+Download the zips yourself, put them in your download directory or a folder listed in
+`local.roots` ([Configuration](configuration.md)), and the local file tools read them.
+
+## Privacy
+
+Your identity values are masked in logs, `--print-config` output and the installer's
+output, and never written to caches, download records or test fixtures. ameriflux-mcp
+also strips the contact emails of tower teams and DOI contributors from its results
+unless you explicitly ask for contacts **and** the operator enabled
+`privacy.allow_contact_emails` (off by default), for example to contact PIs as the
+Legacy policy asks.
+
+[^amf-policy]: AmeriFlux Data Policy. <https://ameriflux.lbl.gov/data/data-policy/>
+[^amf-account]: FLUX User Account Creation. <https://amfcdn.lbl.gov/create>
+[^fluxnet-policy]: FLUXNET Data Policy. <https://fluxnet.org/data/data-policy/>
+[^research]: ameriflux-mcp verified research. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/getting-started/install/
+
+---
+title: "Install ameriflux-mcp"
+description: "Install ameriflux-mcp on macOS, Linux or Windows with uv and the install script, register it by hand, verify, upgrade or remove it."
+type: Guide
+tags:
+  - getting-started
+  - install
+  - uv
+  - install-script
+  - windows
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-23T00:00:00Z"
+sources:
+  - id: uv
+    resource: "https://docs.astral.sh/uv/"
+    title: "uv documentation"
+    author: "team:astral"
+  - id: uv-install
+    resource: "https://docs.astral.sh/uv/getting-started/installation/"
+    title: "Installing uv"
+    author: "team:astral"
+  - id: gh
+    resource: "https://cli.github.com/"
+    title: "GitHub CLI"
+    author: "team:github"
+  - id: repo
+    resource: "https://github.com/idss-mesa/ameriflux-mcp"
+    title: "ameriflux-mcp source repository"
+    author: "team:idss-mesa"
+status: draft
+stale_after: "2027-04-23T00:00:00Z"
+---
+
+# Install ameriflux-mcp
+
+ameriflux-mcp is a Python 3.11+ package with one command, `ameriflux-mcp`, that MCP
+clients start over stdio. These instructions cover macOS, Linux and Windows.
+
+!!! warning "Under construction: the server starts from build step 2"
+
+    ameriflux-mcp is being built in eight steps (see the [roadmap](../tools/roadmap.md)).
+    Today the repository holds the design, the research, the installer and this guide,
+    but **the `ameriflux-mcp` command does not start yet**. The install script
+    checks that the server runs (`ameriflux-mcp --version`) and refuses to register a
+    command that does not, so running it now changes nothing: it stops with
+    "nothing was registered". Every step on this page works as written once build step 2
+    is merged; tools appear in steps 4–7.
+
+!!! note "Private repository and no PyPI release yet"
+
+    The repository is private for now, so you need read access to
+    [idss-mesa/ameriflux-mcp](https://github.com/idss-mesa/ameriflux-mcp){target=_blank}[^repo]
+    and git credentials (see [Access the repository](#access-the-repository)). The first
+    PyPI release, as `ameriflux-mcp`, is the last build step.
+
+## Prerequisites
+
+- [uv](https://docs.astral.sh/uv/){target=_blank}[^uv], which installs Python 3.11+ for
+  ameriflux-mcp if your system lacks it and keeps the server in its own environment.
+- git, to clone the repository.
+- Access to the private repository on GitHub, for example through the
+  [GitHub CLI](https://cli.github.com/){target=_blank}[^gh].
+- Optional: an [AmeriFlux account](identity.md), only for downloading data. Everything
+  else works without one.
+
+### Install uv
+
+=== "macOS"
+
+    ```bash
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    # or: brew install uv
+    ```
+
+=== "Linux"
+
+    ```bash
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    # or your distribution's package, if it ships uv 0.5 or newer
+    ```
+
+=== "Windows (PowerShell)"
+
+    ```powershell
+    powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+    # or: winget install --id=astral-sh.uv -e
+    ```
+
+Open a new terminal afterwards so `uv` is on your `PATH`, and check with
+`uv --version`[^uv-install].
+
+### Install git
+
+=== "macOS"
+
+    ```bash
+    xcode-select --install        # Apple's command-line tools include git
+    # or: brew install git
+    ```
+
+=== "Linux"
+
+    ```bash
+    sudo apt install git          # Debian, Ubuntu
+    sudo dnf install git          # Fedora, RHEL
+    ```
+
+=== "Windows"
+
+    ```powershell
+    winget install --id Git.Git -e
+    ```
+
+    Git for Windows includes **Git Bash**, which the install script needs on Windows.
+
+### Access the repository
+
+While the repository is private, clone it with credentials GitHub accepts. The GitHub
+CLI is the simplest route on every platform:
+
+=== "macOS"
+
+    ```bash
+    brew install gh
+    gh auth login                 # choose GitHub.com, HTTPS, and log in with a browser
+    ```
+
+=== "Linux"
+
+    ```bash
+    # install gh from https://cli.github.com/ (packages for apt, dnf, zypper, ...)
+    gh auth login
+    ```
+
+=== "Windows (PowerShell)"
+
+    ```powershell
+    winget install --id GitHub.cli -e
+    gh auth login
+    ```
+
+`gh auth login` also sets up git's credential helper, so plain `git clone https://…`
+and `uv tool install git+https://…` work afterwards. An SSH key added to your GitHub
+account works too: clone `git@github.com:idss-mesa/ameriflux-mcp.git` instead.
+
+## Option 1: From source with the install script (recommended)
+
+=== "macOS / Linux"
+
+    ```bash
+    git clone https://github.com/idss-mesa/ameriflux-mcp.git
+    cd ameriflux-mcp
+    scripts/install.sh
+    ```
+
+=== "Windows (Git Bash)"
+
+    ```bash
+    git clone https://github.com/idss-mesa/ameriflux-mcp.git
+    cd ameriflux-mcp
+    scripts/install.sh --dry-run    # check the paths it will write first
+    scripts/install.sh
+    ```
+
+`scripts/install.sh` creates the server environment (`uv sync`) if
+`.venv/bin/ameriflux-mcp` is missing, checks that `ameriflux-mcp --version` runs, then
+registers that executable with every supported agent it finds on your machine: Claude
+Code, Claude Desktop, OpenAI Codex CLI, Gemini CLI, Goose and OpenCode. It prefers each
+agent's own CLI when one is installed (`claude mcp add`, `codex mcp add`,
+`gemini mcp add`) and otherwise merges an entry into the agent's config file, keeping
+everything else in the file and leaving a `.bak` copy.
+
+```bash
+scripts/install.sh --with-identity               # also store your download identity (see below)
+scripts/install.sh --agents all --dry-run        # preview the change for every agent
+scripts/install.sh --agents claude,goose         # just Claude Code and Goose
+scripts/install.sh --scope project               # project-level config (claude, codex, gemini, opencode)
+scripts/install.sh --env AMERIFLUX_MCP_SERVER__LOG_LEVEL=debug   # any extra environment variable
+scripts/install.sh --command "$(command -v ameriflux-mcp)"       # register a uv-tool install instead
+scripts/install.sh --uninstall                   # remove the registration everywhere
+```
+
+| Agent | What the script does |
+| --- | --- |
+| `claude` (Claude Code) | `claude mcp add --scope user ameriflux -- /path/to/ameriflux-mcp/.venv/bin/ameriflux-mcp` |
+| `claude-desktop` | adds `mcpServers.ameriflux` to `claude_desktop_config.json` |
+| `codex` (OpenAI Codex CLI) | `codex mcp add ameriflux -- …`, or an `[mcp_servers.ameriflux]` table in `~/.codex/config.toml` |
+| `gemini` (Gemini CLI) | `gemini mcp add --scope user ameriflux …`, or `mcpServers.ameriflux` in `~/.gemini/settings.json` |
+| `goose` | adds an `ameriflux` stdio extension to `~/.config/goose/config.yaml` |
+| `opencode` | adds `mcp.servers.ameriflux` (v2) or `mcp.ameriflux` (v1) to `~/.config/opencode/opencode.json` |
+
+The script writes the absolute path of the executable, because desktop apps do not
+inherit your shell `PATH`. It needs bash; macOS's built-in bash 3.2 is enough. Restart
+desktop apps (Claude Desktop, Goose Desktop) after installing.
+
+### The download identity and the script
+
+Only the download tool needs an identity, and everything in it is sent to the site
+PIs when you confirm a download ([Download identity](identity.md) explains why). There
+is deliberately no option that takes these values on the command line, since command
+lines end up in shell history and process lists. `--with-identity` reads them from your
+environment, or asks for each missing one on a terminal:
+
+```bash
+scripts/install.sh --with-identity
+# AmeriFlux user ID: ...
+# Email registered with AmeriFlux: ...
+# Your name (optional, Enter to skip):
+# Intended use (1 synthesis, 2 model, 3 remote sensing, 4 other research, 5 education, 6 other): ...
+# Describe how you will use the data (20-1000 characters, in your own words): ...
+# Send downloads as test requests? (true/false): ...
+```
+
+The answers are stored in each agent's server `env` as `AMERIFLUX_USER_ID`,
+`AMERIFLUX_USER_EMAIL`, `AMERIFLUX_USER_NAME`, `AMERIFLUX_INTENDED_USE`,
+`AMERIFLUX_DESCRIPTION` and `AMERIFLUX_MCP_IDENTITY__IS_TEST`.
+
+- They are stored **in plain text** in each agent's config file. The script restricts
+  the files it writes, and their `.bak` copies, to your user (mode `600`), and masks your
+  user ID, email and name as `***` in everything it prints, including the output of the
+  agent CLIs it calls.
+- For agents registered through their own CLI (Claude Code, Codex, Gemini CLI), the
+  values are passed to that CLI's `mcp add` command and are briefly visible in the
+  process list. Add `--prefer-files` to have Codex and Gemini CLI configured by file.
+- Without `--with-identity` nothing is stored. Discovery, availability, variables,
+  citations and local previews work as usual; the download tool explains what is
+  missing when you ask it to download.
+
+### Windows
+
+On Windows, run the script from **Git Bash** (installed with Git for Windows) or
+register by hand (Option 2). Git Bash converts paths to Windows form, uses
+`.venv\Scripts\ameriflux-mcp.exe`, and writes Claude Desktop's config under
+`%APPDATA%\Claude` and Goose's under `%APPDATA%\Block\goose\config`. Git Bash support
+has not been tested as widely as macOS and Linux; check the result with `--dry-run`
+first. Do not run the script inside WSL to configure Windows apps: it would write WSL's
+own config files, which Claude Desktop for Windows never reads. (Inside WSL, for agents
+that also run inside WSL, it works as on Linux.)
+
+## Option 2: Install the package and register it by hand
+
+=== "uv tool (recommended)"
+
+    ```bash
+    uv tool install git+https://github.com/idss-mesa/ameriflux-mcp
+    ```
+
+    This puts `ameriflux-mcp` in uv's tool directory (`~/.local/bin` on macOS and
+    Linux, `%USERPROFILE%\.local\bin` on Windows) and uses your git credentials for the
+    private repository. Upgrade with
+    `uv tool install --reinstall git+https://github.com/idss-mesa/ameriflux-mcp`.
+
+=== "From source"
+
+    ```bash
+    git clone https://github.com/idss-mesa/ameriflux-mcp.git
+    cd ameriflux-mcp
+    uv sync                      # creates .venv with the package
+    uv run ameriflux-mcp --version
+    ```
+
+=== "PyPI (from v0.1.0)"
+
+    ```bash
+    uv tool install ameriflux-mcp
+    # or: pipx install ameriflux-mcp
+    ```
+
+    Not published yet; the PyPI release is build step 8.
+
+Then find the executable's absolute path, which is what desktop apps need:
+
+=== "macOS / Linux"
+
+    ```bash
+    command -v ameriflux-mcp     # e.g. /Users/you/.local/bin/ameriflux-mcp
+    # from source: /path/to/ameriflux-mcp/.venv/bin/ameriflux-mcp
+    ```
+
+=== "Windows (PowerShell)"
+
+    ```powershell
+    (Get-Command ameriflux-mcp).Source  # e.g. C:\Users\you\.local\bin\ameriflux-mcp.exe
+    # from source: C:\path\to\ameriflux-mcp\.venv\Scripts\ameriflux-mcp.exe
+    ```
+
+and register it with your client. The shortest form, for Claude Code:
+
+```bash
+claude mcp add ameriflux -s user -- ameriflux-mcp
+```
+
+Claude Desktop, and other JSON-configured clients:
+
+```json
+{
+  "mcpServers": {
+    "ameriflux": {
+      "command": "/ABSOLUTE/PATH/TO/ameriflux-mcp",
+      "args": []
+    }
+  }
+}
+```
+
+Use absolute paths (not `~/` or `./`). On Windows escape backslashes:
+`"C:\\Users\\You\\.local\\bin\\ameriflux-mcp.exe"`. To enable downloads, add an `env`
+block with your identity ([Download identity](identity.md#give-it-to-ameriflux-mcp)).
+[Clients](clients.md) has the entries for Claude Desktop, Codex CLI, Gemini CLI, Goose,
+OpenCode, VS Code and hosted servers.
+
+## Option 3: Docker (from build step 8)
+
+The repository will ship a `Dockerfile` that serves stateless Streamable HTTP on port
+8080 as a non-root user, with a `/healthz` health check:
+
+```bash
+git clone https://github.com/idss-mesa/ameriflux-mcp.git && cd ameriflux-mcp
+docker build -t ameriflux-mcp .
+docker run --rm --read-only --tmpfs /tmp -p 127.0.0.1:8080:8080 ameriflux-mcp
+```
+
+Point an HTTP-capable client at `http://127.0.0.1:8080/mcp`. Over HTTP the server
+offers the eight discovery, variable and citation tools; downloads and local file tools
+are stdio only, and no identity is ever accepted over HTTP.
+
+## Verify the installation
+
+```bash
+ameriflux-mcp --version     # ameriflux-mcp 0.1.0
+ameriflux-mcp --check       # {"ok": true, "version": "0.1.0", "protocolVersion": "2026-07-28", "transport": "stdio", "identityConfigured": false, ...}
+```
+
+`--check` loads your configuration, calls `amf_ping` in-process and prints a one-line
+JSON report: version, protocol, transport, whether a download identity is configured
+(as booleans, never the values) and whether downloads are enabled. It makes no network
+request. To check that AmeriFlux answers, ask your agent to call `amf_ping` with
+`check_api=true` once the server is connected. `--print-config` shows the effective
+settings with identity values replaced by `***`.
+
+In Claude Code, `claude mcp list` runs a health check and shows `ameriflux` as
+connected. To talk to the server directly over stdio:
+
+```bash
+# 2026-07-28 client: every request carries the protocol envelope in _meta
+echo '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{},"io.modelcontextprotocol/clientInfo":{"name":"manual","version":"0"}}}}' \
+  | ameriflux-mcp
+
+# 2025-era client: classic initialize handshake, then tools/list
+printf '%s\n%s\n%s\n' \
+  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"manual","version":"0"}}}' \
+  '{"jsonrpc":"2.0","method":"notifications/initialized"}' \
+  '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
+  | ameriflux-mcp
+```
+
+Both print JSON-RPC responses on stdout (logs go to stderr) and exit once stdin closes.
+`server/discover` reports the server's capabilities and instructions; `tools/list` lists
+every tool available in that build.
+
+## Configuration
+
+Nothing is required. The settings most people touch:
+
+```bash
+AMERIFLUX_MCP_SERVER__LOG_LEVEL=info           # debug | info | warning | error | critical (stderr)
+AMERIFLUX_MCP_DOWNLOADS__DIRECTORY=            # where downloads go (default ~/ameriflux-downloads)
+AMERIFLUX_MCP_LOCAL__ROOTS=                    # extra folders the file tools may read (e.g. FLUXNET2015 zips)
+AMERIFLUX_MCP_DOWNLOADS__ENABLED=false         # turn the download tool off entirely
+```
+
+ameriflux-mcp does not read `.env` files on its own. See [Configuration](configuration.md)
+for every setting, the YAML file and the precedence rules.
+
+## Troubleshooting
+
+**The install script says "nothing was registered".** `ameriflux-mcp --version` did not
+run. Before build step 2 that is expected: the server does not exist yet. Afterwards, run
+`uv sync` in the clone (or reinstall with `uv tool install --reinstall …`) and try again;
+`scripts/install.sh --dry-run` shows what it would do without stopping.
+
+**`git clone` fails with "Repository not found" or asks for a password.** The repository
+is private: GitHub answers 404 to anyone without access. Ask an idss-mesa maintainer for
+access, then run `gh auth login` (or use SSH) so git sends your credentials.
+
+**`ameriflux-mcp: command not found` from a desktop app.** Desktop apps do not read your
+shell profile. Use the executable's absolute path as the `command`; the install script
+does this for you.
+
+**Server shows as disconnected.** Run the configured command yourself with `--check`. If
+it fails, re-create the environment (`uv sync` in a clone, or
+`uv tool install --reinstall git+https://github.com/idss-mesa/ameriflux-mcp`). Claude
+Desktop logs live in `~/Library/Logs/Claude/` (macOS) or `%APPDATA%\Claude\logs\`
+(Windows); in Claude Code, `claude mcp get ameriflux` shows the connection status.
+
+**`identityConfigured` is `false` although you set the variables.** They did not reach
+the server process: desktop apps do not see variables exported in your shell. Put them in
+the client's `env` block, or re-run the install script with `--with-identity`.
+
+**Downloads report `auth_required` with `is_test_unset`.** `is_test` has no default on
+purpose; set `AMERIFLUX_MCP_IDENTITY__IS_TEST` to `true` or `false` (see
+[Download identity](identity.md#is_test)).
+
+**Port already in use.** MCP over stdio uses no network port; a port error comes from an
+HTTP deployment (`--transport http`, port 8080 by default) or something else on your
+machine.
+
+**Windows paths.** In JSON, write backslashes doubled (`C:\\Users\\…`) or use forward
+slashes. Point at `ameriflux-mcp.exe`, not the extension-less name.
+
+## Upgrading
+
+```bash
+# install script / from source
+git pull origin main && uv sync
+# uv tool
+uv tool install --reinstall git+https://github.com/idss-mesa/ameriflux-mcp
+```
+
+Registrations made by the install script keep pointing at `.venv/bin/ameriflux-mcp`, so
+`git pull && uv sync` is enough; restart desktop apps afterwards.
+
+## Uninstallation
+
+`--uninstall` leaves each edited file's `.bak` copy behind; if you used
+`--with-identity`, those backups (owner-only, like the files) still contain your user
+ID and email, so delete them too.
+
+```bash
+scripts/install.sh --uninstall       # remove the server from every agent config
+cd .. && rm -rf ameriflux-mcp        # if installed from source
+uv tool uninstall ameriflux-mcp      # if installed with uv tool
+rm -rf ~/.cache/ameriflux-mcp        # the response cache (from build step 3)
+```
+
+Downloaded data in `~/ameriflux-downloads` is yours; remove it separately if you no
+longer need it.
+
+## Next steps
+
+- [Quickstart](quickstart.md): a first session.
+- [Download identity](identity.md): what downloads disclose and how to configure them.
+- [Clients](clients.md): per-client configuration.
+- [Configuration](configuration.md): every setting.
+
+[^uv]: uv documentation. <https://docs.astral.sh/uv/>
+[^uv-install]: Installing uv. <https://docs.astral.sh/uv/getting-started/installation/>
+[^gh]: GitHub CLI. <https://cli.github.com/>
+[^repo]: ameriflux-mcp source repository. <https://github.com/idss-mesa/ameriflux-mcp>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/getting-started/quickstart/
+
+---
+title: "Quickstart"
+description: "A first session with ameriflux-mcp: register it with Claude Code, check it with amf_ping, find a tower, check its data and get a citation."
+type: Tutorial
+tags:
+  - getting-started
+  - quickstart
+  - tutorial
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-23T00:00:00Z"
+sources:
+  - id: claude-code-mcp
+    resource: "https://docs.claude.com/en/docs/claude-code/mcp"
+    title: "Claude Code — MCP"
+    author: "team:anthropic"
+  - id: amf-products
+    resource: "https://ameriflux.lbl.gov/data/flux-data-products/"
+    title: "AmeriFlux flux data products"
+    author: "team:ameriflux"
+  - id: design
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md"
+    title: "ameriflux-mcp design (tool surface)"
+    author: "team:idss-mesa"
+status: draft
+stale_after: "2027-04-23T00:00:00Z"
+---
+
+# Quickstart
+
+This walks through a first session in Claude Code[^claude-code-mcp]; other clients work
+the same way once connected ([Clients](clients.md)).
+
+!!! warning "A preview of the planned session"
+
+    The tools below arrive in build steps 2–7 ([roadmap](../tools/roadmap.md)); the
+    arguments and results follow the design[^design] and may change in detail before
+    v0.1.0. `amf_ping` is the first tool to work (step 2).
+
+## 1. Register the server
+
+```bash
+claude mcp add ameriflux -s user -- ameriflux-mcp --transport stdio
+```
+
+No account is needed for this walkthrough. Downloads (step 6 below) need a
+[download identity](identity.md).
+
+## 2. Check it
+
+Ask the agent to "call amf_ping with check_api=true". The result shows the version,
+protocol `2026-07-28`, the transport, which download-identity fields are configured (as
+booleans), whether downloads are enabled, and under `upstream` whether one small request
+to the AmeriFlux API succeeded.
+
+## 3. Find towers
+
+```json
+{"tool": "amf_search_sites", "arguments": {"igbp": ["DBF"], "state": ["MA"], "product": "FLUXNET", "min_years": 10}}
+```
+
+→ deciduous broadleaf forest sites in Massachusetts with at least ten years of
+AmeriFlux FLUXNET data, each with `siteId` (such as `US-Ha1`, Harvard Forest), name,
+location, IGBP class, data policy and the years per product. Sites also resolve by name
+or NEON code: `amf_get_site(site="SRER")` finds `US-xSR`, the NEON Santa Rita tower, and
+points to the matching NEON data product.
+
+## 4. Check what data exist
+
+```json
+{"tool": "amf_get_availability", "arguments": {"sites": ["US-Ha1", "CA-Let"], "products": ["BASE-BADM", "FLUXNET"]}}
+```
+
+→ the published years per site and product[^amf-products]. `CA-Let` shares its data
+under the Legacy policy, so it has BASE years but appears in `emptySites` for FLUXNET,
+with a note that the FLUXNET product exists only for CC-BY sites.
+
+## 5. Understand the variables
+
+```json
+{"tool": "amf_describe_variables", "arguments": {"names": ["GPP_NT_VUT_REF", "TA_F_MDS_QC"], "resolution": "DD"}}
+```
+
+→ `GPP_NT_VUT_REF` is gross primary production from nighttime partitioning with a
+variable USTAR threshold, reference realization, in gC m-2 d-1 at daily resolution;
+`TA_F_MDS_QC` is the fraction (0–1) of measured or good-quality gap-filled air
+temperature in each day.
+
+## 6. Plan a download
+
+```json
+{"tool": "amf_download_data", "arguments": {"sites": ["US-Ha1"], "product": "FLUXNET"}}
+```
+
+→ a **plan**, not a download: the exact user ID (masked), email (masked), intended use
+and description that would be sent to the US-Ha1 PIs, the data policy (`CCBY4.0`) and
+what it asks of you. Only `confirm=true` with `accept_data_policy="CCBY4.0"` sends the
+request; the files land in `~/ameriflux-downloads` with a checksum record. Then
+`amf_preview_data(site="US-Ha1", product="FLUXNET", resolution="DD")` summarizes the
+daily file without loading it all.
+
+## 7. Cite it
+
+```json
+{"tool": "amf_get_citation", "arguments": {"sites": ["US-Ha1"], "product": "FLUXNET"}}
+```
+
+→ the versioned citation AmeriFlux recommends ("… AmeriFlux FLUXNET-1F US-Ha1 Harvard
+Forest EMS Tower (HFR1), Ver. v1.3_r1 (1991-2025), AmeriFlux AMP, (Dataset).
+https://doi.org/10.17190/AMF/1871137"), the required acknowledgments, the processing
+reference and a data-availability sentence. See
+[Citing AmeriFlux and FLUXNET data](../about/citing-ameriflux.md).
+
+Every result also carries `notes` (caveats) and `nextSteps` (concrete follow-up calls),
+so agents normally chain these on their own.
+
+[^claude-code-mcp]: Claude Code — MCP. <https://docs.claude.com/en/docs/claude-code/mcp>
+[^amf-products]: AmeriFlux flux data products. <https://ameriflux.lbl.gov/data/flux-data-products/>
+[^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/roadmap/
+
+---
+title: "Roadmap"
+description: "The twelve planned ameriflux-mcp tools, the build step that delivers each, and which work over HTTP or need a download identity."
+type: Reference
+tags:
+  - tools
+  - roadmap
+  - planning
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-23T00:00:00Z"
+sources:
+  - id: design
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md"
+    title: "ameriflux-mcp design (tool surface and build order)"
+    author: "team:idss-mesa"
+  - id: research
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md"
+    title: "ameriflux-mcp verified research"
+    author: "team:idss-mesa"
+status: draft
+stale_after: "2027-01-23T00:00:00Z"
+---
+
+# Roadmap
+
+ameriflux-mcp is built in eight steps, one pull request each[^design]. This page lists
+what each step delivers. Once tools exist, a generated tool reference replaces the
+descriptions here.
+
+## Build steps
+
+| Step | Delivers | Status |
+| --- | --- | --- |
+| 1 | Design, verified API research, a read-only API probe | done |
+| 2 | The MCP core ported from edi-mcp, configuration, identity settings, `amf_ping`, CI | next |
+| 3 | AmeriFlux API client, rate limiting, cache, site catalog and name resolution, policy engine, recorded test fixtures | planned |
+| 4 | Site discovery and availability tools | planned |
+| 5 | Variable, citation and BADM tools | planned |
+| 6 | Local file readers and previews | planned |
+| 7 | The download tool (merged only after AmeriFlux confirms third-party use) | planned |
+| 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | planned |
+
+The installer and the installation guide shipped ahead of step 2; they work as soon as
+the `ameriflux-mcp` command starts.
+
+## Planned tools
+
+| Tool | Step | HTTP | What it does |
+| --- | --- | --- | --- |
+| `amf_ping` | 2 | yes | Version, protocol, transport; which identity fields are configured (booleans only); whether the AmeriFlux API answers. |
+| `amf_search_sites` | 4 | yes | Find AmeriFlux (856 sites), FLUXNET2015 (212) and FLUXNET-CH4 (81) towers[^research] by name, place, bounding box, IGBP ecosystem class, Köppen climate, years, product, data policy and measured variables. |
+| `amf_get_site` | 4 | yes | One site by ID, name, NEON code or FLUXNET2015 alias: location, ecosystem, climate, data policy, DOIs, years per product, team (no emails by default) and links to NEON and EDI. |
+| `amf_get_availability` | 4 | yes | Published years per site, product and policy, with the sites that have no data listed separately and the effective policy of the selection. |
+| `amf_search_variables` | 5 | yes | Search the FP Standard (145 base names) and FLUXNET FULLSET/SUBSET dictionaries, with units per time resolution. |
+| `amf_describe_variables` | 5 | yes | Parse names such as `TA_F_1_1_1` or `GPP_NT_VUT_REF`: qualifiers, gap-filling and partitioning method, QC scheme, units by resolution, sign convention, measurement heights. |
+| `amf_get_citation` | 5 | yes | The versioned citation AmeriFlux recommends per site, required acknowledgments, the obligations of the CC-BY-4.0, Legacy or Tier 2 policy, and a data-availability sentence. |
+| `amf_get_badm` | 5 | yes | Site metadata (BADM) from the catalog: location, IGBP, climate, team, DOI, disturbance and management, funding. |
+| `amf_download_data` | 7 | no | BASE-BADM, AmeriFlux FLUXNET and bulk BADM through AmeriFlux's logged download route: a plan first, then `confirm=true`; checksummed files. Needs a [download identity](../getting-started/identity.md). |
+| `amf_list_files` | 6 | no | Classify downloaded zips and CSVs by product, site, resolution, years and version. |
+| `amf_preview_data` | 6 | no | Column summaries and row windows from local BASE, FLUXNET and FLUXNET2015 files, with time windows, QC filtering, missing values as nulls and a SUBSET view. |
+| `amf_read_bif` | 6 | no | Read BADM Interchange Format files (xlsx or CSV), including UTC offsets and the site's DOI citation. |
+
+## Data products covered
+
+| Product | Discover | Availability | Cite | Download | Read locally |
+| --- | --- | --- | --- | --- | --- |
+| AmeriFlux BASE (BASE-BADM) | yes | yes | yes | yes | yes |
+| AmeriFlux BADM / BIF | yes | yes (membership) | yes (BASE DOI) | yes (bulk) | yes |
+| AmeriFlux FLUXNET (FLUXNET-1F) | yes | yes | yes | yes | yes |
+| FLUXNET2015 FULLSET / SUBSET | yes | yes | yes | no (login-protected form) | yes |
+| FLUXNET-CH4 | yes | yes | v0.2 | no | v0.2 |
+
+## After v0.1.0
+
+Version 0.2 focuses on analysis: server-side summaries by year, month or hour with QC
+handling, Parquet export with a hand-off to the CyVerse Data Store and mesa-ducklake,
+DuckDB as an optional extra, FLUXNET-CH4 readers and citations, and possibly the
+European and Australian networks served through the FLUXNET Shuttle.
+
+[^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
+[^research]: ameriflux-mcp verified research. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/about/ai-agents/
+
+---
+title: "For AI agents"
+description: "How agents should read this site (llms.txt, per-page Markdown, OKF trust signals) and why to call the ameriflux-mcp server for flux data."
+type: Reference
+tags:
+  - about
+  - ai-agents
+  - OKF
+  - llms.txt
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-23T00:00:00Z"
+sources:
+  - id: okf-spec
+    resource: "https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md"
+    title: "Open Knowledge Format (OKF) v0.2 specification"
+    author: "team:google-cloud"
+  - id: llmstxt
+    resource: "https://llmstxt.org"
+    title: "The /llms.txt convention"
+    author: "team:answer-ai"
+  - id: mcp-spec
+    resource: "https://modelcontextprotocol.io/specification/2026-07-28"
+    title: "Model Context Protocol specification, 2026-07-28"
+    author: "team:modelcontextprotocol"
+status: stable
+---
+
+# For AI agents
+
+This site is published for people **and** for AI agents. The documentation
+source is an [Open Knowledge Format (OKF) v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md){target=_blank}
+knowledge bundle[^okf-spec], and the deployed site exposes that structure
+directly. If you are an agent (or you are wiring one up), consume the
+documentation through the endpoints below rather than scraping rendered HTML.
+
+## This site documents an MCP server
+
+ameriflux-mcp *is* an agent tool. If what you actually want is AmeriFlux or
+FLUXNET data — sites, availability, variables, citations — do not scrape these
+pages: connect to the server and call its tools. Locally, run it over `stdio`
+(`claude mcp add ameriflux -s user -- ameriflux-mcp --transport stdio`); against a
+hosted instance, use Streamable HTTP at `https://<host>/mcp`
+(`claude mcp add --transport http ameriflux https://<host>/mcp`). The server is
+under construction; the [roadmap](../tools/roadmap.md) says which tools exist. The server
+implements MCP 2026-07-28[^mcp-spec]: `server/discover` and `tools/list`
+return the live, authoritative tool catalogue with JSON Schema inputs and
+outputs, and every list result carries cache hints. Use this documentation
+to learn *how* to use the server; use the server to get the data.
+
+## Entry points
+
+All URLs are under `https://idss-mesa.github.io/ameriflux-mcp/`.
+
+| Endpoint | What you get |
+| -------- | ------------ |
+| [`llms.txt`](../llms.txt) — `https://idss-mesa.github.io/ameriflux-mcp/llms.txt` | Linked outline of every page with one-line descriptions ([llms.txt convention](https://llmstxt.org){target=_blank}[^llmstxt]) |
+| [`llms-full.txt`](../llms-full.txt) — `https://idss-mesa.github.io/ameriflux-mcp/llms-full.txt` | The entire corpus in one file: every page's Markdown with frontmatter, each prefixed by its canonical URL |
+| Any page URL + `index.md` | That page's Markdown source with full OKF frontmatter, e.g. `https://idss-mesa.github.io/ameriflux-mcp/getting-started/install/index.md` |
+| `https://idss-mesa.github.io/ameriflux-mcp/sitemap.xml`, `https://idss-mesa.github.io/ameriflux-mcp/robots.txt` | Standard crawl surface; `robots.txt` welcomes AI fetchers and repeats these pointers |
+| [`tools/roadmap/`](../tools/roadmap.md) — `https://idss-mesa.github.io/ameriflux-mcp/tools/roadmap/` | The planned tools and the build step that delivers each (a generated tool reference replaces it once tools exist) |
+| [Source repository](https://github.com/idss-mesa/ameriflux-mcp){target=_blank} | The bundle itself under `docs/`, plus `CLAUDE.md` with the rules coding agents follow when editing the code |
+
+Every rendered page also declares its Markdown twin and OKF signals in its
+HTML `<head>`, as `okf:`-prefixed meta tags named after the frontmatter keys
+(`type`, `status`, `trust-tier`, `generated-at`, `generated-by`,
+`stale-after`) — for example:
+
+```html
+<link rel="alternate" type="text/markdown" href="index.md">
+<meta name="okf:status" content="stable">
+<meta name="okf:trust-tier" content="unverified">
+<meta name="okf:generated-at" content="2026-10-23T00:00:00Z">
+<meta name="okf:generated-by" content="claude/opus-5.5">
+<meta name="okf:stale-after" content="2027-04-23T00:00:00Z">
+```
+
+The page's `type` is exposed the same way, so a crawler can filter by kind of
+page (Guide, Reference, Policy, ...) without parsing frontmatter.
+
+## Reading the OKF frontmatter
+
+Each content page's YAML frontmatter answers the questions an agent should
+ask before relying on it[^okf-spec]:
+
+* **What is this?** — `type` (`Guide`, `Tutorial`, `Reference`, `Policy`,
+  `MCP Tool Reference`), `title`, `description`, `tags`.
+* **Where did it come from?** — `generated: { by, at }` records the actor
+  that produced the current text and when it last changed meaningfully;
+  `sources` lists the load-bearing external references (`id`, `resource`
+  URL, `title`, `author`). Footnotes in the body cite sources by their `id`.
+* **How much should I trust it?** — the `verified` key (see trust tiers
+  below). Its absence is meaningful: the page has not been confirmed by
+  anyone other than its generator.
+* **Is it still true?** — `status` (`stable` is the default; `draft` needs
+  review; `deprecated` is kept for history only) and `stale_after`, an
+  ISO 8601 instant after which the page should be re-checked. Pages that
+  state facts AmeriFlux, FLUXNET or the MCP project may change — data
+  policies, endpoints, SDK versions — carry one.
+
+Actors follow OKF §7: `<producer>/<version>` for agents and tools (for
+example `claude/opus-5.5`), `human:<id>` for a person, `process:<id>` for an
+automated job such as the generated tool reference.
+
+## Trust tiers
+
+| `verified` key | Tier | Meaning |
+| --- | --- | --- |
+| absent | **unverified** | Generated content nobody has confirmed against its sources. Most pages on this site start here. |
+| present, non-`human:` actors only | **machine-confirmed** | An automated check (a CI job, a live smoke test) confirmed the content. |
+| present with a `human:<id>` actor | **human-reviewed** | A maintainer read and confirmed the page. Prefer these when answers conflict. |
+
+Only humans add `verified:` entries; a generator never does. The
+`okf:trust-tier` meta tag carries the derived tier for quick filtering.
+
+## Answering user questions
+
+Ground answers in this documentation and cite the page URL (for example
+`https://idss-mesa.github.io/ameriflux-mcp/getting-started/install/`). For
+anything about the *data* — site IDs, years, variables, DOIs, policies — call
+the server or [AmeriFlux](https://ameriflux.lbl.gov){target=_blank}
+rather than guessing from prose. When the corpus does not answer a question
+about ameriflux-mcp itself, direct users to the
+[GitHub issue tracker](https://github.com/idss-mesa/ameriflux-mcp/issues){target=_blank}.
+
+[^okf-spec]: Open Knowledge Format (OKF) v0.2 specification. <https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md>
+[^llmstxt]: The /llms.txt convention. <https://llmstxt.org>
+[^mcp-spec]: Model Context Protocol specification, 2026-07-28. <https://modelcontextprotocol.io/specification/2026-07-28>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/about/citing-ameriflux/
+
+---
+title: "Citing AmeriFlux and FLUXNET data"
+description: "How to cite AmeriFlux BASE, AmeriFlux FLUXNET and FLUXNET2015 data: per-site DOIs, required acknowledgments, policy obligations, and citing ameriflux-mcp."
+type: Policy
+tags:
+  - about
+  - citation
+  - data-policy
+  - doi
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-23T00:00:00Z"
+sources:
+  - id: amf-policy
+    resource: "https://ameriflux.lbl.gov/data/data-policy/"
+    title: "AmeriFlux Data Policy"
+    author: "team:ameriflux"
+  - id: fluxnet-policy
+    resource: "https://fluxnet.org/data/data-policy/"
+    title: "FLUXNET Data Policy"
+    author: "team:fluxnet"
+  - id: chu-2023
+    resource: "https://doi.org/10.1038/s41597-023-02531-2"
+    title: "Chu et al. (2023), AmeriFlux BASE data pipeline to support network growth and data sharing, Sci Data 10, 614"
+    author: "Chu, H. et al."
+  - id: pastorello-2020
+    resource: "https://doi.org/10.1038/s41597-020-0534-3"
+    title: "Pastorello et al. (2020), The FLUXNET2015 dataset and the ONEFlux processing pipeline for eddy covariance data, Sci Data 7, 225"
+    author: "Pastorello, G. et al."
+status: stable
+stale_after: "2027-04-23T00:00:00Z"
+---
+
+# Citing AmeriFlux and FLUXNET data
+
+AmeriFlux and FLUXNET data come from individual tower teams, and the data policies ask
+you to credit each site you use. `amf_get_citation` assembles everything on this page
+for a list of sites; this page explains what it returns and why. The text below follows
+the AmeriFlux data policy (CC-BY-4.0 license revised December 2025) and the FLUXNET data
+policy as read on 2026-10-22[^amf-policy][^fluxnet-policy]; the policy pages are
+authoritative.
+
+## One citation per site
+
+Every AmeriFlux product of every site has its own DOI under `10.17190/AMF/`, and every
+FLUXNET2015 site one under `10.18140/FLX/`. Cite each site in the reference list, not in
+supplementary material. AmeriFlux's recommended form includes the product version:
+
+> J. William Munger, Shawn Urbanski, Michael Golden, Carol Barford, Jaclyn Matthes,
+> Steven Wofsy (2026), AmeriFlux BASE US-Ha1 Harvard Forest EMS Tower (HFR1), Ver. 28-5,
+> AmeriFlux AMP, (Dataset). https://doi.org/10.17190/AMF/1246059
+
+> … (2026), AmeriFlux FLUXNET-1F US-Ha1 Harvard Forest EMS Tower (HFR1), Ver. v1.3_r1
+> (1991-2025), AmeriFlux AMP, (Dataset). https://doi.org/10.17190/AMF/1871137
+
+The version, year and publisher in this form differ from what generic DOI services
+(DataCite, doi.org) return, so prefer AmeriFlux's form. BADM metadata downloaded with a
+product is cited with that product's DOI. AmeriFlux does not publish ready-made citation
+text for FLUXNET2015 sites; `amf_get_citation` builds it from the site's DOI, title and
+contributors.
+
+## Acknowledgments
+
+For **CC-BY-4.0** AmeriFlux data:
+
+> Funding for the AmeriFlux data service was provided by the U.S. Department of Energy
+> Office of Science.
+
+For **Legacy** data the wording names the data *portal*:
+
+> Funding for the AmeriFlux data portal was provided by the U.S. Department of Energy
+> Office of Science.
+
+When you use the **AmeriFlux FLUXNET** product, add:
+
+> FLUXNET data products were produced and harmonized by eddy covariance regional
+> networks and data processing centers, including AmeriFlux, ChinaFlux, European Fluxes
+> Database, ICOS, JapanFlux, KoFlux, OzFlux, SAEON, and TERN. These products also include
+> a modified version of ERA5 hourly data provided by the Copernicus Climate Change
+> Service.
+
+## Processing references
+
+- AmeriFlux BASE: Chu, H., Christianson, D.S., Cheah, YW. et al. AmeriFlux BASE data
+  pipeline to support network growth and data sharing. *Sci Data* 10, 614 (2023).
+  https://doi.org/10.1038/s41597-023-02531-2[^chu-2023]
+- AmeriFlux FLUXNET and FLUXNET2015: Pastorello, G. et al. The FLUXNET2015 dataset and
+  the ONEFlux processing pipeline for eddy covariance data. *Sci Data* 7, 225 (2020).
+  https://doi.org/10.1038/s41597-020-0534-3[^pastorello-2020]
+
+## Data availability statement
+
+If your paper has a data availability section, the AmeriFlux policy suggests:
+
+> The AmeriFlux [DATA PRODUCT] were accessed from [SOURCE] on XX Month YYYY
+
+where [SOURCE] can be the AmeriFlux data portal, AmeriFlux APIs, the FLUXNET User
+Interface for the Shuttle, or the FLUXNET Shuttle code. Data downloaded through
+ameriflux-mcp came through the AmeriFlux APIs.
+
+## What each policy asks of you
+
+| Policy | Obligations |
+| --- | --- |
+| AmeriFlux CC-BY-4.0 | Cite each site's DOI; include the DOE acknowledgment; informing data providers about publications is recommended. |
+| AmeriFlux Legacy | Contact the site PIs when you start in-depth analysis (they may offer co-authorship); cite each DOI; acknowledge site funding; include the DOE "data portal" acknowledgment; inform providers before publication; use the AmeriFlux logo or link in presentations. |
+| FLUXNET2015 Tier 1 | CC-BY-4.0: cite each site's DOI and Pastorello et al. (2020). |
+| FLUXNET2015 Tier 2 | Scientific and educational use; give data providers at least three weeks to contribute after the first draft. Six sites are Tier 2 only (RU-Sam, RU-SkP, RU-Tks, RU-Vrk, SE-St1, ZA-Kru) and are not part of Pastorello et al. (2020). |
+
+**Mixing escalates.** A study that combines CC-BY-4.0 and Legacy AmeriFlux data follows
+the Legacy policy for all of it; one that combines FLUXNET2015 Tier 1 and Tier 2 data
+treats all of it as Tier 2. `amf_get_citation` reports the effective policy for the
+sites you name, with each obligation marked required or recommended.
+
+## Citing ameriflux-mcp
+
+ameriflux-mcp is software, not a data source: cite the data as above. If you want to
+mention the tool, for example in a methods section:
+
+> Data were discovered and retrieved with ameriflux-mcp (idss-mesa, University of New
+> Mexico; https://github.com/idss-mesa/ameriflux-mcp), version X.Y.Z.
+
+[^amf-policy]: AmeriFlux Data Policy. <https://ameriflux.lbl.gov/data/data-policy/>
+[^fluxnet-policy]: FLUXNET Data Policy. <https://fluxnet.org/data/data-policy/>
+[^chu-2023]: Chu et al. (2023), Sci Data 10, 614. <https://doi.org/10.1038/s41597-023-02531-2>
+[^pastorello-2020]: Pastorello et al. (2020), Sci Data 7, 225. <https://doi.org/10.1038/s41597-020-0534-3>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/about/license/
+
+---
+title: "License"
+description: "ameriflux-mcp code is MIT-licensed by the Regents of the University of New Mexico; these docs are CC-BY 4.0; flux data carry their own policies."
+type: Policy
+tags:
+  - about
+  - license
+  - MIT
+  - CC-BY
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-23T00:00:00Z"
+sources:
+  - id: ameriflux-mcp-license
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/LICENSE"
+    title: "ameriflux-mcp LICENSE file (MIT)"
+    author: "team:idss-mesa"
+  - id: mit
+    resource: "https://opensource.org/license/mit"
+    title: "The MIT License"
+    author: "team:opensource-org"
+  - id: cc-by-4
+    resource: "https://creativecommons.org/licenses/by/4.0/"
+    title: "Creative Commons Attribution 4.0 International (CC BY 4.0)"
+    author: "team:creativecommons"
+  - id: amf-policy
+    resource: "https://ameriflux.lbl.gov/data/data-policy/"
+    title: "AmeriFlux Data Policy"
+    author: "team:ameriflux"
+status: stable
+---
+
+# License
+
+Three things meet on this site: the server software, the documentation you are reading,
+and the AmeriFlux and FLUXNET data the server gives access to. Each has its own terms.
+
+## Server code — MIT
+
+The ameriflux-mcp source code (the `ameriflux_mcp` Python package, the `ameriflux-mcp`
+command-line program, tests and build scripts) is released under the
+[MIT License](https://opensource.org/license/mit){target=_blank}[^mit]:
+
+> Copyright (c) 2026 The Regents of the University of New Mexico
+
+The full text is in the repository's
+[`LICENSE`](https://github.com/idss-mesa/ameriflux-mcp/blob/main/LICENSE){target=_blank}
+file[^ameriflux-mcp-license]. In short: you may use, copy, modify, merge, publish,
+distribute, sublicense and sell the software, provided the copyright notice and
+permission notice are included; the software is provided "as is", without warranty.
+Code and data that ameriflux-mcp ports from other projects (amerifluxr, the FLUXNET
+Shuttle, ONEFlux) keep their own BSD-style licenses and are credited in the repository's
+[`NOTICE`](https://github.com/idss-mesa/ameriflux-mcp/blob/main/NOTICE){target=_blank}
+file.
+
+## Documentation text — CC-BY 4.0
+
+The prose, tables and examples on this site (everything under `docs/` in the repository,
+including the OKF frontmatter) are licensed under
+[Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/){target=_blank}[^cc-by-4].
+You may share and adapt the material for any purpose, provided you give appropriate
+credit ("ameriflux-mcp documentation, idss-mesa / The Regents of the University of New
+Mexico, CC-BY 4.0") and indicate whether changes were made. Code snippets embedded in the
+documentation may alternatively be used under the MIT terms above. Quoted data-policy
+text belongs to AmeriFlux and FLUXNET.
+
+## Flux data — per site and product
+
+Data retrieved through ameriflux-mcp are not part of this project and are not covered by
+either license above. Each AmeriFlux site shares its data under the CC-BY-4.0 license or
+the AmeriFlux Legacy policy, and FLUXNET2015 under Tier 1 (CC-BY-4.0) or Tier 2[^amf-policy].
+Follow the policy of every site you use, and cite it as described in
+[Citing AmeriFlux and FLUXNET data](citing-ameriflux.md).
+
+## Trademarks and affiliation
+
+ameriflux-mcp is an independent project of
+[idss-mesa](https://github.com/idss-mesa){target=_blank} at the University of New
+Mexico. It is not developed, endorsed or supported by the AmeriFlux Management Project,
+Lawrence Berkeley National Laboratory, FLUXNET or the U.S. Department of Energy. Their
+names belong to their respective owners; this site uses its own original artwork.
+
+[^mit]: The MIT License. <https://opensource.org/license/mit>
+[^ameriflux-mcp-license]: ameriflux-mcp `LICENSE` file. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/LICENSE>
+[^cc-by-4]: Creative Commons Attribution 4.0 International. <https://creativecommons.org/licenses/by/4.0/>
+[^amf-policy]: AmeriFlux Data Policy. <https://ameriflux.lbl.gov/data/data-policy/>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/log/
+
+# Directory Update Log
+
+## 2026-10-23
+* **Creation**: Documentation site on Zensical (OKF v0.2), ported from edi-mcp and modelled on gbif-mcp's: home page, the `zensical.toml` configuration, the OKF validator, the `llms.txt` generator and the post-build agent surface (Markdown mirror, `okf:*` head metadata, `robots.txt`).
+* **Creation**: [Install ameriflux-mcp](getting-started/install.md) for macOS, Linux and Windows: uv, git and access to the private repository, the `scripts/install.sh` installer (six agents, `--with-identity`, refuses to register a server that does not start), manual registration, Docker, verification, troubleshooting, upgrades and removal.
+* **Creation**: [Quickstart](getting-started/quickstart.md), [Download identity](getting-started/identity.md), [Clients](getting-started/clients.md) and [Configuration](getting-started/configuration.md) (planned settings until build step 2 generates the table).
+* **Creation**: [Roadmap](tools/roadmap.md) of the twelve planned tools and eight build steps.
+* **Creation**: [For AI agents](about/ai-agents.md), [Citing AmeriFlux and FLUXNET data](about/citing-ameriflux.md) and [License](about/license.md).
+
+## 2026-10-22
+* **Creation**: Started the ameriflux-mcp documentation bundle (OKF v0.2) with this log.
