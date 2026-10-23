@@ -33,16 +33,16 @@ descriptions here.
 | Step | Delivers | Status |
 | --- | --- | --- |
 | 1 | Design, verified API research, a read-only API probe | done |
-| 2 | The MCP core ported from edi-mcp, configuration, identity settings, `amf_ping`, CI | next |
-| 3 | AmeriFlux API client, rate limiting, cache, site catalog and name resolution, policy engine, recorded test fixtures | planned |
+| 2 | The MCP core ported from edi-mcp, configuration, identity settings, `amf_ping`, CI | done |
+| 3 | AmeriFlux API client, rate limiting, cache, site catalog and name resolution, policy engine, recorded test fixtures | next |
 | 4 | Site discovery and availability tools | planned |
 | 5 | Variable, citation and BADM tools | planned |
 | 6 | Local file readers and previews | planned |
 | 7 | The download tool (merged only after AmeriFlux confirms third-party use) | planned |
 | 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | planned |
 
-The installer and the installation guide shipped ahead of step 2; they work as soon as
-the `ameriflux-mcp` command starts.
+The [tool reference](reference.md) is generated from the server's registry and lists
+exactly the tools the current build offers.
 
 ## Planned tools
 

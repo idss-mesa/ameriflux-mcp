@@ -11,13 +11,14 @@ If you want AmeriFlux or FLUXNET data rather than documentation, connect to the 
 ## Getting started
 
 - [Clients](https://idss-mesa.github.io/ameriflux-mcp/getting-started/clients/): Register ameriflux-mcp with Claude Code, Claude Desktop, Codex CLI, Gemini CLI, Goose, OpenCode and VS Code, or a hosted server over HTTP. (draft)
-- [Configuration](https://idss-mesa.github.io/ameriflux-mcp/getting-started/configuration/): Configure ameriflux-mcp with a YAML file, AMERIFLUX_MCP_ environment variables or flags; precedence rules and the planned settings. (draft)
+- [Configuration](https://idss-mesa.github.io/ameriflux-mcp/getting-started/configuration/): Configure ameriflux-mcp with a YAML file, AMERIFLUX_MCP_ environment variables or flags; precedence rules and every setting with its default.
 - [Download identity](https://idss-mesa.github.io/ameriflux-mcp/getting-started/identity/): What AmeriFlux downloads disclose, how to create an account, and how to give ameriflux-mcp your user ID, email and intended use. (draft)
 - [Install ameriflux-mcp](https://idss-mesa.github.io/ameriflux-mcp/getting-started/install/): Install ameriflux-mcp on macOS, Linux or Windows with uv and the install script, register it by hand, verify, upgrade or remove it. (draft)
 - [Quickstart](https://idss-mesa.github.io/ameriflux-mcp/getting-started/quickstart/): A first session with ameriflux-mcp: register it with Claude Code, check it with amf_ping, find a tower, check its data and get a citation. (draft)
 
 ## Tools
 
+- [Tool reference](https://idss-mesa.github.io/ameriflux-mcp/tools/reference/): Every ameriflux-mcp tool with its inputs, result fields, upstream endpoints and annotations, generated from the tool registry.
 - [Roadmap](https://idss-mesa.github.io/ameriflux-mcp/tools/roadmap/): The twelve planned ameriflux-mcp tools, the build step that delivers each, and which work over HTTP or need a download identity. (draft)
 
 ## About

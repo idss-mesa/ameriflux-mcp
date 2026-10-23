@@ -22,12 +22,11 @@ Desktop, and stateless Streamable HTTP at `/mcp` when hosted. It is developed by
 [idss-mesa](https://github.com/idss-mesa){target=_blank} at the University of New
 Mexico and released under the MIT license.
 
-!!! warning "Under construction: build step 1 of 8"
+!!! warning "Under construction: build step 2 of 8"
 
-    The installer and these instructions are ready ahead of the server. The
-    `ameriflux-mcp` command starts from build step 2, and the tools arrive in steps 4–7
-    (see the [roadmap](tools/roadmap.md)). Until then `scripts/install.sh` checks that
-    the server starts and refuses to register a command that does not.
+    The server installs, starts and answers `amf_ping` on every supported client. The
+    data tools arrive in build steps 4–7 (see the [roadmap](tools/roadmap.md)); the
+    [tool reference](tools/reference.md) lists what the current build offers.
 
 ## Install in one minute
 
@@ -56,7 +55,7 @@ lifecycle fields, and the whole corpus is available to agents at [`llms.txt`](ll
 and [`llms-full.txt`](llms-full.txt).
 
 * [Getting started](getting-started/index.md) - Install ameriflux-mcp on macOS, Linux or Windows, connect an MCP client, set up the download identity and tune the configuration.
-* [Tools](tools/index.md) - The twelve planned tools, what each will do and the build step that delivers it.
+* [Tools](tools/index.md) - The generated reference of the tools in this build, and the roadmap of the twelve planned tools.
 * [About](about/index.md) - How agents should consume this site, how to cite AmeriFlux and FLUXNET data, licenses, and the change log.
 
 ## Where to get help
