@@ -90,7 +90,7 @@ async def test_disk_layer_round_trip_and_privacy(tmp_path: Path) -> None:
     first = make_cache(fake, tmp_path)
 
     async def fetch() -> dict[str, object]:
-        return {"team": [{"name": "A", "team_member_email": "a@x.org"}], "n": 1}
+        return {"team": [{"name": "A", "team_member_email": "a@example.net"}], "n": 1}
 
     await first.get_or_fetch("catalog", "k", fetch)
     files = list(tmp_path.rglob("*.json"))
@@ -122,7 +122,7 @@ async def test_memory_only_family_never_hits_disk(tmp_path: Path) -> None:
     cache = make_cache(FakeTime(), tmp_path)
 
     async def fetch() -> dict[str, str]:
-        return {"DOI_CONTRIBUTOR_EMAIL": "a@x.org"}
+        return {"DOI_CONTRIBUTOR_EMAIL": "a@example.net"}
 
     await cache.get_or_fetch("citations", "k", fetch)
     assert list(tmp_path.rglob("*.json")) == []

@@ -20,10 +20,10 @@ LABEL = "GET amfcdn.lbl.gov/api/v1/x"
 def test_strip_emails_removes_keys_and_scrubs_values() -> None:
     data = {
         "grp_team_member": [
-            {"team_member_name": "A", "team_member_email": "a@x.org"},
-            {"team_member_name": "B", "TEAM_MEMBER_EMAIL": "b@x.org"},
+            {"team_member_name": "A", "team_member_email": "a@example.net"},
+            {"team_member_name": "B", "TEAM_MEMBER_EMAIL": "b@example.net"},
         ],
-        "DOI_CONTRIBUTOR": [{"DOI_CONTRIBUTOR_EMAIL": "c@x.org", "note": "write to d@x.org"}],
+        "DOI_CONTRIBUTOR": [{"DOI_CONTRIBUTOR_EMAIL": "c@example.net", "note": "write to d@example.net"}],
         "count": 3,
     }
     clean = strip_emails(data)

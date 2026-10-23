@@ -59,7 +59,7 @@ def test_check_rules(rec: ModuleType, tmp_path: Path) -> None:
             {"key": "POST amfcdn.lbl.gov/api/v1/data_download", "status": 200},
         ],
         {
-            "v1/a.json": '{"pi": "someone@harvard.edu", "ok": "fine@example.org"}',
+            "v1/a.json": '{"pi": "someone@example.edu", "ok": "fine@example.org"}',
             "v1/stray.json": "x" * (41 * 1024),
         },
     )
@@ -73,7 +73,7 @@ def test_check_rules(rec: ModuleType, tmp_path: Path) -> None:
 
 
 def test_email_rewrite_is_stable(rec: ModuleType) -> None:
-    text = "a: Jane.Doe@Harvard.edu, b: jane.doe@harvard.edu, c: other@lbl.gov"
+    text = "a: Jane.Doe@Example.EDU, b: jane.doe@example.edu, c: other@example.net"
     out = rec.scrub_emails(text)
     found = re.findall(r"[\w.+-]+@[\w.-]+", out)
     assert all(e.endswith("@example.org") for e in found)
