@@ -37,15 +37,12 @@ stale_after: "2027-04-23T00:00:00Z"
 ameriflux-mcp is a Python 3.11+ package with one command, `ameriflux-mcp`, that MCP
 clients start over stdio. These instructions cover macOS, Linux and Windows.
 
-!!! warning "Under construction: the server starts from build step 2"
+!!! warning "Under construction: build step 2 of 8"
 
     ameriflux-mcp is being built in eight steps (see the [roadmap](../tools/roadmap.md)).
-    Today the repository holds the design, the research, the installer and this guide,
-    but **the `ameriflux-mcp` command does not start yet**. The install script
-    checks that the server runs (`ameriflux-mcp --version`) and refuses to register a
-    command that does not, so running it now changes nothing: it stops with
-    "nothing was registered". Every step on this page works as written once build step 2
-    is merged; tools appear in steps 4–7.
+    The server installs, starts and answers `amf_ping` on every client below; the data
+    tools arrive in steps 4–7, and the [tool reference](../tools/reference.md) always lists
+    what the current build offers. Every step on this page works as written today.
 
 !!! note "Private repository and no PyPI release yet"
 
@@ -329,7 +326,7 @@ are stdio only, and no identity is ever accepted over HTTP.
 
 ```bash
 ameriflux-mcp --version     # ameriflux-mcp 0.1.0
-ameriflux-mcp --check       # {"ok": true, "version": "0.1.0", "protocolVersion": "2026-07-28", "transport": "stdio", "identityConfigured": false, ...}
+ameriflux-mcp --check       # {"ok": true, "version": "0.1.0", "protocolVersion": "2026-07-28", "transport": "stdio", "identityConfigured": false, "downloadsEnabled": true}
 ```
 
 `--check` loads your configuration, calls `amf_ping` in-process and prints a one-line
@@ -376,9 +373,15 @@ for every setting, the YAML file and the precedence rules.
 ## Troubleshooting
 
 **The install script says "nothing was registered".** `ameriflux-mcp --version` did not
-run. Before build step 2 that is expected: the server does not exist yet. Afterwards, run
-`uv sync` in the clone (or reinstall with `uv tool install --reinstall …`) and try again;
-`scripts/install.sh --dry-run` shows what it would do without stopping.
+run, so the script refused to register a broken command. Run `uv sync` in the clone (or
+reinstall with `uv tool install --reinstall …`) and try again; run the command yourself
+to see its error; `scripts/install.sh --dry-run` shows what it would do without stopping.
+
+**The server exits at once with "invalid configuration".** A setting failed validation
+(exit code 2). The message names the setting and the rule, for example
+`identity.user_email: Value error, user_email is not an email address`; it never repeats
+the value, so check the variable yourself. `ameriflux-mcp --print-config` shows the
+effective settings once they load.
 
 **`git clone` fails with "Repository not found" or asks for a password.** The repository
 is private: GitHub answers 404 to anyone without access. Ask an idss-mesa maintainer for

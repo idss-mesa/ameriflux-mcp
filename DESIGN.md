@@ -1,6 +1,6 @@
 # ameriflux-mcp — design
 
-Status: **scaffold, 2026-10-22.** Target: MCP **2026-07-28** (stateless core) on the
+Status: **build step 2 (core port), 2026-10-23.** Target: MCP **2026-07-28** (stateless core) on the
 Python `mcp` SDK 2.x (`mcp>=2.0,<3`), Python 3.11+. Repo
 `https://github.com/idss-mesa/ameriflux-mcp`, package `ameriflux_mcp`, console script
 `ameriflux-mcp`, tool prefix `amf_`, MIT (Regents of UNM). Templates:
@@ -50,6 +50,7 @@ hand-off, optional DuckDB extra).
 | D29 | Release | `server.json` (`io.github.idss-mesa/ameriflux-mcp`); README carries `<!-- mcp-name: io.github.idss-mesa/ameriflux-mcp -->`; Dockerfile from neon with a pinned uv image, no `--extra pdf`, uid 10001; release.yml with a `pypi` environment. | [E40, E47]. |
 | D30 | SUBSET (FLUXNET v1.x) | A local column view (`view='subset'`) taken from the SUBSET dictionary; the download variant is fixed at FULLSET until Q3 is answered. | v1.3 zips carry no SUBSET/FULLSET token [E32]. |
 | D31 | Auxiliary tables | FLUXNET2015 AUXMETEO/AUXNEE are `aux_table` files read without the timestamp requirement; ERAI spans 1989–2014 regardless of the site's flux years. | RESEARCH.md §6. |
+| D32 | Value-free configuration errors | `load_config` turns pydantic validation errors into `ConfigError` naming the setting and rule only (pydantic would echo the input); the CLI exits 2 with that message. A YAML section left empty (`cache:` with commented children) counts as absent. Over HTTP, `amf_ping` reports no identity fields at all, not just "unavailable". The upstream client treats any 3xx as an error (redirects are never followed). | A mistyped email must not land in a log; a hosted server's callers have no business learning what its operator configured. Step 2, 2026-10-23. |
 
 ## Tool surface (v0.1: 12 tools on stdio, 8 on HTTP)
 
@@ -77,8 +78,9 @@ vocabularies,fp-variables,fluxnet-variables,neon-crosswalk,lter-crosswalk}`, tem
 
 ## Build order (one PR each)
 
-1. `research/api-probe` — scaffold, this register, RESEARCH.md, GET-only probe ✅ (this PR)
-2. `feat/core-port` — edi core, `amf_ping`, config, transports, CI
+1. `research/api-probe` — scaffold, this register, RESEARCH.md, GET-only probe ✅
+   (`docs/install` — docs site, install script ✅)
+2. `feat/core-port` — edi core, `amf_ping`, config with identity, transports, CI ✅
 3. `feat/client-cache` — endpoints, client, ratelimit, cache, catalog, resolve, policy,
    privacy, fixtures and router
 4. `feat/discovery-tools` — `amf_search_sites`, `amf_get_site`, `amf_get_availability`

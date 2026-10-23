@@ -13,8 +13,8 @@ years exist, understand FLUXNET variable names and QC flags, cite data under the
 data policy, and preview files: AmeriFlux BASE and BADM, the AmeriFlux FLUXNET
 (FLUXNET-1F) product, and FLUXNET2015 FULLSET and SUBSET.
 
-> **Status: under construction (build step 1 of 8).** No tools work yet, and the
-> `ameriflux-mcp` command starts from build step 2. See [DESIGN.md](DESIGN.md) for
+> **Status: under construction (build step 2 of 8).** The server installs, starts and
+> answers `amf_ping`; the data tools arrive in steps 4–7. See [DESIGN.md](DESIGN.md) for
 > decisions, [RESEARCH.md](RESEARCH.md) for verified API facts, and
 > `research/2026-10-22-plan.md` for the build plan.
 
@@ -35,8 +35,8 @@ scripts/install.sh --with-identity  # ... and stores your AmeriFlux download ide
 ```
 
 `scripts/install.sh` creates the environment with `uv sync`, checks that
-`ameriflux-mcp --version` runs (until build step 2 it does not, so the script stops
-without registering anything), and registers the server with Claude Code, Claude
+`ameriflux-mcp --version` runs (it never registers a command that does not start), and
+registers the server with Claude Code, Claude
 Desktop, OpenAI Codex CLI, Gemini CLI, Goose and OpenCode. On Windows run it from Git
 Bash. `--dry-run` previews every change; `--uninstall` removes them.
 

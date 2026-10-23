@@ -1,0 +1,30 @@
+# ameriflux-mcp configuration example. Copy to config.yaml (gitignored) and pass with:
+#   ameriflux-mcp --config config.yaml
+# Precedence: flags > environment (AMERIFLUX_MCP_<SECTION>__<FIELD>) > this file > defaults.
+# Every setting and its default: docs/getting-started/configuration.md
+
+# The download identity. Keep user_id and user_email in the environment
+# (AMERIFLUX_USER_ID, AMERIFLUX_USER_EMAIL) rather than in a file you might share.
+# Everything here is sent to the site PIs when you confirm a download.
+identity:
+  # is_test: false            # required before any download; no default
+  profiles:
+    default:
+      intended_use: other_research   # 1-6 or synthesis, model, remote_sensing, other_research, education, other
+      description: "Comparing drought responses of semi-arid grassland GPP across New Mexico towers."
+    # teaching:
+    #   intended_use: education
+    #   description: "Classroom exercises on energy-balance closure for an ecosystem ecology course."
+
+downloads:
+  directory: ~/ameriflux-downloads
+  # enabled: false            # remove the download tool entirely
+
+local:
+  roots: []                   # extra folders the file tools may read, e.g. [~/data/fluxnet2015]
+
+cache:
+  # disk_dir: ~/.cache/ameriflux-mcp
+
+server:
+  log_level: info

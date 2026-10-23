@@ -27,14 +27,15 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: 3.x
-      # The validator and llms.txt generator need only PyYAML; the server package is not
-      # installed until build step 2 adds the config and tool reference generators.
-      - run: pip install "zensical>=0.0.60" pyyaml
+      # The reference generators import the package (no network).
+      - run: pip install -e ".[docs]"
       - run: python scripts/okf_validate.py docs
-      # Fail if a generated file drifted from its sources.
+      # Fail if any generated file drifted from its sources.
       - run: |
           python scripts/gen_llms_txt.py
-          git diff --exit-code docs/llms.txt docs/llms-full.txt
+          python scripts/gen_tools_reference.py
+          python scripts/gen_config_reference.py
+          git diff --exit-code docs/llms.txt docs/llms-full.txt docs/tools/reference.md docs/getting-started/configuration.md
       # Trial build on every run, so a broken link fails the PR, not the deploy.
       - run: zensical build --clean --strict
 
@@ -55,7 +56,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: 3.x
-      - run: pip install "zensical>=0.0.60" pyyaml
+      - run: pip install -e ".[docs]"
       - run: zensical build --clean --strict
       # Agent surface: markdown mirror, OKF meta injection, robots.txt
       - run: python scripts/postbuild_agent_surface.py site

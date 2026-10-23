@@ -58,7 +58,8 @@ All URLs are under `https://idss-mesa.github.io/ameriflux-mcp/`.
 | [`llms-full.txt`](../llms-full.txt) — `https://idss-mesa.github.io/ameriflux-mcp/llms-full.txt` | The entire corpus in one file: every page's Markdown with frontmatter, each prefixed by its canonical URL |
 | Any page URL + `index.md` | That page's Markdown source with full OKF frontmatter, e.g. `https://idss-mesa.github.io/ameriflux-mcp/getting-started/install/index.md` |
 | `https://idss-mesa.github.io/ameriflux-mcp/sitemap.xml`, `https://idss-mesa.github.io/ameriflux-mcp/robots.txt` | Standard crawl surface; `robots.txt` welcomes AI fetchers and repeats these pointers |
-| [`tools/roadmap/`](../tools/roadmap.md) — `https://idss-mesa.github.io/ameriflux-mcp/tools/roadmap/` | The planned tools and the build step that delivers each (a generated tool reference replaces it once tools exist) |
+| [`tools/reference/`](../tools/reference.md) — `https://idss-mesa.github.io/ameriflux-mcp/tools/reference/` | The tool catalogue generated from the server's registry: every tool's inputs, result fields, endpoints and identity requirement |
+| [`tools/roadmap/`](../tools/roadmap.md) — `https://idss-mesa.github.io/ameriflux-mcp/tools/roadmap/` | The planned tools and the build step that delivers each |
 | [Source repository](https://github.com/idss-mesa/ameriflux-mcp){target=_blank} | The bundle itself under `docs/`, plus `CLAUDE.md` with the rules coding agents follow when editing the code |
 
 Every rendered page also declares its Markdown twin and OKF signals in its
