@@ -24,9 +24,16 @@ prompts, docs, server.json, Docker, v0.1.0.
 ```bash
 python3 scripts/probe_api.py --selftest            # offline guard checks
 python3 scripts/probe_api.py --json probe.json      # live GET-only probe (P1, P4, P7, P8)
-uv run --no-project --with pytest python -m pytest tests -o addopts=""   # step 1 tests
-uvx ruff check scripts tests && uvx ruff format --check scripts tests
+uv run --no-project --with pytest --with pyyaml python -m pytest tests -o addopts=""   # step 1 tests
+uvx ruff check scripts tests src && uvx ruff format --check scripts tests src
+scripts/install.sh --agents all --dry-run           # installer (test only in a sandboxed HOME)
+uv run --no-project --with pyyaml python scripts/okf_validate.py docs
+uv run --no-project --with pyyaml python scripts/gen_llms_txt.py   # commit docs/llms*.txt
+uv run --no-project --with "zensical>=0.0.60" --with pyyaml zensical build --clean --strict
 ```
+
+Docs follow AGENTS.md (OKF frontmatter, `docs/log.md` entry, regenerate `llms.txt`).
+GitHub Pages deploys only once the repository is public (free plan).
 
 From step 2 on, the edi commands apply (`uv sync --all-extras`, `uv run pytest`,
 `uv run mypy --strict src`, `record_fixtures.py check`, live tests with
@@ -55,6 +62,9 @@ From step 2 on, the edi commands apply (`uv sync --all-extras`, `uv run pytest`,
 ## Code map
 
 Step 1 only: `scripts/probe_api.py` (GET/HEAD-only probe with a host/path allow-list
-and email scrubbing), `tests/test_probe_no_post.py`, `src/ameriflux_mcp/__init__.py`.
+and email scrubbing), `tests/test_probe_no_post.py`, `src/ameriflux_mcp/__init__.py`,
+`scripts/install.sh` (agent registration; `--with-identity`; refuses a server whose
+`--version` fails) with `tests/test_install_script.py`, and the docs site (`docs/`,
+`zensical.toml`, `scripts/{okf_validate,gen_llms_txt,postbuild_agent_surface}.py`).
 The target layout is in DESIGN.md and `research/2026-10-22-plan.md` ("Architecture and
 port map").

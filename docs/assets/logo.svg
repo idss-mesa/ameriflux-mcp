@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="ameriflux-mcp" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <!-- ameriflux-mcp glyph (monochrome, inherits the header colour): an eddy-covariance flux tower above a canopy, with an eddy. -->
+  <path d="M26 56 L32 12 L38 56"/>
+  <path d="M28 40 H36"/>
+  <path d="M30 26 H34"/>
+  <path d="M32 12 H48"/>
+  <path d="M44 8 V16"/>
+  <path d="M8 56 C12 48 18 48 22 56"/>
+  <path d="M42 56 C46 48 52 48 56 56"/>
+  <path d="M12 24 C12 16 22 16 22 22 C22 26 16 26 16 22"/>
+</svg>

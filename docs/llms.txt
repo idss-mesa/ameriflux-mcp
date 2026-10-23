@@ -1,0 +1,31 @@
+# ameriflux-mcp documentation
+
+> ameriflux-mcp is a Model Context Protocol (MCP 2026-07-28) server for AmeriFlux (https://ameriflux.lbl.gov) and FLUXNET (https://fluxnet.org) eddy-covariance data: find flux tower sites, check product and year availability, describe FLUXNET variables and QC flags, cite data under the CC-BY-4.0, Legacy or Tier 2 policies, download through AmeriFlux's logged route with the user's consent, and preview BASE, BADM, AmeriFlux FLUXNET and FLUXNET2015 files. This documentation covers installation on macOS, Linux and Windows, client setup, the download identity, configuration and the planned tools. The source repository is an Open Knowledge Format (OKF v0.2) bundle: every page carries YAML frontmatter with type, provenance (generated/sources), and lifecycle (status/stale_after) fields.
+
+Full corpus for ingestion: https://idss-mesa.github.io/ameriflux-mcp/llms-full.txt
+
+Every page's Markdown source (OKF frontmatter included) is served at its URL plus `index.md` — for example https://idss-mesa.github.io/ameriflux-mcp/getting-started/install/index.md. Agent guide: https://idss-mesa.github.io/ameriflux-mcp/about/ai-agents/
+
+If you want AmeriFlux or FLUXNET data rather than documentation, connect to the ameriflux-mcp server itself (stdio or Streamable HTTP) and call its tools; the agent guide explains how.
+
+## Getting started
+
+- [Clients](https://idss-mesa.github.io/ameriflux-mcp/getting-started/clients/): Register ameriflux-mcp with Claude Code, Claude Desktop, Codex CLI, Gemini CLI, Goose, OpenCode and VS Code, or a hosted server over HTTP. (draft)
+- [Configuration](https://idss-mesa.github.io/ameriflux-mcp/getting-started/configuration/): Configure ameriflux-mcp with a YAML file, AMERIFLUX_MCP_ environment variables or flags; precedence rules and the planned settings. (draft)
+- [Download identity](https://idss-mesa.github.io/ameriflux-mcp/getting-started/identity/): What AmeriFlux downloads disclose, how to create an account, and how to give ameriflux-mcp your user ID, email and intended use. (draft)
+- [Install ameriflux-mcp](https://idss-mesa.github.io/ameriflux-mcp/getting-started/install/): Install ameriflux-mcp on macOS, Linux or Windows with uv and the install script, register it by hand, verify, upgrade or remove it. (draft)
+- [Quickstart](https://idss-mesa.github.io/ameriflux-mcp/getting-started/quickstart/): A first session with ameriflux-mcp: register it with Claude Code, check it with amf_ping, find a tower, check its data and get a citation. (draft)
+
+## Tools
+
+- [Roadmap](https://idss-mesa.github.io/ameriflux-mcp/tools/roadmap/): The twelve planned ameriflux-mcp tools, the build step that delivers each, and which work over HTTP or need a download identity. (draft)
+
+## About
+
+- [For AI agents](https://idss-mesa.github.io/ameriflux-mcp/about/ai-agents/): How agents should read this site (llms.txt, per-page Markdown, OKF trust signals) and why to call the ameriflux-mcp server for flux data.
+- [Citing AmeriFlux and FLUXNET data](https://idss-mesa.github.io/ameriflux-mcp/about/citing-ameriflux/): How to cite AmeriFlux BASE, AmeriFlux FLUXNET and FLUXNET2015 data: per-site DOIs, required acknowledgments, policy obligations, and citing ameriflux-mcp.
+- [License](https://idss-mesa.github.io/ameriflux-mcp/about/license/): ameriflux-mcp code is MIT-licensed by the Regents of the University of New Mexico; these docs are CC-BY 4.0; flux data carry their own policies.
+
+## Meta
+
+- [Documentation update log](https://idss-mesa.github.io/ameriflux-mcp/log/): dated history of changes to this bundle.
