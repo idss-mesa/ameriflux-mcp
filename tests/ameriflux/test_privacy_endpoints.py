@@ -23,7 +23,9 @@ def test_strip_emails_removes_keys_and_scrubs_values() -> None:
             {"team_member_name": "A", "team_member_email": "a@example.net"},
             {"team_member_name": "B", "TEAM_MEMBER_EMAIL": "b@example.net"},
         ],
-        "DOI_CONTRIBUTOR": [{"DOI_CONTRIBUTOR_EMAIL": "c@example.net", "note": "write to d@example.net"}],
+        "DOI_CONTRIBUTOR": [
+            {"DOI_CONTRIBUTOR_EMAIL": "c@example.net", "note": "write to d@example.net"}
+        ],
         "count": 3,
     }
     clean = strip_emails(data)
