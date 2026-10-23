@@ -8,6 +8,26 @@ All notable changes to ameriflux-mcp are documented here. The format follows
 
 ### Added
 
+- The full upstream client (build step 3): host and path allow-list (D21; `paper_test/`
+  and `..` refused with `download_denied` before any connection), GET/HEAD only, no
+  redirects, per-host rate limiting (2 req/s; 1 per 15 s to ameriflux.lbl.gov), retries
+  on network errors, 5xx, Cloudflare 52x and 429 (`Retry-After`), byte caps, and error
+  text scrubbed of secrets and emails.
+- Response cache: in-memory TTL per family with single-flight and stale-if-error, plus a
+  disk layer on stdio (`~/.cache/ameriflux-mcp`) that never stores emails and never holds
+  DOI records; `amf_ping` now reports cache statistics.
+- Endpoint table (version, envelope, required keys) with drift detection, and typed
+  upstream models.
+- Site catalog merging the AmeriFlux, FLUXNET2015 and FLUXNET-CH4 lists; site resolution
+  by ID (any case), FLUXNET2015 renames, NEON code or fuzzy name (`ambiguous_input`,
+  `not_found` with suggestions); the NEON crosswalk; the product × policy matrix with
+  input normalization; the policy engine (Legacy and Tier Two escalation, FLUXNET
+  eligibility, obligations and their union); privacy helpers.
+- Recorded fixtures (29 GET responses, filtered to 15 fixture sites, emails rewritten to
+  example.org) with `scripts/record_fixtures.py record|check` and a router that fails on
+  unrecorded requests, POSTs, off-list hosts, `paper_test/` and identity sent upstream;
+  nightly live smoke tests (GET only) in CI.
+
 - Core server ported from edi-mcp (build step 2): tool registry with result-size budget
   and MRTR continuations, MCP 2026-07-28 adapter (structured results, cache hints,
   `server/discover`), stdio and stateless Streamable HTTP transports with `/healthz` and

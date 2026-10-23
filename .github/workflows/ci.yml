@@ -1,13 +1,14 @@
 name: CI
 
-# Build step 2. Step 3 adds the fixture check and the nightly live smoke job (GET only);
-# step 8 adds the Docker image job.
+# Build step 3. Step 8 adds the Docker image job.
 
 on:
   push:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: "17 7 * * *"  # nightly live smoke tests (GET only)
 
 permissions:
   contents: read
@@ -35,6 +36,8 @@ jobs:
       - run: uv run mypy --strict src
       - run: uv run python scripts/probe_api.py --selftest
       - run: bash -n scripts/install.sh
+      - name: Fixtures are allow-listed GETs, small, and carry no real emails
+        run: uv run python scripts/record_fixtures.py check
       - run: uv run pytest -q --cov=ameriflux_mcp --cov-report=term --cov-report=xml
 
   macos:
@@ -92,3 +95,19 @@ jobs:
       - name: Surface DeprecationWarnings (advisory)
         continue-on-error: true
         run: uv run pytest -q -W error::DeprecationWarning tests/test_spec_conformance_2026_07_28.py
+
+  live:
+    # Real AmeriFlux API calls, GET only, no secrets: counts within ±10%, the validation
+    # quirks and the DOI sentinels (tests/live). Never runs on pull requests.
+    name: live smoke (nightly)
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.13"
+      - run: uv sync --all-extras
+      - run: uv run pytest -q -m live tests/live
+        env:
+          AMERIFLUX_MCP_LIVE: "1"

@@ -9,6 +9,7 @@ from mcp.types import LATEST_PROTOCOL_VERSION
 from pydantic import Field
 
 from ameriflux_mcp import __version__
+from ameriflux_mcp.ameriflux.endpoints import FP_VAR
 from ameriflux_mcp.ameriflux.identity import identity_status
 from ameriflux_mcp.context import ToolContext
 from ameriflux_mcp.errors import (
@@ -21,9 +22,6 @@ from ameriflux_mcp.errors import (
 from ameriflux_mcp.logging import registered_secrets
 from ameriflux_mcp.models.common import AmfInput, AmfOutput, Source, ToolResultBase
 from ameriflux_mcp.registry import get_registered_tools, register_tool
-
-#: The small, stable endpoint check_api fetches (145 FP Standard variables, ~30 KB).
-CHECK_PATH = "v1/fp_var"
 
 
 class PingIn(AmfInput):
@@ -73,6 +71,19 @@ class Endpoints(AmfOutput):
     api: str = Field(description="AmeriFlux API base URL.")
 
 
+class CacheReport(AmfOutput):
+    enabled: bool
+    disk_dir: str | None = Field(None, description="On-disk cache directory (stdio only).")
+    entries: int = Field(description="Entries held in memory.")
+    hits: int
+    misses: int
+    disk_hits: int
+    stale_served: int = Field(description="Expired entries served because a refresh failed.")
+    catalog_sites: int | None = Field(
+        None, description="Sites in the loaded catalog (absent until a tool has loaded it)."
+    )
+
+
 class PingResult(ToolResultBase):
     pong: Literal["ok"] = "ok"
     version: str
@@ -88,6 +99,7 @@ class PingResult(ToolResultBase):
         None, description="Directories the local file tools may read (stdio only)."
     )
     endpoints: Endpoints
+    cache: CacheReport
     upstream: UpstreamCheck | None = Field(
         None, description="Present when check_api was requested."
     )
@@ -100,26 +112,34 @@ async def _check_api(ctx: ToolContext) -> UpstreamCheck:
     error: dict[str, Any] | None = None
     variables: int | None = None
     try:
-        body = await ctx.client.get_json(CHECK_PATH, stats=ctx.stats)
-        if isinstance(body, list) and all(isinstance(v, dict) and "Name" in v for v in body):
-            variables = len(body)
-        else:
-            raise AmeriFluxApiError(
-                200,
-                "expected a list of variables with a Name key",
-                ctx.stats.endpoints[-1],
-                kind="drift",
-                missing=["Name"],
-            )
+        # Uncached on purpose: the point is to reach the API now. The FP_VAR endpoint
+        # definition also checks the response's shape (drift, DESIGN.md D8).
+        rows = await ctx.client.fetch(FP_VAR, stats=ctx.stats, use_cache=False)
+        variables = len(rows)
     except AmeriFluxApiError as exc:
         err = map_api_error(exc, secrets=registered_secrets())
         error = {"code": err.code, "message": err.message}
     return UpstreamCheck(
         ok=error is None,
-        endpoint=ctx.stats.endpoints[-1] if ctx.stats.endpoints else CHECK_PATH,
+        endpoint=ctx.stats.endpoints[-1] if ctx.stats.endpoints else FP_VAR.path(),
         latency_ms=round((time.monotonic() - started) * 1000, 1),
         variables=variables,
         error=error,
+    )
+
+
+def _cache_report(ctx: ToolContext) -> CacheReport:
+    stats = ctx.client.cache_stats() if ctx.client is not None else None
+    index = ctx.catalog.peek() if ctx.catalog is not None else None
+    return CacheReport(
+        enabled=ctx.config.cache.enabled,
+        disk_dir=stats.disk_dir if stats else None,
+        entries=stats.entries if stats else 0,
+        hits=stats.hits if stats else 0,
+        misses=stats.misses if stats else 0,
+        disk_hits=stats.disk_hits if stats else 0,
+        stale_served=stats.stale_served if stats else 0,
+        catalog_sites=len(index) if index is not None else None,
     )
 
 
@@ -187,6 +207,7 @@ async def amf_ping(args: PingIn, ctx: ToolContext) -> PingResult:
         download_dir=str(cfg.downloads.directory) if downloads else None,
         local_roots=[str(p) for p in cfg.local_roots()] if ctx.transport == "stdio" else None,
         endpoints=Endpoints(api=cfg.upstream.api_base_url),
+        cache=_cache_report(ctx),
         upstream=upstream,
         notes=notes,
         next_steps=steps,
