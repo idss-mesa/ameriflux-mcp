@@ -1,8 +1,9 @@
 """Shared fixtures: config, server factory, secret isolation.
 
-Unit tests never touch the network: every server built here talks to an
-:class:`~tests.upstream_stub.UpstreamStub`, which answers the few API paths build
-step 2 uses and fails the test on any other request.
+Unit tests never touch the network: every server built here talks to a
+:class:`~tests.fixture_router.FixtureRouter`, which replays recorded (filtered,
+email-scrubbed) AmeriFlux responses and fails the test on any request it has no
+fixture for, on any non-allow-listed host or path, and on identity sent upstream.
 """
 
 from __future__ import annotations
@@ -16,8 +17,8 @@ import pytest
 from ameriflux_mcp.config import Config, load_config
 from ameriflux_mcp.logging import forget_secrets
 from ameriflux_mcp.server import AmeriFluxServer, create_server
+from tests.fixture_router import FixtureRouter
 from tests.helpers import IDENTITY_ENV
-from tests.upstream_stub import UpstreamStub
 
 
 @pytest.fixture(autouse=True)
@@ -46,13 +47,13 @@ def identity_config(config: Config) -> Config:
 
 
 @pytest.fixture
-def stub() -> UpstreamStub:
-    return UpstreamStub()
+def router() -> FixtureRouter:
+    return FixtureRouter()
 
 
 @pytest.fixture
 async def make_server(
-    config: Config, identity_config: Config, stub: UpstreamStub
+    config: Config, identity_config: Config, router: FixtureRouter
 ) -> AsyncIterator[Callable[..., AmeriFluxServer]]:
     servers: list[AmeriFluxServer] = []
 
@@ -67,7 +68,7 @@ async def make_server(
         server = create_server(
             base.model_copy(deep=True),
             transport=transport,  # type: ignore[arg-type]
-            http_transport=stub.transport,
+            http_transport=router.transport,
         )
         servers.append(server)
         return server

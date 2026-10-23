@@ -1,0 +1,196 @@
+[
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/AR-Bal/FLUXNET",
+  "status": 200,
+  "contentType": "application/json",
+  "file": "v1/DOI_AR_Bal_FLUXNET_200_58490b80.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/BR-Sa1/FLUXNET2015",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "REFERENCES cut to 4 of 25",
+  "file": "v1/DOI_BR_Sa1_FLUXNET2015_200_ce602ee9.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/CA-Let/AmeriFlux",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "REFERENCES cut to 4 of 16",
+  "file": "v1/DOI_CA_Let_AmeriFlux_200_1fea27a6.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/RU-Sam/FLUXNET2015",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "REFERENCES cut to 4 of 8",
+  "file": "v1/DOI_RU_Sam_FLUXNET2015_200_4af530b5.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/US-CRT/AmeriFlux",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "REFERENCES cut to 4 of 5",
+  "file": "v1/DOI_US_CRT_AmeriFlux_200_a928f8d1.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/US-Ha1/AmeriFlux",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "REFERENCES cut to 4 of 60",
+  "file": "v1/DOI_US_Ha1_AmeriFlux_200_3b24b1d2.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/US-Ha1/BASE",
+  "status": 200,
+  "contentType": "application/json",
+  "file": "v1/DOI_US_Ha1_BASE_200_dac323a5.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/US-Ha1/BIF",
+  "status": 200,
+  "contentType": "application/json",
+  "file": "v1/DOI_US_Ha1_BIF_200_0ac225ad.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/US-Ha1/FLUXNET",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "REFERENCES cut to 4 of 60",
+  "file": "v1/DOI_US_Ha1_FLUXNET_200_07a2d773.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/US-Ha1/FLUXNET2015",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "REFERENCES cut to 4 of 60",
+  "file": "v1/DOI_US_Ha1_FLUXNET2015_200_53ab58d4.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/US-Myb/FLUXNET-CH4",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "REFERENCES cut to 4 of 27",
+  "file": "v1/DOI_US_Myb_FLUXNET_CH4_200_53fd3cf9.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/US-xSR/AmeriFlux",
+  "status": 200,
+  "contentType": "application/json",
+  "file": "v1/DOI_US_xSR_AmeriFlux_200_bbba5e2c.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/US-xSR/FLUXNET",
+  "status": 200,
+  "contentType": "application/json",
+  "file": "v1/DOI_US_xSR_FLUXNET_200_5466d06d.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/XX-Zzz/AmeriFlux",
+  "status": 200,
+  "contentType": "application/json",
+  "file": "v1/DOI_XX_Zzz_AmeriFlux_200_9d117e3c.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/data_availability/AmeriFlux/BASE-BADM/CCBY4.0",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites",
+  "file": "v1/data_availability_AmeriFlux_BASE_BADM_CCBY4_0_200_bcbac70b.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/data_availability/AmeriFlux/BASE-BADM/LEGACY",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites",
+  "file": "v1/data_availability_AmeriFlux_BASE_BADM_LEGACY_200_1960142c.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/data_availability/AmeriFlux/BASE-BADM/Tier2",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites",
+  "file": "v1/data_availability_AmeriFlux_BASE_BADM_Tier2_200_c1489ffa.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/data_availability/AmeriFlux/FLUXNET/CCBY4.0",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites",
+  "file": "v1/data_availability_AmeriFlux_FLUXNET_CCBY4_0_200_ed3a4ec6.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/data_availability/FLUXNET/FLUXNET-CH4/CCBY4.0",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites",
+  "file": "v1/data_availability_FLUXNET_FLUXNET_CH4_CCBY4_0_200_776d3d8b.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/data_availability/FLUXNET/FLUXNET-CH4/TIER2",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites",
+  "file": "v1/data_availability_FLUXNET_FLUXNET_CH4_TIER2_200_be297092.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/data_availability/FLUXNET/FLUXNET2015/CCBY4.0",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites",
+  "file": "v1/data_availability_FLUXNET_FLUXNET2015_CCBY4_0_200_b11d91bb.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/data_availability/FLUXNET/FLUXNET2015/TIER2",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites",
+  "file": "v1/data_availability_FLUXNET_FLUXNET2015_TIER2_200_cc9dd090.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/data_availability/FLUXNET/FLUXNET2015/Tier2",
+  "status": 422,
+  "contentType": "application/json",
+  "file": "v1/data_availability_FLUXNET_FLUXNET2015_Tier2_422_4d5c44e9.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/does_not_exist",
+  "status": 404,
+  "contentType": "application/json",
+  "file": "v1/does_not_exist_404_59447fc5.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/fp_var?limits=True",
+  "status": 200,
+  "contentType": "application/json",
+  "file": "v1/fp_var_200_09702a06.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/site_availability",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites",
+  "file": "v1/site_availability_200_87ed684c.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/site_display/FLUXNET/FLUXNET-CH4",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites",
+  "file": "v1/site_display_FLUXNET_FLUXNET_CH4_200_aebc39c6.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/site_display/FLUXNET/FLUXNET2015",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites",
+  "file": "v1/site_display_FLUXNET_FLUXNET2015_200_0a3787dc.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v2/site_info_display/AmeriFlux",
+  "status": 200,
+  "contentType": "application/json",
+  "transform": "filtered to the fixture sites; site_desc cut to 280 characters",
+  "file": "v2/site_info_display_AmeriFlux_200_266f9ac8.json"
+ }
+]

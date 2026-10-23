@@ -1,6 +1,7 @@
 # Directory Update Log
 
 ## 2026-10-23
+* **Update**: [Tool reference](tools/reference.md) — `amf_ping` reports cache statistics (build step 3); [Roadmap](tools/roadmap.md) — step 3 done.
 * **Creation**: [Tool reference](tools/reference.md), generated from the tool registry by `scripts/gen_tools_reference.py` (`amf_ping`).
 * **Update**: [Configuration](getting-started/configuration.md) — the settings table is now generated from `config.py` by `scripts/gen_config_reference.py` (59 settings); value-free validation errors and the look-alike variables are documented.
 * **Update**: [Install](getting-started/install.md), [home](index.md), [Quickstart](getting-started/quickstart.md), [Roadmap](tools/roadmap.md) and [For AI agents](about/ai-agents.md) — the server now starts and answers `amf_ping`; real `--check` output; troubleshooting for invalid configuration.

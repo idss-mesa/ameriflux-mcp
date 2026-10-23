@@ -7,8 +7,8 @@ import httpx
 
 from ameriflux_mcp.config import Config
 from ameriflux_mcp.server import AmeriFluxServer
+from tests.fixture_router import FixtureRouter, Reply
 from tests.helpers import PRIVATE_VALUES, call_ok
-from tests.upstream_stub import UpstreamStub
 
 
 async def test_ping_without_identity(server: AmeriFluxServer) -> None:
@@ -72,52 +72,52 @@ async def test_ping_rejects_unknown_arguments(server: AmeriFluxServer) -> None:
 
 
 async def test_ping_makes_no_request_by_default(
-    server: AmeriFluxServer, stub: UpstreamStub
+    server: AmeriFluxServer, router: FixtureRouter
 ) -> None:
     payload = await call_ok(server, "amf_ping")
-    assert "upstream" not in payload and stub.calls == []
+    assert "upstream" not in payload and router.calls == []
 
 
-async def test_ping_check_api(server: AmeriFluxServer, stub: UpstreamStub) -> None:
+async def test_ping_check_api(server: AmeriFluxServer, router: FixtureRouter) -> None:
     payload = await call_ok(server, "amf_ping", {"check_api": True})
     upstream = payload["upstream"]
-    assert upstream["ok"] is True and upstream["variables"] == 2
+    assert upstream["ok"] is True and upstream["variables"] == 145
     assert upstream["endpoint"] == "GET amfcdn.lbl.gov/api/v1/fp_var"
     assert payload["source"]["backend"] == "amfcdn"
     assert payload["source"]["endpoints"] == ["GET amfcdn.lbl.gov/api/v1/fp_var"]
-    call = stub.calls[0]
-    assert (call.method, call.host, call.path) == ("GET", "amfcdn.lbl.gov", "/api/v1/fp_var")
+    call = router.calls[0]
+    assert call.key == "GET amfcdn.lbl.gov/api/v1/fp_var?limits=True"
     assert call.headers["user-agent"].startswith("ameriflux-mcp/0.1.0 (+https://github.com/")
 
 
 async def test_ping_check_api_sends_no_identity(
-    identity_server: AmeriFluxServer, stub: UpstreamStub
+    identity_server: AmeriFluxServer, router: FixtureRouter
 ) -> None:
     await call_ok(identity_server, "amf_ping", {"check_api": True})
-    sent = json.dumps([c.headers for c in stub.calls]) + json.dumps([c.path for c in stub.calls])
+    sent = json.dumps([c.headers for c in router.calls]) + json.dumps([c.url for c in router.calls])
     for value in PRIVATE_VALUES:
         assert value not in sent
 
 
 async def test_ping_check_api_reports_an_outage(
-    server: AmeriFluxServer, stub: UpstreamStub
+    server: AmeriFluxServer, router: FixtureRouter
 ) -> None:
-    stub.inject(httpx.ConnectError)
+    router.inject(httpx.ConnectError, times=3)
     payload = await call_ok(server, "amf_ping", {"check_api": True})
     assert payload["upstream"]["ok"] is False
     assert payload["upstream"]["error"]["code"] == "upstream_unavailable"
 
 
 async def test_ping_check_api_reports_cloudflare_errors(
-    server: AmeriFluxServer, stub: UpstreamStub
+    server: AmeriFluxServer, router: FixtureRouter
 ) -> None:
-    stub.inject(521)
+    router.inject(Reply(521, b"origin down", "text/html"), times=3)
     payload = await call_ok(server, "amf_ping", {"check_api": True})
     assert payload["upstream"]["error"]["code"] == "upstream_unavailable"
 
 
-async def test_ping_check_api_detects_drift(server: AmeriFluxServer, stub: UpstreamStub) -> None:
-    stub.answers["/api/v1/fp_var"] = (200, {"values": []})
+async def test_ping_check_api_detects_drift(server: AmeriFluxServer, router: FixtureRouter) -> None:
+    router.add("GET amfcdn.lbl.gov/api/v1/fp_var?limits=True", Reply.json({"values": []}))
     payload = await call_ok(server, "amf_ping", {"check_api": True})
     assert payload["upstream"]["ok"] is False
     assert payload["upstream"]["error"]["code"] == "upstream_error"

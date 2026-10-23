@@ -57,4 +57,5 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | `downloadDir` | string \\| null |  |
 | `localRoots` | array of string \\| null | Directories the local file tools may read (stdio only). |
 | `endpoints` | Endpoints |  |
+| `cache` | CacheReport |  |
 | `upstream` | UpstreamCheck \\| null | Present when check_api was requested. |

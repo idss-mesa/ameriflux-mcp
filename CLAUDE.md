@@ -15,7 +15,7 @@ behaviour. `research/` holds the raw 2026-10-22 dossier and the approved plan.
 Build order (one PR each): 1 scaffold + GET-only API probe ✅ (+ docs site and install
 script ✅) → 2 core port from edi-mcp (registry, adapter, config, errors, identity config,
 transports, `amf_ping`, conformance tests, CI) ✅ → 3 client/cache/catalog/resolve/policy/
-privacy + fixtures (replaces `tests/upstream_stub.py` with a recorded-fixture router) → 4
+privacy + recorded fixtures ✅ → 4
 discovery tools → 5 variables, citation, BADM → 6 local readers → 7 downloads (merge
 gated on AmeriFlux support answering Q1 and Q4; see `research/questions.md`) → 8
 prompts, docs, server.json, Docker, v0.1.0.
@@ -24,7 +24,10 @@ prompts, docs, server.json, Docker, v0.1.0.
 
 ```bash
 uv sync --all-extras
-uv run pytest                                   # hermetic (UpstreamStub); coverage >= 85
+uv run pytest                                   # hermetic (FixtureRouter); coverage >= 85
+uv run python scripts/record_fixtures.py check  # fixtures: allow-listed GETs, small, no real emails
+uv run python scripts/record_fixtures.py record # re-record live (GET only), then check + promote
+AMERIFLUX_MCP_LIVE=1 uv run pytest -m live tests/live   # live smoke (GET only)
 uv run ruff check src tests scripts && uv run ruff format --check src tests scripts
 uv run mypy --strict src
 uv run ameriflux-mcp --check                    # offline JSON report
@@ -37,8 +40,7 @@ uv run zensical build --clean --strict
 
 Docs follow AGENTS.md (OKF frontmatter, `docs/log.md` entry, regenerate `llms.txt` and the
 two references; CI fails on drift). GitHub Pages deploys only once the repository is
-public (free plan). Step 3 adds `record_fixtures.py check` and the live tests
-(`AMERIFLUX_MCP_LIVE=1 uv run pytest -m live tests/live`, GET only).
+public (free plan).
 
 ## Fixed decisions (do not re-litigate)
 
@@ -68,11 +70,18 @@ and enforces the result budget; tools in `tools/<family>.py` are
 `async (args, ctx) -> OutputModel`; `context.py` builds the per-call `ToolContext`
 (`ctx.identity` is `None` over HTTP or when incomplete); `config.py` loads settings
 (identity fallbacks, value-free `ConfigError`); `ameriflux/identity.py` resolves and
-reports the identity (booleans only); `ameriflux/client.py` is the one HTTP client (GET
-only, API host only, no redirects); `errors.py` maps upstream failures (D24);
+reports the identity (booleans only); `ameriflux/client.py` is the one HTTP client
+(allow-list `ALLOWED`, GET/HEAD only, no redirects, retries, rate limit via
+`ratelimit.py`, `fetch(endpoint)` caches through `cache.py`); `ameriflux/endpoints.py`
+defines each endpoint's version, envelope and required keys (drift); `models/upstream.py`
+types the rows; `ameriflux/catalog.py` builds the `SiteIndex` (AmeriFlux + FLUXNET2015 +
+FLUXNET-CH4); `resolve.py` turns site arguments into IDs; `products.py` holds the D6
+matrix; `policy.py` the D10 engine; `privacy.py` strips emails; `errors.py` maps upstream
+failures (D24);
 `transport/` holds stdio and stateless HTTP; `resources.py` serves
 `ameriflux://guide/identity`; `prompts.py` is empty until step 8. Tests: `conftest.py`
-builds servers on `tests/upstream_stub.py`; `tests/helpers` has `IDENTITY_ENV`,
+builds servers on `tests/fixture_router.py` (recorded fixtures in `tests/fixtures/`,
+15 fixture sites: never assert network-wide counts); `tests/helpers` has `IDENTITY_ENV`,
 `PRIVATE_VALUES` (must never appear in output), `call_ok`/`call_err` and the ASGI
 harness. Also `scripts/probe_api.py` (GET/HEAD-only probe), `scripts/install.sh`, the
 docs site (`docs/`, `zensical.toml`) and its generators. The target layout is in

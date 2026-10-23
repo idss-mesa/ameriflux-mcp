@@ -26,6 +26,7 @@ import structlog
 from mcp import types as t
 
 from ameriflux_mcp import __version__
+from ameriflux_mcp.ameriflux.catalog import Catalog
 from ameriflux_mcp.ameriflux.client import AmeriFluxClient
 from ameriflux_mcp.config import Config
 from ameriflux_mcp.context import (
@@ -168,8 +169,16 @@ class AmeriFluxServer:
     ) -> None:
         self.config = config
         self.transport: Literal["stdio", "http"] = transport
-        #: The one upstream client; ``http_transport`` lets tests swap in a mock.
-        self.client = AmeriFluxClient(config.upstream, http_transport=http_transport)
+        #: The one upstream client; ``http_transport`` lets tests swap in a mock. The disk
+        #: cache is on for stdio and off over HTTP unless configured (DESIGN.md D22).
+        self.client = AmeriFluxClient(
+            config.upstream,
+            config.cache,
+            disk_dir=config.effective_disk_cache(transport),
+            http_transport=http_transport,
+        )
+        #: The site catalog built on the client's cache.
+        self.catalog = Catalog(self.client)
         #: Reported by ``/readyz``; ``degraded`` is set when startup checks fail.
         self.readiness: Literal["ready", "warming", "degraded"] = "ready"
 
@@ -250,6 +259,7 @@ class AmeriFluxServer:
             request_id=request_id,
             stats=stats,
             client=self.client,
+            catalog=self.catalog,
         )
 
     async def call(
