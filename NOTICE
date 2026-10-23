@@ -1,0 +1,35 @@
+ameriflux-mcp
+Copyright (c) 2026 The Regents of the University of New Mexico
+Licensed under the MIT License (see LICENSE).
+
+This file credits third-party code and data that ameriflux-mcp ports, derives from or
+vendors (DESIGN.md D27). Each entry is added, with the full upstream licence text, by
+the build step that brings the material into the repository.
+
+Current contents
+----------------
+
+None. As of build step 1 the repository contains no third-party code or data. The
+research notes (RESEARCH.md, research/) quote short passages from public AmeriFlux and
+FLUXNET web pages, data-policy text and API responses for reference, with their sources.
+
+Planned entries
+---------------
+
+- amerifluxr (https://github.com/chuhousen/amerifluxr), BSD-3-Clause: the variable-name
+  parsing logic of amf_parse_basename (step 5) and the US-CRT sample files used as test
+  fixtures (step 6).
+- FLUXNET Shuttle (https://github.com/fluxnet/shuttle), BSD-3-Clause: the FLUXNET v1.3+
+  zip filename pattern (step 6).
+- ONEFlux (https://github.com/fluxnet/ONEFlux), LBNL BSD-3-Clause with the
+  Enhancements clause: units derived from var_info_definitions_{hh,dd,ww,mm,yy}.txt
+  (step 5).
+- FLUXNET2015 variable dictionaries
+  (https://ftp.fluxdata.org/.fluxnet_downloads_67934/webdoc/variable_codes_{FULLSET,SUBSET}_20200504.csv):
+  no licence is stated, so only derived tables are committed, with source URL, fetch date
+  and ETag (step 5; licence question Q7 in research/questions.md).
+- US-CRT sample data are AmeriFlux data under CC-BY-4.0, not BSD: Jiquan Chen, Housen Chu,
+  AmeriFlux BASE US-CRT Curtice Walter-Berger cropland, Ver. 2-5 (outdated; current is
+  Ver. 5-5), AmeriFlux AMP, (Dataset). https://doi.org/10.17190/AMF/1246156. Funding for
+  the AmeriFlux data service was provided by the U.S. Department of Energy Office of
+  Science.
