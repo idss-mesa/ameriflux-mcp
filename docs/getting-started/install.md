@@ -37,12 +37,13 @@ stale_after: "2027-04-23T00:00:00Z"
 ameriflux-mcp is a Python 3.11+ package with one command, `ameriflux-mcp`, that MCP
 clients start over stdio. These instructions cover macOS, Linux and Windows.
 
-!!! warning "Under construction: build step 2 of 8"
+!!! warning "Under construction: build step 4 of 8"
 
     ameriflux-mcp is being built in eight steps (see the [roadmap](../tools/roadmap.md)).
-    The server installs, starts and answers `amf_ping` on every client below; the data
-    tools arrive in steps 4–7, and the [tool reference](../tools/reference.md) always lists
-    what the current build offers. Every step on this page works as written today.
+    The server installs and starts on every client below, and site search, site details
+    and data availability work today; variables, citations, local files and downloads
+    arrive in steps 5–7. The [tool reference](../tools/reference.md) always lists what the
+    current build offers. Every step on this page works as written today.
 
 !!! note "Private repository and no PyPI release yet"
 

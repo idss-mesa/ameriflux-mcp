@@ -1,0 +1,160 @@
+{
+ "source": "https://ameriflux.lbl.gov/sites/site-search/",
+ "fetched": "2026-10-24",
+ "igbp": {
+  "BSV": "Barren Sparse Vegetation: Lands exposed soil, sand, or rocks and has less than 10% vegetative cover during any time of the year.",
+  "CRO": "Croplands: Lands covered with temporary crops followed by harvest and a bare soil period (e.g., single and multiple cropping systems). Note that perennial woody crops will be classified as the appropriate forest or shrub land cover type.",
+  "CSH": "Closed Shrublands: Lands with woody vegetation less than 2 meters tall and with shrub canopy cover >60%. The shrub foliage can be either evergreen or deciduous.",
+  "CVM": "Cropland\\/Natural Vegetation Mosaics: Lands with a mosaic of croplands, forest, shrublands, and grasslands in which no one component comprises more than 60% of the landscape",
+  "DBF": "Deciduous Broadleaf Forests: Lands dominated by woody vegetation with a percent cover >60% and height exceeding 2 meters.  Consists of broadleaf tree communities with an annual cycle of leaf-on and leaf-off periods.",
+  "DNF": "Deciduous Needleleaf Forests: Lands dominated by woody vegetation with a percent cover >60% and height exceeding 2 meters.  Consists of seasonal needleleaf tree communities with an annual cycle of leaf-on and leaf-off periods.",
+  "EBF": "Evergreen Broadleaf Forests: Lands dominated by woody vegetation with a percent cover >60% and height exceeding 2 meters. Almost all trees and shrubs remain green year round. Canopy is never without green foliage.",
+  "ENF": "Evergreen Needleleaf Forests: Lands dominated by woody vegetation with a percent cover >60% and height exceeding 2 meters. Almost all trees remain green all year. Canopy is never without green foliage.",
+  "GRA": "Grasslands: Lands with herbaceous types of cover. Tree and shrub cover is less than 10%. Permanent wetlands lands with a permanent mixture of water and herbaceous or woody vegetation. The vegetation can be present in either salt, brackish, or fresh water.",
+  "MF": "Mixed Forests: Lands dominated by trees with a percent cover >60% and height exceeding 2 meters.  Consists of tree communities with interspersed mixtures or mosaics of the other four forest types.  None of the forest types exceeds 60% of landscape.",
+  "OSH": "Open Shrublands: Lands with woody vegetation less than 2 meters tall and with shrub canopy cover between 10-60%. The shrub foliage can be either evergreen or deciduous.",
+  "SAV": "Savannas: Lands with herbaceous and other understory systems, and with forest canopy cover between 10-30%. The forest cover height exceeds 2 meters.",
+  "SNO": "Snow and Ice: Lands under snow\\/ice cover most of the year.",
+  "URB": "Urban and Built-Up Lands: Land covered by buildings and other man-made structures.",
+  "WAT": "Water Bodies : Oceans, seas, lakes, reservoirs, and rivers. Can be either fresh or salt- water bodies.",
+  "WET": "Permanent Wetlands: Lands with a permanent mixture of water and herbaceous or woody vegetation that cover extensive areas. The vegetation can be present in either salt, brackish, or fresh water",
+  "WSA": "Woody Savannas: Lands with herbaceous and other understory systems, and with forest canopy cover between 30-60%. The forest cover height exceeds 2 meters."
+ },
+ "koeppen": {
+  "Af": "Tropical rain forest",
+  "Am": "Tropical monsoon",
+  "Aw": "Tropical savanna",
+  "Bsh": "Steppe: very cold winter",
+  "Bsk": "Steppe: warm winter",
+  "Bwh": "Desert: warm winter",
+  "Bwk": "Desert: very cold winter",
+  "Cfa": "Humid Subtropical: mild with no dry season, hot summer",
+  "Cfb": "Marine West Coast: mild with no dry season, warm summer",
+  "Cfc": "Marine West Coast: mild with no dry season, cool summer",
+  "Csa": "Mediterranean: mild with dry, hot summer",
+  "Csb": "Mediterranean: mild with dry, warm summer",
+  "Cwa": "Humid Subtropical: dry winter, hot summer",
+  "Cwb": "Temperate Highland: dry winter, warm summer",
+  "Cwc": "Temperate Highland: dry winter, cool summer",
+  "Dfa": "Humid Continental: humid with severe winter, no dry season, hot summer",
+  "Dfb": "Warm Summer Continental: significant precipitation in all seasons",
+  "Dfc": "Subarctic: severe winter, no dry season, cool summer",
+  "Dfd": "Subarctic: severe, very cold winter, no dry season, cool summer",
+  "Dsa": "Dry Continental: hot summer",
+  "Dsb": "Warm Summer Continental: warm summer",
+  "Dsc": "Dry Continental: cool summer",
+  "Dsd": "Subarctic: severe, very cold winter, dry cool summer",
+  "Dwa": "Humid Continental: humid with severe winter, no dry season, warm summer",
+  "Dwb": "Warm Summer Continental: dry winters",
+  "Dwc": "Subarctic: severe, dry winter, cool summer",
+  "Dwd": "Subarctic: severe, very cold and dry winter, cool summer",
+  "EF": "Ice Cap",
+  "ET": "Tundra"
+ },
+ "koeppenCaveats": {
+  "Bsh": "Standard Köppen-Geiger BSh is hot semi-arid (steppe); AmeriFlux's text reads 'very cold winter', which matches BSk. The two descriptions appear swapped upstream.",
+  "Bsk": "Standard Köppen-Geiger BSk is cold semi-arid (steppe); AmeriFlux's text reads 'warm winter', which matches BSh. The two descriptions appear swapped upstream."
+ },
+ "products": {
+  "BASE-BADM": {
+   "network": "AmeriFlux",
+   "policies": [
+    "CCBY4.0",
+    "LEGACY"
+   ],
+   "collection": "ameriflux",
+   "doiSegment": "AmeriFlux",
+   "label": "AmeriFlux BASE (half-hourly/hourly flux and met data with BADM)"
+  },
+  "BIF": {
+   "network": "AmeriFlux",
+   "policies": [
+    "CCBY4.0",
+    "LEGACY"
+   ],
+   "collection": "ameriflux",
+   "doiSegment": "AmeriFlux",
+   "label": "AmeriFlux BADM site metadata (BIF)"
+  },
+  "FLUXNET": {
+   "network": "AmeriFlux",
+   "policies": [
+    "CCBY4.0"
+   ],
+   "collection": "ameriflux",
+   "doiSegment": "FLUXNET",
+   "label": "AmeriFlux FLUXNET (FLUXNET-1F, ONEFlux-processed)"
+  },
+  "FLUXNET2015": {
+   "network": "FLUXNET",
+   "policies": [
+    "CCBY4.0",
+    "TIER2"
+   ],
+   "collection": "fluxnet2015",
+   "doiSegment": "FLUXNET2015",
+   "label": "FLUXNET2015 (FULLSET and SUBSET, frozen 2020 release)"
+  },
+  "FLUXNET-CH4": {
+   "network": "FLUXNET",
+   "policies": [
+    "CCBY4.0",
+    "TIER2"
+   ],
+   "collection": "fluxnet_ch4",
+   "doiSegment": "FLUXNET-CH4",
+   "label": "FLUXNET-CH4 Community Product V1.0"
+  }
+ },
+ "policies": {
+  "CCBY4.0": "CC-BY-4.0 license (AmeriFlux) or FLUXNET Tier One",
+  "LEGACY": "AmeriFlux Legacy Data Policy (more restrictive; mixing with CC-BY means Legacy applies)",
+  "TIER2": "FLUXNET Tier Two (scientific and educational use; mixing tiers means Tier Two applies)"
+ },
+ "intendedUse": [
+  {
+   "code": 1,
+   "key": "synthesis",
+   "label": "Research - Multi-site synthesis"
+  },
+  {
+   "code": 2,
+   "key": "model",
+   "label": "Research - Land model/Earth system model"
+  },
+  {
+   "code": 3,
+   "key": "remote_sensing",
+   "label": "Research - Remote sensing"
+  },
+  {
+   "code": 4,
+   "key": "other_research",
+   "label": "Research - Other"
+  },
+  {
+   "code": 5,
+   "key": "education",
+   "label": "Education (Teacher or Student)"
+  },
+  {
+   "code": 6,
+   "key": "other",
+   "label": "Other"
+  }
+ ],
+ "networks": {
+  "Phenocam": 196,
+  "NEON": 47,
+  "LTAR": 41,
+  "Fluxnet-Canada": 30,
+  "LTER": 18,
+  "New York State Mesonet": 18,
+  "MexFlux": 16,
+  "UFLUX": 16,
+  "LBA": 8,
+  "USCCC": 4,
+  "CZNet": 2,
+  "Urban Flux Network": 1
+ }
+}

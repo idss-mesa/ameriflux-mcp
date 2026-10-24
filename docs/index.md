@@ -22,11 +22,11 @@ Desktop, and stateless Streamable HTTP at `/mcp` when hosted. It is developed by
 [idss-mesa](https://github.com/idss-mesa){target=_blank} at the University of New
 Mexico and released under the MIT license.
 
-!!! warning "Under construction: build step 2 of 8"
+!!! warning "Under construction: build step 4 of 8"
 
-    The server installs, starts and answers `amf_ping` on every supported client. The
-    data tools arrive in build steps 4–7 (see the [roadmap](tools/roadmap.md)); the
-    [tool reference](tools/reference.md) lists what the current build offers.
+    Site search, site details and data availability work today; variables, citations,
+    local files and downloads arrive in build steps 5–7 (see the [roadmap](tools/roadmap.md)).
+    The [tool reference](tools/reference.md) lists what the current build offers.
 
 ## Install in one minute
 

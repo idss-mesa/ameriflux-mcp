@@ -8,6 +8,29 @@ All notable changes to ameriflux-mcp are documented here. The format follows
 
 ### Added
 
+- `amf_search_sites` (build step 4): AmeriFlux, FLUXNET2015 and FLUXNET-CH4 sites by
+  words, collection, product and policy, IGBP, Köppen, country, state, status, member
+  network, bounding box or distance, data years, measured variables and gas species; years
+  per product, facets over all matches, paging.
+- `amf_get_site`: one site by ID (any case), NEON code, FLUXNET2015 old ID or name, with
+  AmeriFlux's ecosystem and climate descriptions, the policy and what it asks, DOIs, years
+  per product, team (contacts under the two-flag rule), measured variables and links to
+  NEON (DP4.00200.001) and to LTER data in EDI.
+- `amf_get_availability`: published years per site, product and policy, each row labelled
+  with the policy its data are shared under; BIF membership; requested sites without data
+  and why; the policy verdict per product with obligations and their union.
+- Resources: `ameriflux://reference/vocabularies` (built by
+  `scripts/build_site_vocabularies.py` from AmeriFlux's IGBP and Köppen text, with a caveat
+  on its swapped Bsh/Bsk wording), `ameriflux://reference/neon-crosswalk` (live),
+  `ameriflux://reference/lter-crosswalk` (curated draft, EDI scopes verified) and the
+  `ameriflux://site/{site_id}` template.
+- Docs: the Discovery and availability page.
+
+### Changed
+
+- Test servers use the largest rate-limit burst, so replayed fixtures never sleep (the
+  suite runs in about 7 s).
+
 - The full upstream client (build step 3): host and path allow-list (D21; `paper_test/`
   and `..` refused with `download_denied` before any connection), GET/HEAD only, no
   redirects, per-host rate limiting (2 req/s; 1 per 15 s to ameriflux.lbl.gov), retries

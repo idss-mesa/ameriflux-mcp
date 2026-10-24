@@ -15,8 +15,8 @@ behaviour. `research/` holds the raw 2026-10-22 dossier and the approved plan.
 Build order (one PR each): 1 scaffold + GET-only API probe ✅ (+ docs site and install
 script ✅) → 2 core port from edi-mcp (registry, adapter, config, errors, identity config,
 transports, `amf_ping`, conformance tests, CI) ✅ → 3 client/cache/catalog/resolve/policy/
-privacy + recorded fixtures ✅ → 4
-discovery tools → 5 variables, citation, BADM → 6 local readers → 7 downloads (merge
+privacy + recorded fixtures ✅ → 4 discovery tools (`amf_search_sites`, `amf_get_site`,
+`amf_get_availability`, vocabularies/crosswalk resources, site template) ✅ → 5 variables, citation, BADM → 6 local readers → 7 downloads (merge
 gated on AmeriFlux support answering Q1 and Q4; see `research/questions.md`) → 8
 prompts, docs, server.json, Docker, v0.1.0.
 
@@ -77,9 +77,12 @@ defines each endpoint's version, envelope and required keys (drift); `models/ups
 types the rows; `ameriflux/catalog.py` builds the `SiteIndex` (AmeriFlux + FLUXNET2015 +
 FLUXNET-CH4); `resolve.py` turns site arguments into IDs; `products.py` holds the D6
 matrix; `policy.py` the D10 engine; `privacy.py` strips emails; `errors.py` maps upstream
-failures (D24);
-`transport/` holds stdio and stateless HTTP; `resources.py` serves
-`ameriflux://guide/identity`; `prompts.py` is empty until step 8. Tests: `conftest.py`
+failures (D24); `ameriflux/reference.py` loads the static vocabularies and the curated
+LTER crosswalk; tools: `tools/sites.py` (search, get_site, shared product/years models),
+`tools/availability.py`; `transport/` holds stdio and stateless HTTP; `resources.py`
+serves the identity guide, the references and `ameriflux://site/{site_id}`;
+`prompts.py` is empty until step 8. `scripts/build_site_vocabularies.py` rebuilds
+`resources_static/vocabularies.json` (one GET of the site-search page). Tests: `conftest.py`
 builds servers on `tests/fixture_router.py` (recorded fixtures in `tests/fixtures/`,
 15 fixture sites: never assert network-wide counts); `tests/helpers` has `IDENTITY_ENV`,
 `PRIVATE_VALUES` (must never appear in output), `call_ok`/`call_err` and the ASGI
