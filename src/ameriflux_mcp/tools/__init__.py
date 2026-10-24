@@ -2,6 +2,9 @@
 
 from ameriflux_mcp.tools import (  # noqa: F401  (registration side effects)
     availability,
+    badm,
+    citation,
     core,
     sites,
+    variables,
 )

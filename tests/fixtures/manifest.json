@@ -1,5 +1,12 @@
 [
  {
+  "key": "GET ameriflux.lbl.gov/data/measurement-height/",
+  "status": 200,
+  "contentType": "text/html",
+  "transform": "cut to the lines linking the measurement-height CSV",
+  "file": "ameriflux.lbl.gov/data_measurement_height_200_35de08e7.html"
+ },
+ {
   "key": "GET amfcdn.lbl.gov/api/v1/DOI/AR-Bal/FLUXNET",
   "status": 200,
   "contentType": "application/json",
@@ -18,6 +25,12 @@
   "contentType": "application/json",
   "transform": "REFERENCES cut to 4 of 16",
   "file": "v1/DOI_CA_Let_AmeriFlux_200_1fea27a6.json"
+ },
+ {
+  "key": "GET amfcdn.lbl.gov/api/v1/DOI/DE-Tha/FLUXNET2015",
+  "status": 200,
+  "contentType": "application/json",
+  "file": "v1/DOI_DE_Tha_FLUXNET2015_200_cbac76aa.json"
  },
  {
   "key": "GET amfcdn.lbl.gov/api/v1/DOI/RU-Sam/FLUXNET2015",
@@ -192,5 +205,25 @@
   "contentType": "application/json",
   "transform": "filtered to the fixture sites; site_desc cut to 280 characters",
   "file": "v2/site_info_display_AmeriFlux_200_266f9ac8.json"
+ },
+ {
+  "key": "GET api.datacite.org/dois/10.17190/AMF/1246059",
+  "status": 200,
+  "contentType": "application/json",
+  "file": "api.datacite.org/dois_10_17190_AMF_1246059_200_8fa249d8.json"
+ },
+ {
+  "key": "GET ftp.fluxdata.org/.ameriflux_downloads/measurement_height/BASE_MeasurementHeight_20260908.csv",
+  "status": 200,
+  "contentType": "text/csv",
+  "transform": "filtered to AR-Bal, CA-Let, US-CRT, US-Ha1",
+  "file": "ftp.fluxdata.org/BASE_MeasurementHeight_20260908_csv_200_b26ec7dd.csv"
+ },
+ {
+  "key": "GET raw.githubusercontent.com/chuhousen/amerifluxr/master/data-summary/AMF_AA-Flx_BASE_VARIABLE-AVAILABILITY_LATEST.csv",
+  "status": 200,
+  "contentType": "text/plain",
+  "transform": "filtered to US-CRT, US-Ha1; fractions rounded to 3 digits",
+  "file": "raw.githubusercontent.com/AMF_AA_Flx_BASE_VARIABLE_AVAILABILITY_LATEST_csv_200_dd89181f.txt"
  }
 ]

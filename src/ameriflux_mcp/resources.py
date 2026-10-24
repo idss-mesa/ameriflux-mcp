@@ -1,10 +1,12 @@
 """MCP resources: static guides and references, derived references and the site template.
 
-* Static (``resources_static/``, ``cacheScope: public``): the identity guide, the
-  vocabularies (built from AmeriFlux's own IGBP and Köppen text) and the curated LTER
-  crosswalk (draft).
-* Derived from the site catalog (``public``: nothing depends on the caller): the NEON
-  crosswalk and the ``ameriflux://site/{site_id}`` card (the ``amf_get_site`` payload).
+* Static (``resources_static/``, ``cacheScope: public``): the identity, data-policy and
+  variable-grammar guides, the vocabularies (built from AmeriFlux's own IGBP and Köppen
+  text), the FLUXNET variable dictionary and the curated LTER crosswalk (draft).
+* Derived (``public``: nothing depends on the caller): the NEON crosswalk and the
+  ``ameriflux://site/{site_id}`` card (the ``amf_get_site`` payload) from the site
+  catalog, the FP Standard list (live, or the bundled snapshot) and the verbatim
+  acknowledgments.
 """
 
 from __future__ import annotations
@@ -56,6 +58,7 @@ class _Derived:
     mime_type: str
     title: str
     description: str
+    loader: str
 
 
 @dataclass(frozen=True)
@@ -76,6 +79,30 @@ STATIC: tuple[_Static, ...] = (
         "Download identity",
         "Why AmeriFlux downloads disclose the user's ID, email and intended use to site PIs, how "
         "the user configures it, and the auth_required errors without it.",
+    ),
+    _Static(
+        "ameriflux://guide/data-policy",
+        "data-policy.md",
+        "text/markdown",
+        "Data policies",
+        "AmeriFlux CC-BY-4.0 vs Legacy and FLUXNET2015 Tier One vs Tier Two: what each asks when "
+        "you publish, and why mixing sites escalates to the stricter policy.",
+    ),
+    _Static(
+        "ameriflux://guide/variable-grammar",
+        "variable-grammar.md",
+        "text/markdown",
+        "Variable names",
+        "How BASE (FP Standard) and FLUXNET variable names are built: qualifiers, positions, "
+        "processing tokens, units and QC that change with resolution, sign conventions.",
+    ),
+    _Static(
+        "ameriflux://reference/fluxnet-variables",
+        "fluxnet-variables.json",
+        "application/json",
+        "FLUXNET variables",
+        "FLUXNET2015 FULLSET/SUBSET and ONEFlux v1.3 variables with units and notes per "
+        "resolution (HH, DD, WW, MM, YY), SUBSET membership and sources.",
     ),
     _Static(
         "ameriflux://reference/vocabularies",
@@ -101,6 +128,23 @@ DERIVED: tuple[_Derived, ...] = (
         "NEON crosswalk",
         "NEON site codes and their AmeriFlux site IDs (e.g. SRER -> US-xSR), from the live "
         "catalog; NEON's flux product for these towers is DP4.00200.001.",
+        "neon_crosswalk",
+    ),
+    _Derived(
+        "ameriflux://reference/fp-variables",
+        "application/json",
+        "FP Standard variables",
+        "The FP Standard variable list of AmeriFlux BASE (about 145 base names) with units, "
+        "type and QA/QC ranges; live, or the bundled snapshot when the API is unreachable.",
+        "fp_variables",
+    ),
+    _Derived(
+        "ameriflux://reference/acknowledgments",
+        "application/json",
+        "Acknowledgments",
+        "Verbatim acknowledgment, data-availability and processing-reference texts from the "
+        "AmeriFlux and FLUXNET data-policy pages, with the date they were checked.",
+        "acknowledgments",
     ),
 )
 TEMPLATES: tuple[_Template, ...] = (
@@ -179,6 +223,45 @@ async def _neon_crosswalk(ctx: ToolContext) -> str:
     return _compact({"neonDataProduct": NEON_FLUX_PRODUCT, "count": len(rows), "sites": rows})
 
 
+async def _fp_variables(ctx: ToolContext) -> str:
+    from ameriflux_mcp.ameriflux.variables.dictionaries import fp_variables
+
+    fp = await fp_variables(ctx)
+    return _compact(
+        {
+            "source": "live" if fp.live else f"snapshot {fp.fetched}",
+            "notes": list(fp.notes),
+            "count": len(fp.variables),
+            "variables": [
+                {
+                    "name": v.name,
+                    "type": v.type,
+                    "units": v.units,
+                    "description": v.description,
+                    "min": v.min,
+                    "max": v.max,
+                    "heightDirection": v.height_direction,
+                }
+                for v in fp.variables
+            ],
+        }
+    )
+
+
+async def _acknowledgments(ctx: ToolContext) -> str:
+    from ameriflux_mcp.ameriflux.acknowledgments import as_resource
+
+    del ctx
+    return _compact(as_resource())
+
+
+DERIVED_LOADERS = {
+    "neon_crosswalk": _neon_crosswalk,
+    "fp_variables": _fp_variables,
+    "acknowledgments": _acknowledgments,
+}
+
+
 async def _site_card(site_id: str, ctx: ToolContext) -> str:
     from ameriflux_mcp.registry import get_tool, invoke
 
@@ -193,9 +276,8 @@ async def read_resource(uri: str, ctx: ToolContext, *, server: Any = None) -> Re
             return ResourceContent(_static_text(s.file), s.mime_type, STATIC_TTL_MS, "static")
     for d in DERIVED:
         if d.uri == uri:
-            return ResourceContent(
-                await _neon_crosswalk(ctx), d.mime_type, DERIVED_TTL_MS, "derived"
-            )
+            text = await DERIVED_LOADERS[d.loader](ctx)
+            return ResourceContent(text, d.mime_type, DERIVED_TTL_MS, "derived")
     for tpl in TEMPLATES:
         match = tpl.pattern.match(uri)
         if match is not None:

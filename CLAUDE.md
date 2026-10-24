@@ -16,7 +16,9 @@ Build order (one PR each): 1 scaffold + GET-only API probe ✅ (+ docs site and 
 script ✅) → 2 core port from edi-mcp (registry, adapter, config, errors, identity config,
 transports, `amf_ping`, conformance tests, CI) ✅ → 3 client/cache/catalog/resolve/policy/
 privacy + recorded fixtures ✅ → 4 discovery tools (`amf_search_sites`, `amf_get_site`,
-`amf_get_availability`, vocabularies/crosswalk resources, site template) ✅ → 5 variables, citation, BADM → 6 local readers → 7 downloads (merge
+`amf_get_availability`, vocabularies/crosswalk resources, site template) ✅ → 5 variables, citation, BADM
+(`amf_search_variables`, `amf_describe_variables`, `amf_get_citation`, `amf_get_badm`,
+policy/grammar guides, FP/FLUXNET/acknowledgment references) ✅ → 6 local readers → 7 downloads (merge
 gated on AmeriFlux support answering Q1 and Q4; see `research/questions.md`) → 8
 prompts, docs, server.json, Docker, v0.1.0.
 
@@ -27,6 +29,8 @@ uv sync --all-extras
 uv run pytest                                   # hermetic (FixtureRouter); coverage >= 85
 uv run python scripts/record_fixtures.py check  # fixtures: allow-listed GETs, small, no real emails
 uv run python scripts/record_fixtures.py record # re-record live (GET only), then check + promote
+uv run python scripts/record_fixtures.py record --add   # record only new scenarios, merge
+uv run python scripts/build_variable_dictionaries.py    # rebuild FLUXNET/FP dictionaries (--check offline)
 AMERIFLUX_MCP_LIVE=1 uv run pytest -m live tests/live   # live smoke (GET only)
 uv run ruff check src tests scripts && uv run ruff format --check src tests scripts
 uv run mypy --strict src
@@ -78,11 +82,19 @@ types the rows; `ameriflux/catalog.py` builds the `SiteIndex` (AmeriFlux + FLUXN
 FLUXNET-CH4); `resolve.py` turns site arguments into IDs; `products.py` holds the D6
 matrix; `policy.py` the D10 engine; `privacy.py` strips emails; `errors.py` maps upstream
 failures (D24); `ameriflux/reference.py` loads the static vocabularies and the curated
-LTER crosswalk; tools: `tools/sites.py` (search, get_site, shared product/years models),
-`tools/availability.py`; `transport/` holds stdio and stateless HTTP; `resources.py`
-serves the identity guide, the references and `ameriflux://site/{site_id}`;
+LTER crosswalk; `ameriflux/variables/` holds the name grammar (`grammar.py`), the FP and
+FLUXNET dictionaries (`dictionaries.py`, live FP with snapshot fallback), measurement
+heights (`heights.py`) and amerifluxr coverage (`coverage.py`); `ameriflux/citation.py`
+builds citations from the DOI API (FLUXNET2015 constructed, DataCite fallback) and
+`ameriflux/acknowledgments.py` holds the verbatim policy texts; tools:
+`tools/sites.py` (search, get_site, shared product/years models),
+`tools/availability.py`, `tools/variables.py`, `tools/citation.py`, `tools/badm.py`; `transport/` holds stdio and stateless HTTP; `resources.py`
+serves the guides (identity, data policy, variable grammar), the references and
+`ameriflux://site/{site_id}`;
 `prompts.py` is empty until step 8. `scripts/build_site_vocabularies.py` rebuilds
-`resources_static/vocabularies.json` (one GET of the site-search page). Tests: `conftest.py`
+`resources_static/vocabularies.json` (one GET of the site-search page);
+`scripts/build_variable_dictionaries.py` rebuilds `fluxnet-variables.json` and
+`fp-variables.json`. Tests: `conftest.py`
 builds servers on `tests/fixture_router.py` (recorded fixtures in `tests/fixtures/`,
 15 fixture sites: never assert network-wide counts); `tests/helpers` has `IDENTITY_ENV`,
 `PRIVATE_VALUES` (must never appear in output), `call_ok`/`call_err` and the ASGI

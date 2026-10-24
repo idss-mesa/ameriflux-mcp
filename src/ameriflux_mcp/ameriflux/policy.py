@@ -20,6 +20,7 @@ from collections.abc import Iterable, Sequence
 from dataclasses import dataclass, field
 from typing import Literal
 
+from ameriflux_mcp.ameriflux import acknowledgments as ack
 from ameriflux_mcp.ameriflux.catalog import SiteRecord
 from ameriflux_mcp.ameriflux.products import (
     Collection,
@@ -32,14 +33,8 @@ from ameriflux_mcp.ameriflux.products import (
 Level = Literal["required", "recommended"]
 
 CITE_EACH_SITE = "Cite each site's DOI in the reference list (not in supplementary material)."
-DOE_SERVICE = (
-    "Acknowledge: 'Funding for the AmeriFlux data service was provided by the U.S. Department "
-    "of Energy Office of Science.'"
-)
-DOE_PORTAL = (
-    "Acknowledge: 'Funding for the AmeriFlux data portal was provided by the U.S. Department of "
-    "Energy Office of Science.'"
-)
+DOE_SERVICE = f"Acknowledge: '{ack.DOE_DATA_SERVICE.text}'"
+DOE_PORTAL = f"Acknowledge: '{ack.DOE_DATA_PORTAL.text}'"
 
 
 @dataclass(frozen=True)
@@ -70,16 +65,7 @@ def obligations(
 
     if collection == "ameriflux":
         fluxnet_ack = (
-            [
-                ob(
-                    "Add the FLUXNET acknowledgment: 'FLUXNET data products were produced and "
-                    "harmonized by eddy covariance regional networks and data processing "
-                    "centers, including AmeriFlux, ChinaFlux, European Fluxes Database, ICOS, "
-                    "JapanFlux, KoFlux, OzFlux, SAEON, and TERN. These products also include a "
-                    "modified version of ERA5 hourly data provided by the Copernicus Climate "
-                    "Change Service.'"
-                )
-            ]
+            [ob(f"Add the FLUXNET acknowledgment: '{ack.FLUXNET_NETWORKS.text}'")]
             if product == "FLUXNET"
             else []
         )
@@ -104,28 +90,27 @@ def obligations(
             ob(DOE_SERVICE),
             *fluxnet_ack,
             ob(
-                "If the paper has a Data Availability section: 'The AmeriFlux [DATA PRODUCT] were "
-                "accessed from [SOURCE] on XX Month YYYY.'",
-                "recommended",
+                "If the paper has a Data Availability section, add: "
+                f"'{ack.DATA_AVAILABILITY.text}'."
             ),
             ob("Inform the data providers about forthcoming publications.", "recommended"),
         ]
-    name = info("FLUXNET2015" if collection == "fluxnet2015" else "FLUXNET-CH4").label
-    base = [ob(f"Cite each site's DOI ({name}).")]
+    name = "FLUXNET2015" if collection == "fluxnet2015" else "FLUXNET-CH4"
+    where = "in a table in the paper" if code == "TIER2" else "in the paper"
+    base = [ob(f"List each site used by its FLUXNET ID and/or per-site DOI {where} ({name}).")]
     if collection == "fluxnet2015":
-        base.append(
-            ob(
-                "Cite Pastorello et al. (2020), Sci Data 7, 225, "
-                "https://doi.org/10.1038/s41597-020-0534-3."
-            )
-        )
+        base.append(ob(f"Cite the data-collection paper: {ack.PASTORELLO_2020.text}"))
     if code == "TIER2":
         base.extend(
             [
                 ob("Use the data for scientific and educational purposes only."),
                 ob(
-                    "Give the data providers at least three weeks to contribute after the first "
-                    "draft is complete; they may become co-authors."
+                    "Contact the data providers when you begin research that could lead to a "
+                    "publication."
+                ),
+                ob(
+                    "Give the data providers at least three weeks after the first draft is "
+                    "completed to contribute; substantive contributions result in co-authorship."
                 ),
             ]
         )
@@ -133,9 +118,11 @@ def obligations(
             base.append(
                 ob(
                     "Tier-Two-only sites (RU-Sam, RU-SkP, RU-Tks, RU-Vrk, SE-St1, ZA-Kru) are not "
-                    "part of Pastorello et al. (2020); cite their own references."
+                    "part of Pastorello et al. (2020)."
                 )
             )
+    else:
+        base.append(ob("Inform the data providers of forthcoming publications.", "recommended"))
     return base
 
 
@@ -173,7 +160,7 @@ def effective_policy(
         tier2_only = [s.site_id for s, t in zip(sites, tiers, strict=True) if t and t.tier2_only]
         for site, tier in zip(sites, tiers, strict=True):
             if tier is None:
-                ineligible[site.site_id] = f"is not part of {entry.label}"
+                ineligible[site.site_id] = f"is not part of {product}"
         if requested == "TIER2":
             code, reason = "TIER2", "TIER2 was requested"
         elif tier2_only:

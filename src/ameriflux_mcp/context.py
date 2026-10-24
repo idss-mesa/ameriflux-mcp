@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from ameriflux_mcp.config import Config
 
 TransportName = Literal["stdio", "http"]
-BackendName = Literal["amfcdn", "fluxdata", "amerifluxr", "datacite"]
+BackendName = Literal["amfcdn", "fluxdata", "amerifluxr", "datacite", "mixed"]
 
 current_transport: ContextVar[TransportName | None] = ContextVar(
     "ameriflux_mcp_transport", default=None

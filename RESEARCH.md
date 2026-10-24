@@ -74,6 +74,18 @@ Step 1 probe results (`scripts/probe_api.py`, 2026-10-22; sections 1, 4 and 9 be
 | E54 | P7: in `v2/site_info_display`, `base_variables` is `list[str]` (610 non-empty, up to 65 names, FP base names such as `CO2`, `FC_SSITC_TEST`, `FETCH_90`); `dom_dist_mgmt` is `list[str]` (554 non-empty, up to 6; e.g. "Agriculture", "Grazing", "Undisturbed", "Drought", "Fire", "Temperature extreme"); `flux_measurements_variables` is `list[str]` on all 856 (gas species such as `CO2`, `H2O`, `CH4`, `Isotopes`, with repeated "Other"). |
 | E55 | P8: `/data/measurement-height/` links exactly one file, `BASE_MeasurementHeight_20260908.csv`; HEAD → 200, `text/csv`, 2 254 621 B, ETag `"22671d-65affa8c88ad7"`, Last-Modified Tue, 08 Sep 2026 21:45:55 GMT, `cache-control: public, max-age=14400`. |
 
+Build steps 4 and 5 (2026-10-24; GET only):
+
+| # | Evidence |
+|---|---|
+| E56 | The site-search page (`ameriflux.lbl.gov/sites/site-search/`) embeds AmeriFlux's own descriptions as JSON string literals `igbpText` (17 IGBP classes) and `climText` (Köppen codes); its `Bsh` text reads "Steppe: very cold winter" and `Bsk` "Steppe: warm winter", the reverse of standard Köppen-Geiger (step 4). |
+| E57 | Webdoc dictionaries re-fetched (ETags unchanged from E28): a section row, then a variable row with blank Units, then one row per resolution label (`HH`, `DD`, `WW`, `MM`, `YY`, `WW-YY`, `WW-MM`, `DD-YY`, `DD-MM`, `HH-DD`, `HH-YY`). Every resolution row has units unless its description is "not available"/"not defined"; µ is stored as UTF-8. FULLSET has 232 names, SUBSET 72, SUBSET ⊂ FULLSET; placeholders `XX` (percentiles) and `#` (soil layer) appear in 24 FULLSET names. |
+| E58 | ONEFlux `var_info_definitions_{hh,dd,ww,mm,yy}.txt` at commit `d4ecebe` (2025-12-09, v1.3.0-rc, last change to the files) define 230 names, all in FULLSET; FULLSET also has `RECO_SR` and `RECO_SR_N`, which ONEFlux v1.3 does not. Units agree with FULLSET at every name and resolution; only the timestamps differ (FULLSET gives none per resolution, ONEFlux YYYYMMDDHHMM/YYYYMMDD/YYYYMM/YYYY). So E29's "many blank Units cells" are the variable rows only; units come from FULLSET (D35). |
+| E59 | The AmeriFlux data-policy page lists the processing references verbatim: "Chu, H., Christianson, D.S., Cheah, YW. et al. AmeriFlux BASE data pipeline to support network growth and data sharing. Sci Data 10, 614 (2023). https://doi.org/10.1038/s41597-023-02531-2" and "Pastorello, G., Trotta, C., Canfora, E. et al. The FLUXNET2015 dataset and the ONEFlux processing pipeline for eddy covariance data. Sci Data 7, 225 (2020). https://doi.org/10.1038/s41597-020-0534-3"; the Data Availability sentence is "The AmeriFlux [DATA PRODUCT] were accessed from [SOURCE] on XX Month YYYY" with [SOURCE] = AmeriFlux data portal, AmeriFlux APIs, FLUXNET User Interface for the Shuttle, or the FLUXNET Shuttle code. |
+| E60 | `doi.org/10.18140/FLX/1440071` redirects to `fluxnet.org/doi/FLUXNET2015/US-Ha1`, whose template renders the citation as `{{author.name}} , ({{doiObject.tier2}}) {{dataProduct}} {{siteId}} {{doiObject.siteName}}, Dataset. https://doi.org/{{doiObject.DOI}}` from the same DOI API record: authors, the Tier Two year range, title, "Dataset", DOI. |
+| E61 | fluxnet.org/data/data-policy/ (FLUXNET2015): CC-BY-4.0 asks to cite Pastorello et al. 2020 and list each site by FLUXNET ID and/or per-site DOI (informing providers recommended); Tier Two asks to contact the providers "when you begin research that could lead to a publication", to give them at least three weeks after the first draft, and to list sites in a table; "In case of a synthesis using both CC-BY-4.0 and Tier Two data, all data should be treated as Tier Two." |
+| E62 | The measurement-height CSV of 2026-09-08 covers 587 sites (US-Ha1 138 rows, US-Myb 278, RU-Sam none); the amerifluxr coverage snapshot is unchanged since commit `7319e63` (2025-11-03, `create_date:2025-10-20`, 561 sites, years Y1990–Y2025). DataCite still records US-Ha1's BASE DOI without a version (2016, Harvard University). `fp_var` `HeightDirection` is `pos` for 125 names, `neg` for 7 (soil and water: SWC, TS, WTD …), null for 13. |
+
 ## 1. The amfcdn.lbl.gov API (verified 2026-10-22)
 
 Public, unauthenticated, CORS-open JSON behind Cloudflare. No published contract (E12),
@@ -152,7 +164,7 @@ cached in memory only (D19, D22).
 |---|---|---|
 | `AmeriFlux` (BASE-BADM, and BIF by D9) | `DOI_CITATION` verbatim, with "Ver. X-Y" | E19, E41, E52 |
 | `FLUXNET` (FLUXNET-1F) | `DOI_CITATION` verbatim, with "Ver. v1.3_r1 (YYYY-YYYY)" | E19, E52 |
-| `FLUXNET2015` | `DOI_CITATION` is null: construct from DOI, title and contributors, plus Pastorello et al. 2020 | E20, E51 |
+| `FLUXNET2015` | `DOI_CITATION` is null: construct it as the FLUXNET DOI page does (authors, Tier Two years, title, "Dataset", DOI; E60), plus Pastorello et al. 2020 | E20, E51, E60 |
 | `FLUXNET-CH4` | `DOI_CITATION` is null; DOI present. Reference paper for the product is UNVERIFIED (Q8; v0.2) | E51 |
 
 DataCite also knows these DOIs (CSL-JSON by content negotiation; Crossref does not) but
@@ -236,8 +248,10 @@ starts with two comma-padded `#` lines; FLUXMET does not.
 - **Units change with resolution**: NEE/GPP/RECO µmolCO2 m-2 s-1 (HH), gC m-2 d-1
   (DD–MM), gC m-2 y-1 (YY, sum of daily); P mm per interval (HH), mm d-1, mm y-1.
 - **Signs**: negative NEE is uptake; GPP and RECO positive; NEE = RECO − GPP.
-- **Dictionary sources**: units from ONEFlux var_info (E29, µ restored); descriptions and
-  SUBSET membership from the webdoc CSVs (E28).
+- **Dictionary sources**: descriptions, units per resolution and SUBSET membership from
+  the webdoc CSVs (E28, E57); timestamp formats and the resolutions the AmeriFlux FLUXNET
+  product defines from ONEFlux var_info (E29, E58, µ restored). The two agree on every
+  unit.
 - **Quick-start defaults** (fluxnet.org guide): NEE_VUT_REF, GPP_NT_VUT_REF and
   GPP_DT_VUT_REF (their difference as uncertainty), RECO_*, NEE_VUT_XX, LE_F_MDS,
   H_F_MDS, LE_CORR, H_CORR.
@@ -267,7 +281,7 @@ starts with two comma-padded `#` lines; FLUXMET does not.
 ## 9. Supporting data (verified 2026-10-22)
 
 - **Measurement heights**: one dated CSV linked from `/data/measurement-height/` (E30,
-  E55). The page documents a `Historical_Information` column the file lacks; parsers
+  E55, E62). The page documents a `Historical_Information` column the file lacks; parsers
   follow the file. Monthly cadence is UNVERIFIED.
 - **Variable coverage**: only amerifluxr's GitHub snapshots (E31); stale by at least one
   release (BASE years reach 2026). `POST variable_availability` exists but is not used.
@@ -317,3 +331,5 @@ server.json; edi has no Dockerfile or release workflow; the umbrella installer i
   files inside current BASE-BADM zips (P6); AUXMETEO/AUXNEE layout.
 - Measurement Height release cadence.
 - The FLUXNET-CH4 reference paper for citations (Q8).
+- The comma in the FLUXNET DOI page template (`{{author.name}} , (…)`) is presumably the
+  author-list separator; ameriflux-mcp writes "A, B (1991-2012) FLUXNET2015 …" (E60).

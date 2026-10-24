@@ -618,7 +618,7 @@ async def amf_get_site(args: GetSiteIn, ctx: ToolContext) -> GetSiteResult:
             TeamEntry(
                 name=m.name,
                 role=m.role,
-                institution=m.institution,
+                institution=m.institution or None,
                 email=m.email if show_email else None,
             )
             for m in record.team[:MAX_TEAM]

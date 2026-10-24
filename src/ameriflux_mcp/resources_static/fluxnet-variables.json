@@ -1,0 +1,6492 @@
+{
+ "sources": {
+  "fullset": {
+   "url": "https://ftp.fluxdata.org/.fluxnet_downloads_67934/webdoc/variable_codes_FULLSET_20200504.csv",
+   "etag": "\"10afb-5a4e12f9d7b40\"",
+   "lastModified": "Tue, 05 May 2020 06:59:17 GMT",
+   "fetched": "2026-10-24"
+  },
+  "subset": {
+   "url": "https://ftp.fluxdata.org/.fluxnet_downloads_67934/webdoc/variable_codes_SUBSET_20200504.csv",
+   "etag": "\"48fd-5a4e12bcceb40\"",
+   "lastModified": "Tue, 05 May 2020 06:58:13 GMT",
+   "fetched": "2026-10-24"
+  },
+  "oneflux": {
+   "repository": "https://github.com/fluxnet/ONEFlux",
+   "commit": "d4ecebef96b83b33c82c8c0449aad308adf604cd",
+   "files": "oneflux/metadata/var_info_definitions_{hh,dd,ww,mm,yy}.txt",
+   "fetched": "2026-10-24"
+  }
+ },
+ "resolutions": [
+  "HH",
+  "DD",
+  "WW",
+  "MM",
+  "YY"
+ ],
+ "placeholders": {
+  "XX": [
+   "05",
+   "16",
+   "25",
+   "50",
+   "75",
+   "84",
+   "95"
+  ],
+  "#": "soil layer index, 1 = shallowest"
+ },
+ "count": 232,
+ "variables": [
+  {
+   "name": "TIMESTAMP",
+   "section": "TIMEKEEPING",
+   "description": "ISO timestamp - short format",
+   "units": {
+    "HH": null,
+    "DD": "YYYYMMDD",
+    "WW": null,
+    "MM": "YYYYMM",
+    "YY": "YYYY"
+   },
+   "notes": {},
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "DD",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "TIMESTAMP_START",
+   "section": "TIMEKEEPING",
+   "description": "ISO timestamp start of averaging period - short format",
+   "units": {
+    "HH": "YYYYMMDDHHMM",
+    "DD": null,
+    "WW": "YYYYMMDD",
+    "MM": null,
+    "YY": null
+   },
+   "notes": {},
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "WW"
+   ],
+   "members": null
+  },
+  {
+   "name": "TIMESTAMP_END",
+   "section": "TIMEKEEPING",
+   "description": "ISO timestamp end of averaging period - short format",
+   "units": {
+    "HH": "YYYYMMDDHHMM",
+    "DD": null,
+    "WW": "YYYYMMDD",
+    "MM": null,
+    "YY": null
+   },
+   "notes": {},
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "WW"
+   ],
+   "members": null
+  },
+  {
+   "name": "TA_F_MDS",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Air temperature, gapfilled using MDS method",
+   "units": {
+    "HH": "deg C",
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_F_MDS_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for TA_F_MDS",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "TA_F_MDS_NIGHT",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Average nighttime TA_F_MDS",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_F_MDS_NIGHT_SD",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Standard deviation for TA_F_MDS_NIGHT",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data",
+    "WW": "average SD from daily data",
+    "MM": "average SD from daily data",
+    "YY": "average SD from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_F_MDS_NIGHT_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for TA_F_MDS_NIGHT",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "TA_F_MDS_DAY",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Average daytime TA_F_MDS",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_F_MDS_DAY_SD",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Standard deviation for TA_F_MDS_DAY",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data",
+    "WW": "average SD from daily data",
+    "MM": "average SD from daily data",
+    "YY": "average SD from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_F_MDS_DAY_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for TA_F_MDS_DAY",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "TA_ERA",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Air temperature, downscaled from ERA, linearly regressed using measured only site data",
+   "units": {
+    "HH": "deg C",
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_ERA_NIGHT",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Average nighttime TA_ERA",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_ERA_NIGHT_SD",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Standard deviation for TA_ERA_NIGHT",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data",
+    "WW": "average SD from daily data",
+    "MM": "average SD from daily data",
+    "YY": "average SD from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_ERA_DAY",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Average daytime TA_ERA",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_ERA_DAY_SD",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Standard deviation for TA_ERA_DAY",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data",
+    "WW": "average SD from daily data",
+    "MM": "average SD from daily data",
+    "YY": "average SD from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_F",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Air temperature, consolidated from TA_F_MDS and TA_ERA",
+   "units": {
+    "HH": "deg C",
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "TA_F_MDS used if TA_F_MDS_QC is 0 or 1",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_F_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for TA_F",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = downscaled from ERA",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "TA_F_NIGHT",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Average nighttime TA_F",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_F_NIGHT_SD",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Standard deviation for TA_F_NIGHT",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data",
+    "WW": "average SD from daily data",
+    "MM": "average SD from daily data",
+    "YY": "average SD from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_F_NIGHT_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for TA_F_NIGHT",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "TA_F_DAY",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Average daytime TA_F",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_F_DAY_SD",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Standard deviation for TA_F_DAY",
+   "units": {
+    "HH": null,
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data",
+    "WW": "average SD from daily data",
+    "MM": "average SD from daily data",
+    "YY": "average SD from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TA"
+  },
+  {
+   "name": "TA_F_DAY_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for TA_F_DAY",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "SW_IN_POT",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Shortwave radiation, incoming, potential (top of atmosphere)",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": null
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM"
+   ],
+   "members": null
+  },
+  {
+   "name": "SW_IN_F_MDS",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Shortwave radiation, incoming, gapfilled using MDS (negative values set to zero, e.g., negative values from instrumentation noise)",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "SW_IN"
+  },
+  {
+   "name": "SW_IN_F_MDS_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for SW_IN_F_MDS",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "SW_IN_ERA",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Shortwave radiation, incoming, downscaled from ERA, linearly regressed using measured only site data (negative values set to zero)",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "SW_IN"
+  },
+  {
+   "name": "SW_IN_F",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Shortwave radiation, incoming consolidated from SW_IN_F_MDS and SW_IN_ERA (negative values set to zero)",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "HH": "SW_IN_F_MDS used if SW_IN_F_MDS_QC is 0 or 1",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "SW_IN"
+  },
+  {
+   "name": "SW_IN_F_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for SW_IN_F",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = downscaled from ERA",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "LW_IN_F_MDS",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Longwave radiation, incoming, gapfilled using MDS",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "LW_IN"
+  },
+  {
+   "name": "LW_IN_F_MDS_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for LW_IN_F_MDS",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "LW_IN_ERA",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Longwave radiation, incoming, downscaled from ERA, linearly regressed using measured only site data",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "LW_IN"
+  },
+  {
+   "name": "LW_IN_F",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Longwave radiation, incoming, consolidated from LW_IN_F_MDS and LW_IN_ERA",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "HH": "LW_IN_F_MDS used if LW_IN_F_MDS_QC is 0 or 1",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "LW_IN"
+  },
+  {
+   "name": "LW_IN_F_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for LW_IN_F",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = downscaled from ERA",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "LW_IN_JSB",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Longwave radiation, incoming, calculated from TA_F_MDS, SW_IN_F_MDS, VPD_F_MDS and SW_IN_POT using the JSBACH algorithm (Sonke Zaehle)",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(TA, SW_IN,RH)(TA, SW_IN, VPD)"
+  },
+  {
+   "name": "LW_IN_JSB_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for LW_IN_JSB",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "highest from TA_F_MDS_QC, SW_IN_F_MDS_QC, and VPD_F_MDS_QC, poorest quality prevails",
+    "DD": "fraction between 0-1, indicating percentage of calculated LW_IN starting from measured and good quality gapfill drivers data",
+    "WW": "fraction between 0-1, indicating percentage ofcalculated LW_IN starting from measured and good quality gapfill drivers data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage ofcalculated LW_IN starting from measured and good quality gapfill drivers data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage ofcalculated LW_IN starting from measured and good quality gapfill drivers data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "LW_IN_JSB_ERA",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Longwave radiation, incoming, downscaled from ERA, linearly regressed using site level LW_IN_JSB calculated from measured only drivers",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(TA, SW_IN,RH)(TA, SW_IN, VPD)"
+  },
+  {
+   "name": "LW_IN_JSB_F",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Longwave radiation, incoming, consolidated from LW_IN_JSB and LW_IN_JSB_ERA",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "HH": "LW_IN_JSB used if LW_IN_JSB_QC is 0 or 1",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(TA, SW_IN,RH)(TA, SW_IN, VPD)"
+  },
+  {
+   "name": "LW_IN_JSB_F_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for LW_IN_JSB_F",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = calculated from measured drivers; 1 = calculated from good quality gapfilled drivers; 2: downscaled from ERA",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "VPD_F_MDS",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Vapor Pressure Deficit, gapfilled using MDS",
+   "units": {
+    "HH": "hPa",
+    "DD": "hPa",
+    "WW": "hPa",
+    "MM": "hPa",
+    "YY": "hPa"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(TA, RH)(VPD)"
+  },
+  {
+   "name": "VPD_F_MDS_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for VPD_F_MDS",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "VPD_ERA",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Vapor Pressure Deficit, downscaled from ERA, linearly regressed using measured only site data",
+   "units": {
+    "HH": "hPa",
+    "DD": "hPa",
+    "WW": "hPa",
+    "MM": "hPa",
+    "YY": "hPa"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(TA, RH)(VPD)"
+  },
+  {
+   "name": "VPD_F",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Vapor Pressure Deficit consolidated from VPD_F_MDS and VPD_ERA",
+   "units": {
+    "HH": "hPa",
+    "DD": "hPa",
+    "WW": "hPa",
+    "MM": "hPa",
+    "YY": "hPa"
+   },
+   "notes": {
+    "HH": "VPD_F_MDS used if VPD_F_MDS_QC is 0 or 1",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(TA, RH)(VPD)"
+  },
+  {
+   "name": "VPD_F_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for VPD_F",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = downscaled from ERA",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "PA",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Atmospheric pressure",
+   "units": {
+    "HH": "kPa",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": "PA"
+  },
+  {
+   "name": "PA_ERA",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Atmospheric pressure, downscaled from ERA, linearly regressed using measured only site data",
+   "units": {
+    "HH": "kPa",
+    "DD": "kPa",
+    "WW": "kPa",
+    "MM": "kPa",
+    "YY": "kPa"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "PA"
+  },
+  {
+   "name": "PA_F",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Atmospheric pressure consolidated from PA and PA_ERA",
+   "units": {
+    "HH": "kPa",
+    "DD": "kPa",
+    "WW": "kPa",
+    "MM": "kPa",
+    "YY": "kPa"
+   },
+   "notes": {
+    "HH": "PA used if measured",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "PA"
+  },
+  {
+   "name": "PA_F_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for PA_F",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 2 = downscaled from ERA",
+    "DD": "fraction between 0-1, indicating percentage of measured data",
+    "WW": "fraction between 0-1, indicating percentage of measured data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "P",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Precipitation",
+   "units": {
+    "HH": "mm",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": "P"
+  },
+  {
+   "name": "P_ERA",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Precipitation, downscaled from ERA, linearly regressed using measured only site data",
+   "units": {
+    "HH": "mm",
+    "DD": "mm d-1",
+    "WW": "mm d-1",
+    "MM": "mm d-1",
+    "YY": "mm y-1"
+   },
+   "notes": {
+    "HH": "(mm per dataset resolution: either hour or half-hour)",
+    "DD": "sum from half-hourly data (mm per day)",
+    "WW": "average from daily data (mm per day)",
+    "MM": "average from daily data (mm per day)",
+    "YY": "sum from daily data (mm per year)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "P"
+  },
+  {
+   "name": "P_F",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Precipitation consolidated from P and P_ERA",
+   "units": {
+    "HH": "mm",
+    "DD": "mm d-1",
+    "WW": "mm d-1",
+    "MM": "mm d-1",
+    "YY": "mm y-1"
+   },
+   "notes": {
+    "HH": "P used if measured (mm per dataset resolution: either hour or half-hour)",
+    "DD": "sum from half-hourly data (mm per day)",
+    "WW": "average from daily data (mm per day)",
+    "MM": "average from daily data (mm per day)",
+    "YY": "sum from daily data (mm per year)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "P"
+  },
+  {
+   "name": "P_F_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for P_F",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 2 = downscaled from ERA",
+    "DD": "fraction between 0-1, indicating percentage of measured data",
+    "WW": "fraction between 0-1, indicating percentage of measured data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "WS",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Wind speed",
+   "units": {
+    "HH": "m s-1",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": "WS"
+  },
+  {
+   "name": "WS_ERA",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Wind speed, downscaled from ERA, linearly regressed using measured only site data",
+   "units": {
+    "HH": "m s-1",
+    "DD": "m s-1",
+    "WW": "m s-1",
+    "MM": "m s-1",
+    "YY": "m s-1"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "WS"
+  },
+  {
+   "name": "WS_F",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Wind speed, consolidated from WS and WS_ERA",
+   "units": {
+    "HH": "m s-1",
+    "DD": "m s-1",
+    "WW": "m s-1",
+    "MM": "m s-1",
+    "YY": "m s-1"
+   },
+   "notes": {
+    "HH": "WS used if measured",
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "WS"
+  },
+  {
+   "name": "WS_F_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag of WS_F",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 2 = downscaled from ERA",
+    "DD": "fraction between 0-1, indicating percentage of measured data",
+    "WW": "fraction between 0-1, indicating percentage of measured data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "WD",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Wind direction",
+   "units": {
+    "HH": "Decimal degrees",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH"
+   ],
+   "members": "WD"
+  },
+  {
+   "name": "RH",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Relative humidity, range 0-100",
+   "units": {
+    "HH": "%",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH"
+   ],
+   "members": "RH"
+  },
+  {
+   "name": "USTAR",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Friction velocity",
+   "units": {
+    "HH": "m s-1",
+    "DD": "m s-1",
+    "WW": "m s-1",
+    "MM": "m s-1",
+    "YY": "m s-1"
+   },
+   "notes": {
+    "DD": "average from half-hourly data (only days with more than 50% records available)",
+    "WW": "average from daily data (only periods with more than 50% records available)",
+    "MM": "average from daily data (only periods with more than 50% records available)",
+    "YY": "average from daily data (only periods with more than 50% records available)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "USTAR"
+  },
+  {
+   "name": "USTAR_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag of USTAR",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of data available (measured)",
+    "WW": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of data available (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NETRAD",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Net radiation",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data (only days with more than 50% records available)",
+    "WW": "average from daily data (only periods with more than 50% records available)",
+    "MM": "average from daily data (only periods with more than 50% records available)",
+    "YY": "average from daily data (only periods with more than 50% records available)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "NETRAD"
+  },
+  {
+   "name": "NETRAD_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag of NETRAD",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of data available (measured)",
+    "WW": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of data available (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "PPFD_IN",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Photosynthetic photon flux density, incoming",
+   "units": {
+    "HH": "µmolPhoton m-2 s-1",
+    "DD": "µmolPhoton m-2 s-1",
+    "WW": "µmolPhoton m-2 s-1",
+    "MM": "µmolPhoton m-2 s-1",
+    "YY": "µmolPhoton m-2 s-1"
+   },
+   "notes": {
+    "DD": "average from half-hourly data (only days with more than 50% records available)",
+    "WW": "average from daily data (only periods with more than 50% records available)",
+    "MM": "average from daily data (only periods with more than 50% records available)",
+    "YY": "average from daily data (only periods with more than 50% records available)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "PPFD_IN"
+  },
+  {
+   "name": "PPFD_IN_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag of PPFD_IN",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of data available (measured)",
+    "WW": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of data available (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "PPFD_DIF",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Photosynthetic photon flux density, diffuse incoming",
+   "units": {
+    "HH": "µmolPhoton m-2 s-1",
+    "DD": "µmolPhoton m-2 s-1",
+    "WW": "µmolPhoton m-2 s-1",
+    "MM": "µmolPhoton m-2 s-1",
+    "YY": "µmolPhoton m-2 s-1"
+   },
+   "notes": {
+    "DD": "average from half-hourly data (only days with more than 50% records available)",
+    "WW": "average from daily data (only periods with more than 50% records available)",
+    "MM": "average from daily data (only periods with more than 50% records available)",
+    "YY": "average from daily data (only periods with more than 50% records available)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "PPFD_DIF"
+  },
+  {
+   "name": "PPFD_DIF_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag of PPFD_DIF",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of data available (measured)",
+    "WW": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of data available (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "PPFD_OUT",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Photosynthetic photon flux density, outgoing",
+   "units": {
+    "HH": "µmolPhoton m-2 s-1",
+    "DD": "µmolPhoton m-2 s-1",
+    "WW": "µmolPhoton m-2 s-1",
+    "MM": "µmolPhoton m-2 s-1",
+    "YY": "µmolPhoton m-2 s-1"
+   },
+   "notes": {
+    "DD": "average from half-hourly data (only days with more than 50% records available)",
+    "WW": "average from daily data (only periods with more than 50% records available)",
+    "MM": "average from daily data (only periods with more than 50% records available)",
+    "YY": "average from daily data (only periods with more than 50% records available)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "PPFD_OUT"
+  },
+  {
+   "name": "PPFD_OUT_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag of PPFD_OUT",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of data available (measured)",
+    "WW": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of data available (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "SW_DIF",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Shortwave radiation, diffuse incoming",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data (only days with more than 50% records available)",
+    "WW": "average from daily data (only periods with more than 50% records available)",
+    "MM": "average from daily data (only periods with more than 50% records available)",
+    "YY": "average from daily data (only periods with more than 50% records available)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "SW_DIF"
+  },
+  {
+   "name": "SW_DIF_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag of SW_DIF",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of data available (measured)",
+    "WW": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of data available (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "SW_OUT",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Shortwave radiation, outgoing",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data (only days with more than 50% records available)",
+    "WW": "average from daily data (only periods with more than 50% records available)",
+    "MM": "average from daily data (only periods with more than 50% records available)",
+    "YY": "average from daily data (only periods with more than 50% records available)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "SW_OUT"
+  },
+  {
+   "name": "SW_OUT_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag of SW_OUT",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of data available (measured)",
+    "WW": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of data available (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "LW_OUT",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Longwave radiation, outgoing",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data (only days with more than 50% records available)",
+    "WW": "average from daily data (only periods with more than 50% records available)",
+    "MM": "average from daily data (only periods with more than 50% records available)",
+    "YY": "average from daily data (only periods with more than 50% records available)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "LW_OUT"
+  },
+  {
+   "name": "LW_OUT_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag of LW_OUT",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of data available (measured)",
+    "WW": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of data available (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of data available (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "CO2_F_MDS",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "CO2 mole fraction, gapfilled with MDS",
+   "units": {
+    "HH": "µmolCO2 mol-1",
+    "DD": "µmolCO2 mol-1",
+    "WW": "µmolCO2 mol-1",
+    "MM": "µmolCO2 mol-1",
+    "YY": "µmolCO2 mol-1"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "CO2"
+  },
+  {
+   "name": "CO2_F_MDS_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for CO2_F_MDS",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "TS_F_MDS_#",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Soil temperature, gapfilled with MDS (numeric index \"#\" increases with the depth, 1 is shallowest)",
+   "units": {
+    "HH": "deg C",
+    "DD": "deg C",
+    "WW": "deg C",
+    "MM": "deg C",
+    "YY": "deg C"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "TS"
+  },
+  {
+   "name": "TS_F_MDS_#_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for TS_F_MDS_#",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "SWC_F_MDS_#",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Soil water content, gapfilled with MDS (numeric index \"#\" increases with the depth, 1 is shallowest)",
+   "units": {
+    "HH": "%",
+    "DD": "%",
+    "WW": "%",
+    "MM": "%",
+    "YY": "%"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "SWC"
+  },
+  {
+   "name": "SWC_F_MDS_#_QC",
+   "section": "MICROMETEOROLOGICAL",
+   "description": "Quality flag for SWC_F_MDS_#",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "G_F_MDS",
+   "section": "ENERGY PROCESSING",
+   "description": "Soil heat flux",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "G"
+  },
+  {
+   "name": "G_F_MDS_QC",
+   "section": "ENERGY PROCESSING",
+   "description": "Quality flag of G_F_MDS",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "LE_F_MDS",
+   "section": "ENERGY PROCESSING",
+   "description": "Latent heat flux, gapfilled using MDS method",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "LE"
+  },
+  {
+   "name": "LE_F_MDS_QC",
+   "section": "ENERGY PROCESSING",
+   "description": "Quality flag for LE_F_MDS, LE_CORR, LE_CORR25, and LE_CORR75.",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "LE_CORR",
+   "section": "ENERGY PROCESSING",
+   "description": "Latent heat flux, corrected LE_F_MDS by energy balance closure correction factor",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "LE"
+  },
+  {
+   "name": "LE_CORR_25",
+   "section": "ENERGY PROCESSING",
+   "description": "Latent heat flux, corrected LE_F_MDS by energy balance closure correction factor, 25th percentile",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD"
+   ],
+   "members": "LE"
+  },
+  {
+   "name": "LE_CORR_75",
+   "section": "ENERGY PROCESSING",
+   "description": "Latent heat flux, corrected LE_F_MDS by energy balance closure correction factor, 75th percentile",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD"
+   ],
+   "members": "LE"
+  },
+  {
+   "name": "LE_RANDUNC",
+   "section": "ENERGY PROCESSING",
+   "description": "Random uncertainty of LE, from measured only data",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "HH": "uses only data point where LE_F_MDS_QC is 0 and two hierarchical methods (see header and LE_RANDUNC_METHOD)",
+    "DD": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "WW": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "MM": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "YY": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "LE"
+  },
+  {
+   "name": "LE_RANDUNC_METHOD",
+   "section": "ENERGY PROCESSING",
+   "description": "Method used to estimate the random uncertainty of LE",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "HH": "1 = RANDUNC Method 1 (direct SD method), 2 = RANDUNC Method 2 (median SD method)",
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "LE_RANDUNC_N",
+   "section": "ENERGY PROCESSING",
+   "description": "Number of half-hour data points used to estimate the random uncertainty of LE",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "LE_CORR_JOINTUNC",
+   "section": "ENERGY PROCESSING",
+   "description": "Joint uncertainty estimation for LE",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "HH": "[SQRT(LE_RANDUNC^2 + ((LE_CORR75 - LE_CORR25) / 1.349)^2)]",
+    "DD": "[SQRT(LE_RANDUNC^2 + ((LE_CORR75 - LE_CORR25) / 1.349)^2)]",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD"
+   ],
+   "members": "LE"
+  },
+  {
+   "name": "H_F_MDS",
+   "section": "ENERGY PROCESSING",
+   "description": "Sensible heat flux, gapfilled using MDS method",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "H"
+  },
+  {
+   "name": "H_F_MDS_QC",
+   "section": "ENERGY PROCESSING",
+   "description": "Quality flag for H_F_MDS, H_CORR, H_CORR25, and H_CORR75.",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "H_CORR",
+   "section": "ENERGY PROCESSING",
+   "description": "Sensible heat flux, corrected H_F_MDS by energy balance closure correction factor",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "H"
+  },
+  {
+   "name": "H_CORR_25",
+   "section": "ENERGY PROCESSING",
+   "description": "Sensible heat flux, corrected H_F_MDS by energy balance closure correction factor, 25th percentile",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD"
+   ],
+   "members": "H"
+  },
+  {
+   "name": "H_CORR_75",
+   "section": "ENERGY PROCESSING",
+   "description": "Sensible heat flux, corrected H_F_MDS by energy balance closure correction factor, 75th percentile",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "average from half-hourly data",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD"
+   ],
+   "members": "H"
+  },
+  {
+   "name": "H_RANDUNC",
+   "section": "ENERGY PROCESSING",
+   "description": "Random uncertainty of H, from measured only data",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": "W m-2",
+    "MM": "W m-2",
+    "YY": "W m-2"
+   },
+   "notes": {
+    "HH": "uses only data point where H_F_MDS_QC is 0 and two hierarchical methods (see header and H_RANDUNC_METHOD)",
+    "DD": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "WW": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "MM": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "YY": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "H"
+  },
+  {
+   "name": "H_RANDUNC_METHOD",
+   "section": "ENERGY PROCESSING",
+   "description": "Method used to estimate the random uncertainty of H",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "HH": "1 = RANDUNC Method 1 (direct SD method), 2 = RANDUNC Method 2 (median SD method)",
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "H_RANDUNC_N",
+   "section": "ENERGY PROCESSING",
+   "description": "Number of half-hour data points used to estimate the random uncertainty of H",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "H_CORR_JOINTUNC",
+   "section": "ENERGY PROCESSING",
+   "description": "Joint uncertainty estimation for H",
+   "units": {
+    "HH": "W m-2",
+    "DD": "W m-2",
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "HH": "[SQRT(H_RANDUNC^2 + ((H_CORR75 - H_CORR25) / 1.349)^2)]",
+    "DD": "[SQRT(H_RANDUNC^2 + ((H_CORR75 - H_CORR25) / 1.349)^2)]",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD"
+   ],
+   "members": "H"
+  },
+  {
+   "name": "EBC_CF_N",
+   "section": "ENERGY PROCESSING",
+   "description": "Number of data points used to calculate energy closure balance correction factor. Driver data points within sliding window (ECB_CF Method 1) or number of ECB_CF data points (for ECB_CF Methods 2 and 3)",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "for ECB_CF Method 1 (minimum 5, maximum 93)",
+    "DD": "for ECB_CF Method 1 (minimum 5, maximum 15)",
+    "WW": "fraction between 0-1, indicating percentages of half-hours used with respect to theoretical maximum number of half hours",
+    "MM": "fraction between 0-1, indicating percentages of half-hours used with respect to theoretical maximum number of half hours",
+    "YY": "fraction between 0-1, indicating percentages of half-hours used with respect to theoretical maximum number of half hours"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "EBC_CF_METHOD",
+   "section": "ENERGY PROCESSING",
+   "description": "Method used to calculate the energy balance closure correction factor",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "1 = ECB_CF Method 1, 2 = ECB_CF Method 2, 3 = ECB_CF Method 3. See general description for details",
+    "DD": "1 = ECB_CF Method 1, 2 = ECB_CF Method 2, 3 = ECB_CF Method 3. See general description for details",
+    "WW": "1 = ECB_CF Method 1, 2 = ECB_CF Method 2, 3 = ECB_CF Method 3. See general description for details",
+    "MM": "1 = ECB_CF Method 1, 2 = ECB_CF Method 2, 3 = ECB_CF Method 3. See general description for details",
+    "YY": "1 = ECB_CF Method 1, 2 = ECB_CF Method 2, 3 = ECB_CF Method 3. See general description for details"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NIGHT",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Flag indicating nighttime interval based on SW_IN_POT",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "HH": "0 = daytime, 1 = nighttime",
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "NIGHT_D",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Number of half hours classified as nighttime in the period, i.e., when SW_IN_POT is 0",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": null
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "number of half-hours",
+    "WW": "number of halfhours (average of the daily data)",
+    "MM": "number of halfhours (average of the daily data)",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM"
+   ],
+   "members": null
+  },
+  {
+   "name": "DAY_D",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Number of half hours classified as daytime in the period, i.e., when SW_IN_POT is greater than 0",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": null
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "number of half-hours",
+    "WW": "number of halfhours (average of the daily data)",
+    "MM": "number of halfhours (average of the daily data)",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM"
+   ],
+   "members": null
+  },
+  {
+   "name": "NIGHT_RANDUNC_N",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Number of half hours classified as nighttime and used to calculate the aggregated random uncertainty",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "number of half-hours",
+    "WW": "number of halfhours (average of the daily data)",
+    "MM": "number of halfhours (average of the daily data)",
+    "YY": "number of halfhours (average of the daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "DAY_RANDUNC_N",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Number of half hours classified as daytime and used to calculate the aggregated random uncertainty",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "number of half-hours",
+    "WW": "number of halfhours (average of the daily data)",
+    "MM": "number of halfhours (average of the daily data)",
+    "YY": "number of halfhours (average of the daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_REF",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Net Ecosystem Exchange, using Constant Ustar Threshold (CUT) across years, reference selected on the basis of the model efficiency (MEF). The MEF analysis is repeated for each time aggregation",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_REF",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Net Ecosystem Exchange, using Variable Ustar Threshold (VUT) for each year, reference selected on the basis of the model efficiency (MEF). The MEF analysis is repeated for each time aggregation",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_REF_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_CUT_REF",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_REF_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_VUT_REF",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_REF_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty for NEE_CUT_REF, from measured only data",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "uses only data points where NEE_CUT_REF_QC is 0 and two hierarchical methods - see header and NEE_CUT_REF_RANDUNC_METHOD",
+    "DD": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "WW": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "MM": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "YY": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_REF_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty for NEE_VUT_REF, from measured only data",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "uses only data points where NEE_VUT_REF_QC is 0 and two hierarchical methods - see header and NEE_VUT_REF_RANDUNC_METHOD",
+    "DD": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "WW": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "MM": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "YY": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_REF_RANDUNC_METHOD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Method used to estimate the random uncertainty of NEE_CUT_REF",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "HH": "1 = RANDUNC Method 1 (direct SD method), 2 = RANDUNC Method 2 (median SD method)",
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_REF_RANDUNC_METHOD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Method used to estimate the random uncertainty of NEE_VUT_REF",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "HH": "1 = RANDUNC Method 1 (direct SD method), 2 = RANDUNC Method 2 (median SD method)",
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_REF_RANDUNC_N",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Number of data points used to estimate the random uncertainty of NEE_CUT_REF",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_REF_RANDUNC_N",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Number of data points used to estimate the random uncertainty of NEE_VUT_REF",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_REF_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_CUT_REF, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "[SQRT(NEE_CUT_REF_RANDUNC^2 + ((NEE_CUT_84 - NEE_CUT_16) / 2)^2)] for each half-hour",
+    "DD": "[SQRT(NEE_CUT_REF_RANDUNC^2 + ((NEE_CUT_84 - NEE_CUT_16) / 2)^2)] for each day",
+    "WW": "[SQRT(NEE_CUT_REF_RANDUNC^2 + ((NEE_CUT_84 - NEE_CUT_16) / 2)^2)] for each week",
+    "MM": "[SQRT(NEE_CUT_REF_RANDUNC^2 + ((NEE_CUT_84 - NEE_CUT_16) / 2)^2)] for each month",
+    "YY": "[SQRT(NEE_CUT_REF_RANDUNC^2 + ((NEE_CUT_84 - NEE_CUT_16) / 2)^2)] for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_REF_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_VUT_REF, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "[SQRT(NEE_VUT_REF_RANDUNC^2 + ((NEE_VUT_84 - NEE_VUT_16) / 2)^2)] for each half-hour",
+    "DD": "[SQRT(NEE_VUT_REF_RANDUNC^2 + ((NEE_VUT_84 - NEE_VUT_16) / 2)^2)] for each day",
+    "WW": "[SQRT(NEE_VUT_REF_RANDUNC^2 + ((NEE_VUT_84 - NEE_VUT_16) / 2)^2)] for each week",
+    "MM": "[SQRT(NEE_VUT_REF_RANDUNC^2 + ((NEE_VUT_84 - NEE_VUT_16) / 2)^2)] for each month",
+    "YY": "[SQRT(NEE_VUT_REF_RANDUNC^2 + ((NEE_VUT_84 - NEE_VUT_16) / 2)^2)] for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_USTAR50",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Net Ecosystem Exchange, using Constant Ustar Threshold (CUT) across years, from 50 percentile of USTAR threshold",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_USTAR50",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Net Ecosystem Exchange, using Variable Ustar Threshold (VUT) for each year, from 50 percentile of USTAR threshold",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_USTAR50_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_CUT_USTAR50",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_USTAR50_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_VUT_USTAR50",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_USTAR50_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty for NEE_CUT_USTAR50, from measured only data",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "uses only data points where NEE_CUT_USTAR50_QC is 0 and two hierarchical methods - see header and NEE_CUT_USTAR50_RANDUNC_METHOD",
+    "DD": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "WW": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "MM": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "YY": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_USTAR50_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty for NEE_VUT_USTAR50, from measured only data",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "uses only data points where NEE_VUT_USTAR50_QC is 0 and two hierarchical methods see header and NEE_VUT_USTAR50_RANDUNC_METHOD",
+    "DD": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "WW": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "MM": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used",
+    "YY": "from random uncertainty of individual half-hours (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_USTAR50_RANDUNC_METHOD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Method used to estimate the random uncertainty of NEE_CUT_USTAR50",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "HH": "1 = RANDUNC Method 1 (direct SD method), 2 = RANDUNC Method 2 (median SD method)",
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_USTAR50_RANDUNC_METHOD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Method used to estimate the random uncertainty of NEE_VUT_USTAR50",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "HH": "1 = RANDUNC Method 1 (direct SD method), 2 = RANDUNC Method 2 (median SD method)",
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_USTAR50_RANDUNC_N",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Number of half-hour data points used to estimate the random uncertainty of NEE_CUT_USTAR50",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_USTAR50_RANDUNC_N",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Number of half-hour data points used to estimate the random uncertainty of NEE_VUT_USTAR50",
+   "units": {
+    "HH": "nondimensional",
+    "DD": null,
+    "WW": null,
+    "MM": null,
+    "YY": null
+   },
+   "notes": {
+    "DD": "not available",
+    "WW": "not available",
+    "MM": "not available",
+    "YY": "not available"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_USTAR50_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_CUT_USTAR50, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "[SQRT(NEE_CUT_USTAR50_RANDUNC^2 + ((NEE_CUT_84 - NEE_CUT_16) / 2)^2)] for each half-hour",
+    "DD": "[SQRT(NEE_CUT_USTAR50_RANDUNC^2 + ((NEE_CUT_84 - NEE_CUT_16) / 2)^2)] for each day",
+    "WW": "[SQRT(NEE_CUT_USTAR50_RANDUNC^2 + ((NEE_CUT_84 - NEE_CUT_16) / 2)^2)] for each week",
+    "MM": "[SQRT(NEE_CUT_USTAR50_RANDUNC^2 + ((NEE_CUT_84 - NEE_CUT_16) / 2)^2)] for each month",
+    "YY": "[SQRT(NEE_CUT_USTAR50_RANDUNC^2 + ((NEE_CUT_84 - NEE_CUT_16) / 2)^2)] for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_USTAR50_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_VUT_USTAR50, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "[SQRT(NEE_VUT_USTAR50_RANDUNC^2 + ((NEE_VUT_84 - NEE_VUT_16) / 2)^2)] for each half-hour",
+    "DD": "[SQRT(NEE_VUT_USTAR50_RANDUNC^2 + ((NEE_VUT_84 - NEE_VUT_16) / 2)^2)] for each day",
+    "WW": "[SQRT(NEE_VUT_USTAR50_RANDUNC^2 + ((NEE_VUT_84 - NEE_VUT_16) / 2)^2)] for each week",
+    "MM": "[SQRT(NEE_VUT_USTAR50_RANDUNC^2 + ((NEE_VUT_84 - NEE_VUT_16) / 2)^2)] for each month",
+    "YY": "[SQRT(NEE_VUT_USTAR50_RANDUNC^2 + ((NEE_VUT_84 - NEE_VUT_16) / 2)^2)] for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_MEAN",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Net Ecosystem Exchange, using Constant Ustar Threshold (CUT) across years, average from 40 NEE_CUT_XX versions",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "average from 40 half-hourly NEE_CUT_XX",
+    "DD": "average from 40 daily NEE_CUT_XX",
+    "WW": "average from 40 weekly NEE_CUT_XX",
+    "MM": "average from 40 monthly NEE_CUT_XX",
+    "YY": "average from 40 yearly NEE_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_MEAN",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Net Ecosystem Exchange, using Variable Ustar Threshold (VUT) for each year, average from 40 NEE_VUT_XX versions",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "average from 40 half-hourly NEE_CUT_XX",
+    "DD": "average from 40 daily NEE_CUT_XX",
+    "WW": "average from 40 weekly NEE_CUT_XX",
+    "MM": "average from 40 monthly NEE_CUT_XX",
+    "YY": "average from 40 yearly NEE_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_MEAN_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_CUT_MEAN, fraction between 0-1 indicating percentage of good quality data",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "average of percentages of good data (NEE_CUT_XX_QC is 0 or 1) from 40 NEE_CUT_XX_QC",
+    "DD": "average of 40 NEE_CUT_XX_QC for the period",
+    "WW": "average of 40 NEE_CUT_XX_QC for the period",
+    "MM": "average of 40 NEE_CUT_XX_QC for the period",
+    "YY": "average of 40 NEE_CUT_XX_QC for the period"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_MEAN_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_VUT_MEAN, fraction between 0-1 indicating percentage of good quality data",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "average of percentages of good data (NEE_VUT_XX_QC is 0 or 1) from 40 NEE_VUT_XX_QC",
+    "DD": "average of 40 NEE_VUT_XX_QC for the period",
+    "WW": "average of 40 NEE_VUT_XX_QC for the period",
+    "MM": "average of 40 NEE_VUT_XX_QC for the period",
+    "YY": "average of 40 NEE_VUT_XX_QC for the period"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_SE",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Standard Error for NEE_CUT, calculated as SD(NEE_CUT_XX) / SQRT(40)",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "SE from 40 half-hourly NEE_CUT_XX",
+    "DD": "SE from 40 daily NEE_CUT_XX",
+    "WW": "SE from 40 weekly NEE_CUT_XX",
+    "MM": "SE from 40 monthly NEE_CUT_XX",
+    "YY": "SE from 40 yearly NEE_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_SE",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Standard Error for NEE_VUT, calculated as SD(NEE_VUT_XX) / SQRT(40)",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "SE from 40 half-hourly NEE_CUT_XX",
+    "DD": "SE from 40 daily NEE_CUT_XX",
+    "WW": "SE from 40 weekly NEE_CUT_XX",
+    "MM": "SE from 40 monthly NEE_CUT_XX",
+    "YY": "SE from 40 yearly NEE_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_XX",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "NEE CUT percentiles (approx. percentile indicated by XX, see doc.) calculated from the 40 estimates aggregated at the different time resolutions -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "XXth percentile from 40 half-hourly NEE_CUT_XX",
+    "DD": "XXth percentile from 40 daily NEE_CUT_XX",
+    "WW": "XXth percentile from 40 weekly NEE_CUT_XX",
+    "MM": "XXth percentile from 40 monthly NEE_CUT_XX",
+    "YY": "XXth percentile from 40 yearly NEE_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_XX",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "NEE VUT percentiles (approx. percentile indicated by XX, see doc.) calculated from the 40 estimates aggregated at the different time resolutions -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "XXth percentile from 40 half-hourly NEE_VUT_XX",
+    "DD": "XXth percentile from 40 daily NEE_VUT_XX",
+    "WW": "XXth percentile from 40 weekly NEE_VUT_XX",
+    "MM": "XXth percentile from 40 monthly NEE_VUT_XX",
+    "YY": "XXth percentile from 40 yearly NEE_VUT_XX"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_XX_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_CUT_XX -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_XX_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_VUT_XX -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": "nondimensional",
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "0 = measured; 1 = good quality gapfill; 2 = medium; 3 = poor",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_REF_NIGHT",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Average nighttime NEE, from NEE_CUT_REF",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data (where NIGHT is 1)",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_REF_NIGHT",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Average nighttime NEE, from NEE_VUT_REF",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data (where NIGHT is 1)",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_REF_NIGHT_SD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Standard Deviation of the nighttime NEE, from the NEE_CUT_REF",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data (where NIGHT is 1)",
+    "WW": "from daily data",
+    "MM": "from daily data",
+    "YY": "from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_REF_NIGHT_SD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Standard Deviation of the nighttime NEE, from the NEE_VUT_REF",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data (where NIGHT is 1)",
+    "WW": "from daily data",
+    "MM": "from daily data",
+    "YY": "from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_REF_NIGHT_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_CUT_REF_NIGHT",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_REF_NIGHT_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_VUT_REF_NIGHT",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_REF_NIGHT_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty of NEE_CUT_REF_NIGHT, from the random uncertainty of the single nighttime half-hours",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "WW": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "MM": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "YY": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day."
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_REF_NIGHT_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty of NEE_VUT_REF_NIGHT, from the random uncertainty of the single nighttime half-hours",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "WW": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "MM": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "YY": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day."
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_REF_NIGHT_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_CUT_REF_NIGHT, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "[SQRT(NEE_CUT_REF_NIGHT_RANDUNC^2 + ((NEE_CUT_84_NIGHT - NEE_CUT_16_NIGHT) / 2)^2)] for each day",
+    "WW": "[SQRT(NEE_CUT_REF_NIGHT_RANDUNC^2 + ((NEE_CUT_84_NIGHT - NEE_CUT_16_NIGHT) / 2)^2)] for each week",
+    "MM": "[SQRT(NEE_CUT_REF_NIGHT_RANDUNC^2 + ((NEE_CUT_84_NIGHT - NEE_CUT_16_NIGHT) / 2)^2)] for each month",
+    "YY": "[SQRT(NEE_CUT_REF_NIGHT_RANDUNC^2 + ((NEE_CUT_84_NIGHT - NEE_CUT_16_NIGHT) / 2)^2)] for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_REF_NIGHT_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_VUT_REF_NIGHT, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "[SQRT(NEE_VUT_REF_NIGHT_RANDUNC^2 + ((NEE_VUT_84_NIGHT - NEE_VUT_16_NIGHT) / 2)^2)] for each day",
+    "WW": "[SQRT(NEE_VUT_REF_NIGHT_RANDUNC^2 + ((NEE_VUT_84_NIGHT - NEE_VUT_16_NIGHT) / 2)^2)] for each week",
+    "MM": "[SQRT(NEE_VUT_REF_NIGHT_RANDUNC^2 + ((NEE_VUT_84_NIGHT - NEE_VUT_16_NIGHT) / 2)^2)] for each month",
+    "YY": "[SQRT(NEE_VUT_REF_NIGHT_RANDUNC^2 + ((NEE_VUT_84_NIGHT - NEE_VUT_16_NIGHT) / 2)^2)] for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_REF_DAY",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Average daytime NEE, from NEE_CUT_REF",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data (where NIGHT is 0)",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_REF_DAY",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Average daytime NEE, from NEE_VUT_REF",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data (where NIGHT is 0)",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_REF_DAY_SD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Standard Deviation of the daytime NEE, from the NEE_CUT_REF",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data (where NIGHT is 0)",
+    "WW": "from daily data",
+    "MM": "from daily data",
+    "YY": "from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_REF_DAY_SD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Standard Deviation of the daytime NEE, from the NEE_VUT_REF",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data (where NIGHT is 0)",
+    "WW": "from daily data",
+    "MM": "from daily data",
+    "YY": "from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_REF_DAY_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_CUT_REF_DAY",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_REF_DAY_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_VUT_REF_DAY",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_REF_DAY_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty of NEE_CUT_REF_DAY, from the random uncertainty of the single daytime half-hours",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "WW": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "MM": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "YY": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day."
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_REF_DAY_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty of NEE_VUT_REF_DAY, from the random uncertainty of the single daytime half-hours",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "WW": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "MM": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "YY": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day."
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_REF_DAY_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_CUT_REF_DAY, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "[SQRT(NEE_CUT_REF_DAY_RANDUNC^2 + ((NEE_CUT_84_DAY - NEE_CUT_16_DAY) / 2)^2)] for each day",
+    "WW": "[SQRT(NEE_CUT_REF_DAY_RANDUNC^2 + ((NEE_CUT_84_DAY - NEE_CUT_16_DAY) / 2)^2)] for each week",
+    "MM": "[SQRT(NEE_CUT_REF_DAY_RANDUNC^2 + ((NEE_CUT_84_DAY - NEE_CUT_16_DAY) / 2)^2)] for each month",
+    "YY": "[SQRT(NEE_CUT_REF_DAY_RANDUNC^2 + ((NEE_CUT_84_DAY - NEE_CUT_16_DAY) / 2)^2)] for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_REF_DAY_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_VUT_REF_DAY, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "[SQRT(NEE_VUT_REF_DAY_RANDUNC^2 + ((NEE_VUT_84_DAY - NEE_VUT_16_DAY) / 2)^2)] for each day",
+    "WW": "[SQRT(NEE_VUT_REF_DAY_RANDUNC^2 + ((NEE_VUT_84_DAY - NEE_VUT_16_DAY) / 2)^2)] for each week",
+    "MM": "[SQRT(NEE_VUT_REF_DAY_RANDUNC^2 + ((NEE_VUT_84_DAY - NEE_VUT_16_DAY) / 2)^2)] for each month",
+    "YY": "[SQRT(NEE_VUT_REF_DAY_RANDUNC^2 + ((NEE_VUT_84_DAY - NEE_VUT_16_DAY) / 2)^2)] for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_USTAR50_NIGHT",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Average nighttime NEE, from NEE_CUT_USTAR50",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data (where NIGHT is 1)",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_USTAR50_NIGHT",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Average nighttime NEE, from NEE_VUT_USTAR50",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data (where NIGHT is 1)",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_USTAR50_NIGHT_SD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Standard Deviation of the nighttime NEE, from the NEE_CUT_USTAR50",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data (where NIGHT is 1)",
+    "WW": "from daily data",
+    "MM": "from daily data",
+    "YY": "from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_USTAR50_NIGHT_SD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Standard Deviation of the nighttime NEE, from the NEE_VUT_USTAR50",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data (where NIGHT is 1)",
+    "WW": "from daily data",
+    "MM": "from daily data",
+    "YY": "from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_USTAR50_NIGHT_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_CUT_USTAR50_NIGHT",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_USTAR50_NIGHT_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_VUT_USTAR50_NIGHT",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_USTAR50_NIGHT_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty of NEE_CUT_USTAR50_NIGHT, from the random uncertainty of the single nighttime half-hours",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "WW": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "MM": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "YY": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day."
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_USTAR50_NIGHT_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty of NEE_VUT_USTAR50_NIGHT, from the random uncertainty of the single nighttime half-hours",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "WW": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "MM": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day.",
+    "YY": "from random uncertainty of individual half-hours where NIGHT is 1 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the nighttime aggregation in the day."
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_USTAR50_NIGHT_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_CUT_USTAR50_NIGHT, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "[SQRT(NEE_CUT_USTAR50_NIGHT_RANDUNC^2 + ((NEE_CUT_84_NIGHT - NEE_CUT_16_NIGHT) / 2)^2)] for each day",
+    "WW": "[SQRT(NEE_CUT_USTAR50_NIGHT_RANDUNC^2 + ((NEE_CUT_84_NIGHT - NEE_CUT_16_NIGHT) / 2)^2)] for each week",
+    "MM": "[SQRT(NEE_CUT_USTAR50_NIGHT_RANDUNC^2 + ((NEE_CUT_84_NIGHT - NEE_CUT_16_NIGHT) / 2)^2)] for each month",
+    "YY": "[SQRT(NEE_CUT_USTAR50_NIGHT_RANDUNC^2 + ((NEE_CUT_84_NIGHT - NEE_CUT_16_NIGHT) / 2)^2)] for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_USTAR50_NIGHT_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_VUT_USTAR50_NIGHT, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "[SQRT(NEE_VUT_USTAR50_NIGHT_RANDUNC^2 + ((NEE_VUT_84_NIGHT - NEE_VUT_16_NIGHT) / 2)^2)] for each day",
+    "WW": "[SQRT(NEE_VUT_USTAR50_NIGHT_RANDUNC^2 + ((NEE_VUT_84_NIGHT - NEE_VUT_16_NIGHT) / 2)^2)] for each week",
+    "MM": "[SQRT(NEE_VUT_USTAR50_NIGHT_RANDUNC^2 + ((NEE_VUT_84_NIGHT - NEE_VUT_16_NIGHT) / 2)^2)] for each month",
+    "YY": "[SQRT(NEE_VUT_USTAR50_NIGHT_RANDUNC^2 + ((NEE_VUT_84_NIGHT - NEE_VUT_16_NIGHT) / 2)^2)] for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_USTAR50_DAY",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Average daytime NEE, from NEE_CUT_USTAR50",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data (where NIGHT is 0)",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_USTAR50_DAY",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Average daytime NEE, from NEE_VUT_USTAR50",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "average from half-hourly data (where NIGHT is 0)",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "average from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_USTAR50_DAY_SD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Standard Deviation of the daytime NEE, from the NEE_CUT_USTAR50",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data (where NIGHT is 0)",
+    "WW": "from daily data",
+    "MM": "from daily data",
+    "YY": "from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_USTAR50_DAY_SD",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Standard Deviation of the daytime NEE, from the NEE_VUT_USTAR50",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from half-hourly data (where NIGHT is 0)",
+    "WW": "from daily data",
+    "MM": "from daily data",
+    "YY": "from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_USTAR50_DAY_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_CUT_USTAR50_DAY",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_USTAR50_DAY_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_VUT_USTAR50_DAY",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_USTAR50_DAY_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty of NEE_CUT_USTAR50_DAY, from the random uncertainty of the single daytime half-hours",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "WW": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "MM": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "YY": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day."
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_USTAR50_DAY_RANDUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Random uncertainty of NEE_VUT_USTAR50_DAY, from the random uncertainty of the single daytime half-hours",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "WW": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "MM": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day.",
+    "YY": "from random uncertainty of individual half-hours where NIGHT is 0 (rand(i)) = [SQRT(SUM(rand(i)^2)) / n], where n is the number of half-hours used to calculate the daytime aggregation in the day."
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_USTAR50_DAY_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_CUT_USTAR50_DAY, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "[SQRT(NEE_CUT_USTAR50_DAY_RANDUNC^2 + ((NEE_CUT_84_DAY - NEE_CUT_16_DAY) / 2)^2)] for each day",
+    "WW": "[SQRT(NEE_CUT_USTAR50_DAY_RANDUNC^2 + ((NEE_CUT_84_DAY - NEE_CUT_16_DAY) / 2)^2)] for each week",
+    "MM": "[SQRT(NEE_CUT_USTAR50_DAY_RANDUNC^2 + ((NEE_CUT_84_DAY - NEE_CUT_16_DAY) / 2)^2)] for each month",
+    "YY": "[SQRT(NEE_CUT_USTAR50_DAY_RANDUNC^2 + ((NEE_CUT_84_DAY - NEE_CUT_16_DAY) / 2)^2)] for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_USTAR50_DAY_JOINTUNC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Joint uncertainty estimation for NEE_VUT_USTAR50_DAY, including random uncertainty and USTAR filtering uncertainty",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "SQRT(NEE_VUT_USTAR50_DAY_RANDUNC^2 + ((NEE_VUT_84_DAY - NEE_VUT_16_DAY) / 2)^2) for each day",
+    "WW": "SQRT(NEE_VUT_USTAR50_DAY_RANDUNC^2 + ((NEE_VUT_84_DAY - NEE_VUT_16_DAY) / 2)^2) for each week",
+    "MM": "SQRT(NEE_VUT_USTAR50_DAY_RANDUNC^2 + ((NEE_VUT_84_DAY - NEE_VUT_16_DAY) / 2)^2) for each month",
+    "YY": "SQRT(NEE_VUT_USTAR50_DAY_RANDUNC^2 + ((NEE_VUT_84_DAY - NEE_VUT_16_DAY) / 2)^2) for each year"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_XX_NIGHT",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "NEE CUT nighttime percentiles (approx. percentile indicated by XX, see doc.) calculated from the 40 estimates aggregated at the different time resolutions -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "XXth nighttime percentile from 40 daily NEE_CUT_XX_NIGHT",
+    "WW": "XXth nighttime percentile from 40 weekly NEE_CUT_XX_NIGHT",
+    "MM": "XXth nighttime percentile from 40 monthly NEE_CUT_XX_NIGHT",
+    "YY": "XXth nighttime percentile from 40 yearly NEE_CUT_XX_NIGHT"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_XX_NIGHT",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "NEE VUT nighttime percentiles (approx. percentile indicated by XX, see doc.) calculated from the 40 estimates aggregated at the different time resolutions -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "XXth nighttime percentile from 40 daily NEE_VUT_XX_NIGHT",
+    "WW": "XXth nighttime percentile from 40 weekly NEE_VUT_XX_NIGHT",
+    "MM": "XXth nighttime percentile from 40 monthly NEE_VUT_XX_NIGHT",
+    "YY": "XXth nighttime percentile from 40 yearly NEE_VUT_XX_NIGHT"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_XX_NIGHT_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_CUT_XX_NIGHT -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_XX_NIGHT_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_VUT_XX_NIGHT -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_CUT_XX_DAY",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "NEE CUT daytime percentiles (approx. percentile indicated by XX, see doc.) calculated from the 40 estimates aggregated at the different time resolutions -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "XXth daytime percentile from 40 daily NEE_CUT_XX_DAY",
+    "WW": "XXth daytime percentile from 40 weekly NEE_CUT_XX_DAY",
+    "MM": "XXth daytime percentile from 40 monthly NEE_CUT_XX_DAY",
+    "YY": "XXth daytime percentile from 40 yearly NEE_CUT_XX_DAY"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_VUT_XX_DAY",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "NEE VUT daytime percentiles (approx. percentile indicated by XX, see doc.) calculated from the 40 estimates aggregated at the different time resolutions -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": null,
+    "DD": "µmolCO2 m-2 s-1",
+    "WW": "µmolCO2 m-2 s-1",
+    "MM": "µmolCO2 m-2 s-1",
+    "YY": "µmolCO2 m-2 s-1"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "XXth daytime percentile from 40 daily NEE_VUT_XX_DAY",
+    "WW": "XXth daytime percentile from 40 weekly NEE_VUT_XX_DAY",
+    "MM": "XXth daytime percentile from 40 monthly NEE_VUT_XX_DAY",
+    "YY": "XXth daytime percentile from 40 yearly NEE_VUT_XX_DAY"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "NEE_CUT_XX_DAY_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_CUT_XX_DAY -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "NEE_VUT_XX_DAY_QC",
+   "section": "NET ECOSYSTEM EXCHANGE",
+   "description": "Quality flag for NEE_VUT_XX_DAY -- XX = 05, 16, 25, 50, 75, 84, 95",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "fraction between 0-1, indicating percentage of measured and good quality gapfill data",
+    "WW": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "MM": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)",
+    "YY": "fraction between 0-1, indicating percentage of measured and good quality gapfill data (average from daily data)"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": null
+  },
+  {
+   "name": "RECO_NT_VUT_REF",
+   "section": "NIGHTTIME",
+   "description": "Ecosystem Respiration, from Nighttime partitioning method, reference selected from RECO versions using model efficiency (MEF). The MEF analysis is repeated for each time aggregation",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_NT_VUT_USTAR50",
+   "section": "NIGHTTIME",
+   "description": "Ecosystem Respiration, from Nighttime partitioning method, based on NEE_VUT_USTAR50",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_NT_VUT_MEAN",
+   "section": "NIGHTTIME",
+   "description": "Ecosystem Respiration, from Nighttime partitioning method, average from RECO versions, each from corresponding NEE_VUT_XX version",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "average from 40 half-hourly RECO_NT_VUT_XX",
+    "DD": "average from 40 daily RECO_NT_VUT_XX",
+    "WW": "average from 40 weekly RECO_NT_VUT_XX",
+    "MM": "average from 40 monthly RECO_NT_VUT_XX",
+    "YY": "average from 40 yearly RECO_NT_VUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_NT_VUT_SE",
+   "section": "NIGHTTIME",
+   "description": "Standard Error for Ecosystem Respiration, calculated as  (SD(RECO_NT_VUT_XX) / SQRT(40))",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "SE from 40 half-hourly RECO_NT_CUT_XX",
+    "DD": "SE from 40 daily RECO_NT_VUT_XX",
+    "WW": "SE from 40 weekly RECO_NT_VUT_XX",
+    "MM": "SE from 40 monthly RECO_NT_VUT_XX",
+    "YY": "SE from 40 yearly RECO_NT_VUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_NT_VUT_XX",
+   "section": "NIGHTTIME",
+   "description": "Ecosystem Respiration, from Nighttime partitioning method (with XX = 05, 16, 25, 50, 75, 84, 95)",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_NT_CUT_REF",
+   "section": "NIGHTTIME",
+   "description": "Ecosystem Respiration, from Nighttime partitioning method, reference selected from RECO versions using model efficiency (MEF). The MEF analysis is repeated for each time aggregation",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_NT_CUT_USTAR50",
+   "section": "NIGHTTIME",
+   "description": "Ecosystem Respiration, from Nighttime partitioning method, based on NEE_CUT_USTAR50",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_NT_CUT_MEAN",
+   "section": "NIGHTTIME",
+   "description": "Ecosystem Respiration, from Nighttime partitioning method, average from RECO versions, each from corresponding NEE_CUT_XX version",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "average from 40 half-hourly RECO_NT_CUT_XX",
+    "DD": "average from 40 daily RECO_NT_CUT_XX",
+    "WW": "average from 40 weekly RECO_NT_CUT_XX",
+    "MM": "average from 40 monthly RECO_NT_CUT_XX",
+    "YY": "average from 40 yearly RECO_NT_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_NT_CUT_SE",
+   "section": "NIGHTTIME",
+   "description": "Standard Error for Ecosystem Respiration, calculated as  (SD(RECO_NT_CUT_XX) / SQRT(40))",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "SE from 40 half-hourly RECO_NT_CUT_XX",
+    "DD": "SE from 40 daily RECO_NT_CUT_XX",
+    "WW": "SE from 40 weekly RECO_NT_CUT_XX",
+    "MM": "SE from 40 monthly RECO_NT_CUT_XX",
+    "YY": "SE from 40 yearly RECO_NT_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_NT_CUT_XX",
+   "section": "NIGHTTIME",
+   "description": "Ecosystem Respiration, from Nighttime partitioning method (with XX = 05, 16, 25, 50, 75, 84, 95)",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_NT_VUT_REF",
+   "section": "NIGHTTIME",
+   "description": "Gross Primary Production, from Nighttime partitioning method, reference selected from GPP versions using model efficiency (MEF). The MEF analysis is repeated for each time aggregation",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_NT_VUT_USTAR50",
+   "section": "NIGHTTIME",
+   "description": "Gross Primary Production, from Nighttime partitioning method, based on NEE_VUT_USTAR50",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_NT_VUT_MEAN",
+   "section": "NIGHTTIME",
+   "description": "Gross Primary Production, from Nighttime partitioning method, average from GPP versions, each from corresponding NEE_VUT_XX version",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "average from 40 half-hourly GPP_NT_VUT_XX",
+    "DD": "average from 40 daily GPP_NT_VUT_XX",
+    "WW": "average from 40 weekly GPP_NT_VUT_XX",
+    "MM": "average from 40 monthly GPP_NT_VUT_XX",
+    "YY": "average from 40 yearly GPP_NT_VUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_NT_VUT_SE",
+   "section": "NIGHTTIME",
+   "description": "Standard Error for Gross Primary Production, calculated as  (SD(GPP_NT_VUT_XX) / SQRT(40))",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "SE from 40 half-hourly GPP_NT_VUT_XX",
+    "DD": "SE from 40 daily GPP_NT_VUT_XX",
+    "WW": "SE from 40 weekly GPP_NT_VUT_XX",
+    "MM": "SE from 40 monthly GPP_NT_VUT_XX",
+    "YY": "SE from 40 yearly GPP_NT_VUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_NT_VUT_XX",
+   "section": "NIGHTTIME",
+   "description": "Gross Primary Production, from Nighttime partitioning method (with XX = 05, 16, 25, 50, 75, 84, 95)",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_NT_CUT_REF",
+   "section": "NIGHTTIME",
+   "description": "Gross Primary Production, from Nighttime partitioning method, reference selected from GPP versions using model efficiency (MEF). The MEF analysis is repeated for each time aggregation",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_NT_CUT_USTAR50",
+   "section": "NIGHTTIME",
+   "description": "Gross Primary Production, from Nighttime partitioning method, based on NEE_CUT_USTAR50",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_NT_CUT_MEAN",
+   "section": "NIGHTTIME",
+   "description": "Gross Primary Production, from Nighttime partitioning method, average from GPP versions, each from corresponding NEE_CUT_XX version",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "average from 40 half-hourly GPP_NT_CUT_XX",
+    "DD": "average from 40 daily GPP_NT_CUT_XX",
+    "WW": "average from 40 weekly GPP_NT_CUT_XX",
+    "MM": "average from 40 monthly GPP_NT_CUT_XX",
+    "YY": "average from 40 yearly GPP_NT_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_NT_CUT_SE",
+   "section": "NIGHTTIME",
+   "description": "Standard Error for Gross Primary Production, calculated as  (SD(GPP_NT_CUT_XX) / SQRT(40))",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "SE from 40 half-hourly GPP_NT_CUT_XX",
+    "DD": "SE from 40 daily GPP_NT_CUT_XX",
+    "WW": "SE from 40 weekly GPP_NT_CUT_XX",
+    "MM": "SE from 40 monthly GPP_NT_CUT_XX",
+    "YY": "SE from 40 yearly GPP_NT_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_NT_CUT_XX",
+   "section": "NIGHTTIME",
+   "description": "Gross Primary Production, from Nighttime partitioning method (with XX = 05, 16, 25, 50, 75, 84, 95)",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_DT_VUT_REF",
+   "section": "DAYTIME",
+   "description": "Ecosystem Respiration, from Daytime partitioning method, reference selected from RECO versions using model efficiency (MEF). The MEF analysis is repeated for each time aggregation",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_DT_VUT_USTAR50",
+   "section": "DAYTIME",
+   "description": "Ecosystem Respiration, from Daytime partitioning method, based on NEE_VUT_USTAR50",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_DT_VUT_MEAN",
+   "section": "DAYTIME",
+   "description": "Ecosystem Respiration, from Daytime partitioning method, average from RECO versions, each from corresponding NEE_VUT_XX version",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "average from 40 half-hourly RECO_DT_VUT_XX",
+    "DD": "average from 40 daily RECO_DT_VUT_XX",
+    "WW": "average from 40 weekly RECO_DT_VUT_XX",
+    "MM": "average from 40 monthly RECO_DT_VUT_XX",
+    "YY": "average from 40 yearly RECO_DT_VUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_DT_VUT_SE",
+   "section": "DAYTIME",
+   "description": "Standard Error for Ecosystem Respiration, calculated as  (SD(RECO_DT_VUT_XX) / SQRT(40))",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "SE from 40 half-hourly RECO_DT_VUT_XX",
+    "DD": "SE from 40 daily RECO_DT_VUT_XX",
+    "WW": "SE from 40 weekly RECO_DT_VUT_XX",
+    "MM": "SE from 40 monthly RECO_DT_VUT_XX",
+    "YY": "SE from 40 yearly RECO_DT_VUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_DT_VUT_XX",
+   "section": "DAYTIME",
+   "description": "Ecosystem Respiration, from Daytime partitioning method (with XX = 05, 16, 25, 50, 75, 84, 95)",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_DT_CUT_REF",
+   "section": "DAYTIME",
+   "description": "Ecosystem Respiration, from Daytime partitioning method, reference selected from RECO versions using model efficiency (MEF). The MEF analysis is repeated for each time aggregation",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_DT_CUT_USTAR50",
+   "section": "DAYTIME",
+   "description": "Ecosystem Respiration, from Daytime partitioning method, based on NEE_CUT_USTAR50",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_DT_CUT_MEAN",
+   "section": "DAYTIME",
+   "description": "Ecosystem Respiration, from Daytime partitioning method, average from RECO versions, each from corresponding NEE_CUT_XX version",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "average from 40 half-hourly RECO_DT_CUT_XX",
+    "DD": "average from 40 daily RECO_DT_CUT_XX",
+    "WW": "average from 40 weekly RECO_DT_CUT_XX",
+    "MM": "average from 40 monthly RECO_DT_CUT_XX",
+    "YY": "average from 40 yearly RECO_DT_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_DT_CUT_SE",
+   "section": "DAYTIME",
+   "description": "Standard Error for Ecosystem Respiration, calculated as  (SD(RECO_DT_CUT_XX) / SQRT(40))",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "SE from 40 half-hourly RECO_DT_CUT_XX",
+    "DD": "SE from 40 daily RECO_DT_CUT_XX",
+    "WW": "SE from 40 weekly RECO_DT_CUT_XX",
+    "MM": "SE from 40 monthly RECO_DT_CUT_XX",
+    "YY": "SE from 40 yearly RECO_DT_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_DT_CUT_XX",
+   "section": "DAYTIME",
+   "description": "Ecosystem Respiration, from Daytime partitioning method (with XX = 05, 16, 25, 50, 75, 84, 95)",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_DT_VUT_REF",
+   "section": "DAYTIME",
+   "description": "Gross Primary Production, from Daytime partitioning method, reference selected from GPP versions using model efficiency (MEF). The MEF analysis is repeated for each time aggregation",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_DT_VUT_USTAR50",
+   "section": "DAYTIME",
+   "description": "Gross Primary Production, from Daytime partitioning method, based on NEE_VUT_USTAR50",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_DT_VUT_MEAN",
+   "section": "DAYTIME",
+   "description": "Gross Primary Production, from Daytime partitioning method, average from GPP versions, each from corresponding NEE_VUT_XX version",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "average from 40 half-hourly GPP_DT_VUT_XX",
+    "DD": "average from 40 daily GPP_DT_VUT_XX",
+    "WW": "average from 40 weekly GPP_DT_VUT_XX",
+    "MM": "average from 40 monthly GPP_DT_VUT_XX",
+    "YY": "average from 40 yearly GPP_DT_VUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_DT_VUT_SE",
+   "section": "DAYTIME",
+   "description": "Standard Error for Gross Primary Production, calculated as  (SD(GPP_DT_VUT_XX) / SQRT(40))",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "SE from 40 half-hourly GPP_DT_VUT_XX",
+    "DD": "SE from 40 daily GPP_DT_VUT_XX",
+    "WW": "SE from 40 weekly GPP_DT_VUT_XX",
+    "MM": "SE from 40 monthly GPP_DT_VUT_XX",
+    "YY": "SE from 40 yearly GPP_DT_VUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_DT_VUT_XX",
+   "section": "DAYTIME",
+   "description": "Gross Primary Production, from Daytime partitioning method (with XX = 05, 16, 25, 50, 75, 84, 95)",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_DT_CUT_REF",
+   "section": "DAYTIME",
+   "description": "Gross Primary Production, from Daytime partitioning method, reference selected from GPP versions using model efficiency (MEF). The MEF analysis is repeated for each time aggregation",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_DT_CUT_USTAR50",
+   "section": "DAYTIME",
+   "description": "Gross Primary Production, from Daytime partitioning method, based on NEE_CUT_USTAR50",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_DT_CUT_MEAN",
+   "section": "DAYTIME",
+   "description": "Gross Primary Production, from Daytime partitioning method, average from GPP versions, each from corresponding NEE_CUT_XX version",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "average from 40 half-hourly GPP_DT_CUT_XX",
+    "DD": "average from 40 daily GPP_DT_CUT_XX",
+    "WW": "average from 40 weekly GPP_DT_CUT_XX",
+    "MM": "average from 40 monthly GPP_DT_CUT_XX",
+    "YY": "average from 40 yearly GPP_DT_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_DT_CUT_SE",
+   "section": "DAYTIME",
+   "description": "Standard Error for Gross Primary Production, calculated as  (SD(GPP_DT_CUT_XX) / SQRT(40))",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "HH": "SE from 40 half-hourly GPP_DT_CUT_XX",
+    "DD": "SE from 40 daily GPP_DT_CUT_XX",
+    "WW": "SE from 40 weekly GPP_DT_CUT_XX",
+    "MM": "SE from 40 monthly GPP_DT_CUT_XX",
+    "YY": "SE from 40 yearly GPP_DT_CUT_XX"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "GPP_DT_CUT_XX",
+   "section": "DAYTIME",
+   "description": "Gross Primary Production, from Daytime partitioning method (with XX = 05, 16, 25, 50, 75, 84, 95)",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": false,
+   "oneflux": [
+    "HH",
+    "DD",
+    "WW",
+    "MM",
+    "YY"
+   ],
+   "members": "(FC)(NEE)"
+  },
+  {
+   "name": "RECO_SR",
+   "section": "SUNDOWN",
+   "description": "Ecosystem Respiration, from Sundown Respiration partitioning method",
+   "units": {
+    "HH": "µmolCO2 m-2 s-1",
+    "DD": "gC m-2 d-1",
+    "WW": "gC m-2 d-1",
+    "MM": "gC m-2 d-1",
+    "YY": "gC m-2 y-1"
+   },
+   "notes": {
+    "DD": "calculated from half-hourly data",
+    "WW": "average from daily data",
+    "MM": "average from daily data",
+    "YY": "sum from daily data"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [],
+   "members": null
+  },
+  {
+   "name": "RECO_SR_N",
+   "section": "SUNDOWN",
+   "description": "Fraction between 0-1, indicating the percentage of data avaiable in the averaging period to parametrize the respiration model",
+   "units": {
+    "HH": null,
+    "DD": "nondimensional",
+    "WW": "nondimensional",
+    "MM": "nondimensional",
+    "YY": "nondimensional"
+   },
+   "notes": {
+    "HH": "not available",
+    "DD": "percentage of data available",
+    "WW": "percentage of data available",
+    "MM": "percentage of data available",
+    "YY": "percentage of data available"
+   },
+   "fullset": true,
+   "subset": true,
+   "oneflux": [],
+   "members": null
+  }
+ ]
+}

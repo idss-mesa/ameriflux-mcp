@@ -34,6 +34,9 @@ from ameriflux_mcp.registry import get_registered_tools  # noqa: E402
 FAMILY_PAGES: dict[str, str] = {
     "discovery": "discovery.md",
     "availability": "discovery.md",
+    "variables": "variables.md",
+    "citation": "citation.md",
+    "metadata": "citation.md",
 }
 
 

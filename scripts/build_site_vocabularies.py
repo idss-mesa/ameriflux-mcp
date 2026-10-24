@@ -6,7 +6,7 @@
 
 The AmeriFlux site-search page embeds the descriptions AmeriFlux itself uses for IGBP
 ecosystem classes (``igbpText``) and Köppen climate codes (``climText``) as JSON string
-literals (RESEARCH.md E53). This script fetches that one page (GET, descriptive
+literals (RESEARCH.md E56). This script fetches that one page (GET, descriptive
 User-Agent), extracts both dictionaries and writes them, with the product × policy
 matrix, the intended-use codes and the secondary networks, to the static resource
 served as ``ameriflux://reference/vocabularies``. The output records its source and

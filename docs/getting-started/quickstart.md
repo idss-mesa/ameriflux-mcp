@@ -8,7 +8,7 @@ tags:
   - tutorial
 generated:
   by: "claude/opus-5.5"
-  at: "2026-10-23T00:00:00Z"
+  at: "2026-10-24T00:00:00Z"
 sources:
   - id: claude-code-mcp
     resource: "https://docs.claude.com/en/docs/claude-code/mcp"
@@ -35,7 +35,8 @@ the same way once connected ([Clients](clients.md)).
 
     The tools below arrive in build steps 2–7 ([roadmap](../tools/roadmap.md)); the
     arguments and results follow the design[^design] and may change in detail before
-    v0.1.0. Steps 2–4 below (`amf_ping`, site search, availability) work today.
+    v0.1.0. Steps 2–5 and 7 below (`amf_ping`, site search, availability, variables,
+    citations) work today; step 6 (downloads and previews) arrives in build steps 6–7.
 
 ## 1. Register the server
 

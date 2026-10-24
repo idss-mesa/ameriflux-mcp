@@ -672,12 +672,12 @@ stale_after: "2027-04-23T00:00:00Z"
 ameriflux-mcp is a Python 3.11+ package with one command, `ameriflux-mcp`, that MCP
 clients start over stdio. These instructions cover macOS, Linux and Windows.
 
-!!! warning "Under construction: build step 4 of 8"
+!!! warning "Under construction: build step 5 of 8"
 
     ameriflux-mcp is being built in eight steps (see the [roadmap](../tools/roadmap.md)).
-    The server installs and starts on every client below, and site search, site details
-    and data availability work today; variables, citations, local files and downloads
-    arrive in steps 5–7. The [tool reference](../tools/reference.md) always lists what the
+    The server installs and starts on every client below, and site search, site details,
+    data availability, variables, citations and BADM work today; local files and
+    downloads arrive in steps 6–7. The [tool reference](../tools/reference.md) always lists what the
     current build offers. Every step on this page works as written today.
 
 !!! note "Private repository and no PyPI release yet"
@@ -1100,7 +1100,7 @@ tags:
   - tutorial
 generated:
   by: "claude/opus-5.5"
-  at: "2026-10-23T00:00:00Z"
+  at: "2026-10-24T00:00:00Z"
 sources:
   - id: claude-code-mcp
     resource: "https://docs.claude.com/en/docs/claude-code/mcp"
@@ -1127,7 +1127,8 @@ the same way once connected ([Clients](clients.md)).
 
     The tools below arrive in build steps 2–7 ([roadmap](../tools/roadmap.md)); the
     arguments and results follow the design[^design] and may change in detail before
-    v0.1.0. Steps 2–4 below (`amf_ping`, site search, availability) work today.
+    v0.1.0. Steps 2–5 and 7 below (`amf_ping`, site search, availability, variables,
+    citations) work today; step 6 (downloads and previews) arrives in build steps 6–7.
 
 ## 1. Register the server
 
@@ -1209,6 +1210,124 @@ so agents normally chain these on their own.
 [^claude-code-mcp]: Claude Code — MCP. <https://docs.claude.com/en/docs/claude-code/mcp>
 [^amf-products]: AmeriFlux flux data products. <https://ameriflux.lbl.gov/data/flux-data-products/>
 [^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/citation/
+
+---
+title: "Citations and BADM"
+description: "Cite AmeriFlux and FLUXNET2015 sites with amf_get_citation (versioned text, policy obligations, acknowledgments) and read site metadata with amf_get_badm."
+type: Guide
+tags:
+  - tools
+  - citation
+  - data-policy
+  - badm
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-24T00:00:00Z"
+sources:
+  - id: research
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md"
+    title: "ameriflux-mcp verified research (sections 4 and 8)"
+    author: "team:idss-mesa"
+  - id: design
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md"
+    title: "ameriflux-mcp design (D9, D10, D35)"
+    author: "team:idss-mesa"
+  - id: amf-policy
+    resource: "https://ameriflux.lbl.gov/data/data-policy/"
+    title: "AmeriFlux Data Policy"
+    author: "team:ameriflux"
+  - id: fluxnet-policy
+    resource: "https://fluxnet.org/data/data-policy/"
+    title: "FLUXNET Data Policy"
+    author: "team:fluxnet"
+status: stable
+stale_after: "2027-04-24T00:00:00Z"
+---
+
+# Citations and BADM
+
+`amf_get_citation` gathers everything you need to credit a set of sites, and
+`amf_get_badm` returns the site metadata the API exposes. Both work over stdio and HTTP
+without an account. [Citing AmeriFlux and FLUXNET data](../about/citing-ameriflux.md)
+explains the policies behind them.
+
+## amf_get_citation
+
+Give up to 50 sites and one product:
+
+| `product` | Citation |
+| --- | --- |
+| `BASE-BADM` (default) | AmeriFlux's own text for the site's BASE DOI, with the version (`Ver. 28-5`) |
+| `BIF` (BADM) | The BASE-BADM citation: BADM has no DOI of its own |
+| `FLUXNET` (FLUXNET-1F) | AmeriFlux's text for the FLUXNET DOI (`Ver. v1.3_r1 (1991-2025)`) |
+| `FLUXNET2015` | Built from the DOI record the way the FLUXNET DOI page shows it: authors, Tier Two years, title, "Dataset", DOI |
+
+FLUXNET-CH4 citations come in v0.2 (`feature_unavailable` until then).
+
+The result has:
+
+- **`citations`**: one per site, cited as written in the reference list (not in
+  supplementary material). `source` says where the text came from: `amfcdn` (AmeriFlux),
+  `constructed` (FLUXNET2015) or `datacite` (a fallback when the AmeriFlux DOI service is
+  down; it has no version and comes with a `versionMissing` warning). Set
+  `include_bibtex` for a BibTeX entry per site.
+- **`missing`**: requested sites without a citation and why (a Legacy site has no FLUXNET
+  product; US-xSR is not part of FLUXNET2015).
+- **`effectivePolicy`**: the policy the whole selection must follow, with each obligation
+  marked `required` or `recommended`[^design]. Mixing CC-BY and Legacy sites means Legacy;
+  any Tier Two site makes FLUXNET2015 Tier Two.
+- **`acknowledgments`**: verbatim text from the policy page[^amf-policy]. Legacy data name
+  the data *portal*, CC-BY data the data *service*, and FLUXNET adds the networks and ERA5
+  text.
+- **`siteFunding`**: under Legacy, each site's sponsors from its DOI record, to
+  acknowledge. When a record has none, a note points to the site's BADM.
+- **`dataAvailability`**: the sentence for a Data Availability section, with the product
+  filled in and the AmeriFlux-listed `[SOURCE]` options.
+- **`processingReferences`**: Chu et al. 2023 (BASE) or Pastorello et al. 2020 (FLUXNET,
+  FLUXNET2015).
+
+```json
+{"tool": "amf_get_citation", "arguments": {"sites": ["US-Ha1", "CA-Let"]}}
+{"tool": "amf_get_citation", "arguments": {"sites": ["US-Ha1", "RU-Sam"], "product": "FLUXNET2015"}}
+```
+
+The first call returns the Legacy policy, because CA-Let shares its data under it; the
+second returns Tier Two, because RU-Sam is Tier Two only[^research].
+
+## amf_get_badm
+
+BADM (Biological, Ancillary, Disturbance and Metadata) for one site, grouped as the API
+exposes it:
+
+| Section | Content |
+| --- | --- |
+| `site` | Location (GRP_LOCATION), IGBP and climate with AmeriFlux's descriptions, tower dates, site URL, description |
+| `team` | Names, roles and institutions; emails only under the two-flag rule ([Configuration](../getting-started/configuration.md)) |
+| `disturbance` | Dominant disturbance and management, and the flux gas species measured |
+| `funding` | Sponsor and contributor organizations from the DOI record: what a Legacy site asks you to acknowledge |
+| `references` | The site's reference papers, paged (`references_limit`, `references_offset`) |
+| `instruments` | Variables with height (m; negative is depth), instrument models and dates, from the measurement-height file; `variables` narrows them by base name (`TA`) or exact column (`SWC_1_1_1`) |
+
+The complete BADM, with every group and its dates, is the BIF file inside each BASE-BADM
+download.
+
+```json
+{"tool": "amf_get_badm", "arguments": {"site": "US-Ha1", "include": ["funding", "instruments"], "variables": ["TA"]}}
+```
+
+## Resources
+
+| URI | Content |
+| --- | --- |
+| `ameriflux://guide/data-policy` | CC-BY-4.0 and Legacy, Tier One and Tier Two, and why mixing escalates |
+| `ameriflux://reference/acknowledgments` | The verbatim texts, with the date they were checked against the policy pages[^fluxnet-policy] |
+
+[^research]: ameriflux-mcp verified research. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md>
+[^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
+[^amf-policy]: AmeriFlux Data Policy. <https://ameriflux.lbl.gov/data/data-policy/>
+[^fluxnet-policy]: FLUXNET Data Policy. <https://fluxnet.org/data/data-policy/>
 
 ---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/discovery/
 
@@ -1383,14 +1502,45 @@ status: stable
 
 # Tool reference
 
-Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edit by hand. 4 tools are registered. Inputs are snake_case and outputs camelCase. Every result also carries `resolved`, `notes`, `nextSteps` and `source` (whose `backend` says what answered: the AmeriFlux API, its file server, or nothing upstream), and failures return `structuredContent.error` with a stable `code`. Tools still to come are on the [roadmap](roadmap.md).
+Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edit by hand. 8 tools are registered. Inputs are snake_case and outputs camelCase. Every result also carries `resolved`, `notes`, `nextSteps` and `source` (whose `backend` says what answered: the AmeriFlux API, its file server, or nothing upstream), and failures return `structuredContent.error` with a stable `code`. Tools still to come are on the [roadmap](roadmap.md).
 
 | Tool | Title | Family | Download identity |
 | --- | --- | --- | --- |
+| [`amf_describe_variables`](#amf_describe_variables) | Describe variable names: grammar, units, QC and sites | [variables](variables.md) | no |
 | [`amf_get_availability`](#amf_get_availability) | Get data availability per site and product | [availability](discovery.md) | no |
+| [`amf_get_badm`](#amf_get_badm) | Get a site's BADM metadata | [metadata](citation.md) | no |
+| [`amf_get_citation`](#amf_get_citation) | Get citations and acknowledgments for sites | [citation](citation.md) | no |
 | [`amf_get_site`](#amf_get_site) | Get one AmeriFlux or FLUXNET site | [discovery](discovery.md) | no |
 | [`amf_ping`](#amf_ping) | Check ameriflux-mcp status | [core](roadmap.md) | no |
 | [`amf_search_sites`](#amf_search_sites) | Search AmeriFlux and FLUXNET sites | [discovery](discovery.md) | no |
+| [`amf_search_variables`](#amf_search_variables) | Search the FP Standard and FLUXNET variable dictionaries | [variables](variables.md) | no |
+
+## amf_describe_variables
+
+**Describe variable names: grammar, units, QC and sites.** Decode up to 20 variable names from BASE or FLUXNET files: base name and FP Standard definition with QA/QC range, qualifiers (_PI, _QC, _F, _IU), position (_H_V_R, _H_V_A, _#), FLUXNET processing tokens (MDS, VUT/CUT, NT/DT, REF, percentiles), units and QC meaning per resolution, sign conventions. With site: whether the site measures it, sensor heights and instruments, yearly coverage. Next: call amf_get_availability for the site's years.
+
+| | |
+| --- | --- |
+| Surface | `variables` |
+| Download identity | not needed |
+| Transports | http, stdio |
+| Annotations | readOnly=true, destructive=false, idempotent=true, openWorld=true |
+| Upstream endpoints | `GET amfcdn.lbl.gov/api/v1/fp_var` |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `names` | array of string | yes |  | Variable names as in file headers: TA_F_1_1_1, FC_PI_F_1_1_A, GPP_NT_VUT_REF, NEE_VUT_05, TS_F_MDS_2_QC … (min items 1; max items 20) |
+| `resolution` | string \\| null |  | null | HH (also HR), DD, WW, MM or YY: units and QC meaning at this resolution (FLUXNET). Default: all resolutions. |
+| `site` | string \\| null |  | null | A site (ID, NEON code or name): adds whether it measures the variable, its measurement heights and instruments, and yearly coverage. (max length 200) |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `variables` | array of VariableDescription |  |
+| `page` | Page |  |
 
 ## amf_get_availability
 
@@ -1424,6 +1574,79 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | `policyVerdict` | array of PolicyVerdict | The policy the requested sites must follow, per product, with obligations. |
 | `combinedObligations` | array of ObligationOut | Every obligation once, across all collections. |
 | `summary` | AvailabilitySummary |  |
+| `page` | Page |  |
+
+## amf_get_badm
+
+**Get a site's BADM metadata.** A site's Biological, Ancillary, Disturbance and Metadata as the API exposes it, by group: location, IGBP and climate, tower dates, team (no emails by default), disturbance and management, funding sponsors and organizations (needed to acknowledge Legacy sites), reference papers, and instruments with measurement heights. The full BADM ships as the BIF file in BASE-BADM downloads. Next: call amf_get_citation to cite the site.
+
+| | |
+| --- | --- |
+| Surface | `metadata` |
+| Download identity | not needed |
+| Transports | http, stdio |
+| Annotations | readOnly=true, destructive=false, idempotent=true, openWorld=true |
+| Upstream endpoints | `GET amfcdn.lbl.gov/api/v2/site_info_display/AmeriFlux`<br>`GET amfcdn.lbl.gov/api/v1/site_display/FLUXNET/FLUXNET2015`<br>`GET amfcdn.lbl.gov/api/v1/site_display/FLUXNET/FLUXNET-CH4`<br>`GET amfcdn.lbl.gov/api/v1/DOI/{site}/{product}` |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `site` | string | yes |  | Site ID (any case), NEON code, FLUXNET2015 old ID or name. (max length 200) |
+| `include` | array of `site` \\| `team` \\| `disturbance` \\| `funding` \\| `references` \\| `instruments` \\| null |  | null | Sections; default all: site, team, disturbance, funding, references, instruments. |
+| `variables` | array of string \\| null |  | null | Instruments: only these base names or exact variables (e.g. ['TA', 'SWC_1_1_1']). (max items 20) |
+| `references_limit` | integer |  | `20` | Reference papers per page. (>= 1; <= 200) |
+| `references_offset` | integer |  | `0` | >= 0 |
+| `include_contacts` | boolean |  | false | Team emails, if the server allows it (privacy.allow_contact_emails). |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `siteId` | string |  |
+| `name` | string |  |
+| `policy` | string \\| null |  |
+| `site` | SiteGroup \\| null |  |
+| `team` | array of TeamEntry \\| null |  |
+| `disturbance` | array of string \\| null | Dominant disturbance and management (catalog summary of GRP_DM). |
+| `fluxMeasurements` | array of string \\| null | Flux gas species measured. |
+| `funding` | FundingGroup \\| null |  |
+| `references` | ReferencesGroup \\| null |  |
+| `instruments` | InstrumentsGroup \\| null |  |
+
+## amf_get_citation
+
+**Get citations and acknowledgments for sites.** Citations for up to 50 sites and one product (BASE-BADM, BIF, FLUXNET, FLUXNET2015): AmeriFlux's own versioned text per site DOI (e.g. 'Ver. 28-5'), the policy the selection must follow with its obligations (mixing CC-BY and Legacy means Legacy; mixing tiers means Tier Two), verbatim acknowledgments, Legacy site funding, the data-availability sentence and processing papers. Optional BibTeX. Next: cite every site in the reference list and follow the obligations.
+
+| | |
+| --- | --- |
+| Surface | `citation` |
+| Download identity | not needed |
+| Transports | http, stdio |
+| Annotations | readOnly=true, destructive=false, idempotent=true, openWorld=true |
+| Upstream endpoints | `GET amfcdn.lbl.gov/api/v1/DOI/{site}/{product}` |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `sites` | array of string | yes |  | Site IDs (any case), NEON codes, FLUXNET2015 old IDs or names. (min items 1; max items 50) |
+| `product` | string |  | `"BASE-BADM"` | BASE-BADM, BIF (cited with the BASE DOI), FLUXNET (FLUXNET-1F) or FLUXNET2015. FLUXNET-CH4 citations arrive in v0.2. |
+| `include_bibtex` | boolean |  | false | Add a BibTeX @misc entry per citation. |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `product` | string |  |
+| `citations` | array of CitationOut |  |
+| `missing` | array of MissingCitation | Requested sites without a citation, and why. |
+| `effectivePolicy` | EffectivePolicyOut |  |
+| `acknowledgments` | array of AcknowledgmentOut |  |
+| `siteFunding` | array of SiteFunding | Legacy policy: acknowledge each site's funding (DOI record sponsors). |
+| `dataAvailability` | DataAvailabilityOut \\| null |  |
+| `processingReferences` | array of ReferenceOut |  |
+| `bibtexElided` | boolean \\| null |  |
 | `page` | Page |  |
 
 ## amf_get_site
@@ -1549,6 +1772,37 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | `facets` | Facets | Counts over every match, not just this page. |
 | `page` | Page |  |
 
+## amf_search_variables
+
+**Search the FP Standard and FLUXNET variable dictionaries.** Find variable names in the FP Standard list (AmeriFlux BASE, live, with QA/QC ranges) and the FLUXNET dictionaries (AmeriFlux FLUXNET from ONEFlux v1.3; FLUXNET2015 FULLSET and SUBSET), by words, category or resolution. FLUXNET units change with resolution (NEE is umol m-2 s-1 at HH, gC m-2 d-1 at DD), so each result lists units per resolution and SUBSET membership. Next: call amf_describe_variables on the names.
+
+| | |
+| --- | --- |
+| Surface | `variables` |
+| Download identity | not needed |
+| Transports | http, stdio |
+| Annotations | readOnly=true, destructive=false, idempotent=true, openWorld=true |
+| Upstream endpoints | `GET amfcdn.lbl.gov/api/v1/fp_var` |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `query` | string \\| null |  | null | Words matched against name, description and units (prefixes count: 'soil temp', 'GPP', 'methane'). (max length 200) |
+| `dictionary` | `fp` \\| `fluxnet` \\| `fluxnet_fullset` \\| `fluxnet_subset` \\| `all` |  | `"all"` | fp (FP Standard, BASE), fluxnet (AmeriFlux FLUXNET, ONEFlux v1.3), fluxnet_fullset / fluxnet_subset (FLUXNET2015), or all. |
+| `category` | string \\| null |  | null | FP type (GASES, MET_RAD, MET_SOIL, …) or FLUXNET section (PARTITIONING, NET ECOSYSTEM EXCHANGE, …); prefixes count. (max length 60) |
+| `resolution` | string \\| null |  | null | HH (also HR), DD, WW, MM or YY: FLUXNET variables available at it, with its units. |
+| `limit` | integer |  | `25` | >= 1; <= 200 |
+| `offset` | integer |  | `0` | >= 0 |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `variables` | array of VariableSummary |  |
+| `facets` | VariableFacets |  |
+| `page` | Page |  |
+
 ---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/roadmap/
 
 ---
@@ -1561,7 +1815,7 @@ tags:
   - planning
 generated:
   by: "claude/opus-5.5"
-  at: "2026-10-23T00:00:00Z"
+  at: "2026-10-24T00:00:00Z"
 sources:
   - id: design
     resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md"
@@ -1589,8 +1843,8 @@ descriptions here.
 | 2 | The MCP core ported from edi-mcp, configuration, identity settings, `amf_ping`, CI | done |
 | 3 | AmeriFlux API client, rate limiting, cache, site catalog and name resolution, policy engine, recorded test fixtures | done |
 | 4 | Site discovery and availability tools | done |
-| 5 | Variable, citation and BADM tools | next |
-| 6 | Local file readers and previews | planned |
+| 5 | Variable, citation and BADM tools | done |
+| 6 | Local file readers and previews | next |
 | 7 | The download tool (merged only after AmeriFlux confirms third-party use) | planned |
 | 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | planned |
 
@@ -1608,7 +1862,7 @@ exactly the tools the current build offers.
 | `amf_search_variables` | 5 | yes | Search the FP Standard (145 base names) and FLUXNET FULLSET/SUBSET dictionaries, with units per time resolution. |
 | `amf_describe_variables` | 5 | yes | Parse names such as `TA_F_1_1_1` or `GPP_NT_VUT_REF`: qualifiers, gap-filling and partitioning method, QC scheme, units by resolution, sign convention, measurement heights. |
 | `amf_get_citation` | 5 | yes | The versioned citation AmeriFlux recommends per site, required acknowledgments, the obligations of the CC-BY-4.0, Legacy or Tier 2 policy, and a data-availability sentence. |
-| `amf_get_badm` | 5 | yes | Site metadata (BADM) from the catalog: location, IGBP, climate, team, DOI, disturbance and management, funding. |
+| `amf_get_badm` | 5 | yes | Site metadata (BADM) the API exposes: location, IGBP, climate, team, disturbance and management, funding, reference papers, instruments and measurement heights. |
 | `amf_download_data` | 7 | no | BASE-BADM, AmeriFlux FLUXNET and bulk BADM through AmeriFlux's logged download route: a plan first, then `confirm=true`; checksummed files. Needs a [download identity](../getting-started/identity.md). |
 | `amf_list_files` | 6 | no | Classify downloaded zips and CSVs by product, site, resolution, years and version. |
 | `amf_preview_data` | 6 | no | Column summaries and row windows from local BASE, FLUXNET and FLUXNET2015 files, with time windows, QC filtering, missing values as nulls and a SUBSET view. |
@@ -1633,6 +1887,153 @@ European and Australian networks served through the FLUXNET Shuttle.
 
 [^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
 [^research]: ameriflux-mcp verified research. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/variables/
+
+---
+title: "Variables"
+description: "Find and decode AmeriFlux BASE and FLUXNET variable names with amf_search_variables and amf_describe_variables: qualifiers, units per resolution, QC, heights."
+type: Guide
+tags:
+  - tools
+  - variables
+  - fluxnet
+  - qa-qc
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-24T00:00:00Z"
+sources:
+  - id: research
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md"
+    title: "ameriflux-mcp verified research (section 7)"
+    author: "team:idss-mesa"
+  - id: design
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md"
+    title: "ameriflux-mcp design (D35)"
+    author: "team:idss-mesa"
+  - id: amf-variables
+    resource: "https://ameriflux.lbl.gov/data/aboutdata/data-variables/"
+    title: "AmeriFlux data variables"
+    author: "team:ameriflux"
+  - id: fullset
+    resource: "https://fluxnet.org/data/fluxnet2015-dataset/fullset-data-product/"
+    title: "FLUXNET2015 FULLSET data product"
+    author: "team:fluxnet"
+status: stable
+stale_after: "2027-04-24T00:00:00Z"
+---
+
+# Variables
+
+Flux files name every column with a code such as `TA_F_1_1_1` or `GPP_NT_VUT_REF`. Two
+tools turn those codes into something you can use. Neither needs an account, and both
+work over stdio and HTTP. Inputs and result fields are in the
+[Tool reference](reference.md).
+
+## Two kinds of name
+
+**BASE names** (AmeriFlux BASE, the FP Standard[^amf-variables]) are a base name and
+qualifiers:
+
+```
+<BASE NAME>[_PI][_QC][_F][_IU][_H_V_R | _H_V_A | _#][_SD | _N]
+```
+
+| Part | Meaning |
+| --- | --- |
+| Base name | One of about 145 FP Standard names (`TA`, `FC`, `SW_IN`, `FETCH_70`, `FC_SSITC_TEST`) |
+| `_PI` | Filtered or gap-filled by the tower team, independently of the network |
+| `_QC` | Quality flag from AmeriFlux's central QA/QC |
+| `_F` | Gap-filled |
+| `_IU` | Instrument units (counts, mV) rather than standard units |
+| `_H_V_R` | One sensor: horizontal position, vertical position (1 = highest or shallowest), replicate |
+| `_H_V_A` | Replicates at one position, averaged |
+| `_#` | Layer aggregate across horizontal positions |
+| `_SD`, `_N` | Standard deviation and number of sensors in an aggregate |
+
+**FLUXNET names** (FLUXNET2015 FULLSET and SUBSET[^fullset], and the AmeriFlux FLUXNET
+product made with ONEFlux v1.3) add processing tokens: `_F_MDS` (gap-filled with MDS),
+`_ERA` (downscaled from reanalysis), `_VUT`/`_CUT` (USTAR threshold varies by year or is
+constant), `_REF` and the percentiles `_05` … `_95`, `_NT`/`_DT`/`_SR` (partitioning
+method), `_RANDUNC`, `_CORR`, `_DAY`/`_NIGHT`, `_QC`.
+
+## Units and QC change with resolution
+
+FLUXNET files come at HH (half-hourly or hourly), DD, WW, MM and YY, and one name means
+different units at each[^research]:
+
+| Variable | HH | DD, WW, MM | YY |
+| --- | --- | --- | --- |
+| `NEE_VUT_REF`, `GPP_NT_VUT_REF`, `RECO_NT_VUT_REF` | µmolCO2 m-2 s-1 | gC m-2 d-1 | gC m-2 y-1 |
+| `P_F` | mm (per interval) | mm d-1 | mm y-1 |
+| `TA_F_MDS_QC` | 0 measured, 1 good, 2 medium, 3 poor gap-fill | fraction of measured and good data | fraction |
+
+Every FLUXNET result carries `unitsByResolution`; pass `resolution` to get one unit and
+the QC meaning at that resolution. Negative NEE and FC are uptake; GPP and RECO are
+positive.
+
+## amf_search_variables
+
+Words match names, descriptions and units (prefixes count). Choose a `dictionary`:
+
+| `dictionary` | Contents |
+| --- | --- |
+| `fp` | The FP Standard list for BASE, read live from the AmeriFlux API with its QA/QC ranges (`plausibleRange`) |
+| `fluxnet` | Names the AmeriFlux FLUXNET product defines (ONEFlux v1.3) |
+| `fluxnet_fullset`, `fluxnet_subset` | FLUXNET2015 FULLSET (232 names) and SUBSET (72) |
+| `all` | All of the above (default) |
+
+`category` filters by FP type (`GASES`, `MET_SOIL`) or FLUXNET section (`PARTITIONING`,
+`SUNDOWN`); `resolution` keeps the FLUXNET names produced at it.
+
+```json
+{"tool": "amf_search_variables", "arguments": {"query": "soil temperature"}}
+{"tool": "amf_search_variables", "arguments": {"query": "GPP", "dictionary": "fluxnet_subset", "resolution": "DD"}}
+```
+
+Dictionary names with `XX` or `#` stand for many columns: `NEE_VUT_XX` is `NEE_VUT_05`
+to `NEE_VUT_95`, and `TS_F_MDS_#` is `TS_F_MDS_1` (shallowest), `TS_F_MDS_2`, …
+
+## amf_describe_variables
+
+Up to 20 names per call. Each result gives the base name and its FP definition, every
+qualifier or token with its meaning, the position, the units, the FLUXNET definition
+(with the dictionary key: `NEE_VUT_05` is `NEE_VUT_XX`), a sign convention where one
+applies, and `didYouMean` for names it does not recognize. A name valid in both grammars
+(`TA_F`) gets both readings, with a note.
+
+With `site`, each name also gets:
+
+- whether the site's BASE data include the base name (from the catalog);
+- sensor heights and instruments from AmeriFlux's measurement-height file;
+- yearly coverage per column from amerifluxr's snapshot, marked with its date
+  (2025-10-20 as of this writing; it lags the current BASE release).
+
+```json
+{"tool": "amf_describe_variables", "arguments": {"names": ["GPP_NT_VUT_REF", "TA_F_MDS_QC"], "resolution": "DD"}}
+{"tool": "amf_describe_variables", "arguments": {"names": ["TA", "SWC_1_1_1"], "site": "US-Ha1"}}
+```
+
+The first call with `site` downloads the measurement-height file (about 2.3 MB) and the
+coverage snapshot (about 6.5 MB). Both are cached: heights for 24 hours, coverage for
+7 days.
+
+## Sources and resources
+
+| URI | Content |
+| --- | --- |
+| `ameriflux://guide/variable-grammar` | The grammar on this page, for agents |
+| `ameriflux://reference/fp-variables` | The FP Standard list (live, or the bundled snapshot when the API is unreachable) |
+| `ameriflux://reference/fluxnet-variables` | The FLUXNET dictionary with units and notes per resolution |
+
+The FLUXNET dictionary is built by `scripts/build_variable_dictionaries.py` from the
+FLUXNET2015 webdoc dictionaries and ONEFlux's `var_info_definitions` files. The micro
+sign is restored where ONEFlux stores it as a replacement character[^design].
+
+[^research]: ameriflux-mcp verified research. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md>
+[^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
+[^amf-variables]: AmeriFlux data variables. <https://ameriflux.lbl.gov/data/aboutdata/data-variables/>
+[^fullset]: FLUXNET2015 FULLSET data product. <https://fluxnet.org/data/fluxnet2015-dataset/fullset-data-product/>
 
 ---8<--- https://idss-mesa.github.io/ameriflux-mcp/about/ai-agents/
 
@@ -1779,7 +2180,7 @@ tags:
   - doi
 generated:
   by: "claude/opus-5.5"
-  at: "2026-10-23T00:00:00Z"
+  at: "2026-10-24T00:00:00Z"
 sources:
   - id: amf-policy
     resource: "https://ameriflux.lbl.gov/data/data-policy/"
@@ -1826,8 +2227,12 @@ supplementary material. AmeriFlux's recommended form includes the product versio
 The version, year and publisher in this form differ from what generic DOI services
 (DataCite, doi.org) return, so prefer AmeriFlux's form. BADM metadata downloaded with a
 product is cited with that product's DOI. AmeriFlux does not publish ready-made citation
-text for FLUXNET2015 sites; `amf_get_citation` builds it from the site's DOI, title and
-contributors.
+text for FLUXNET2015 sites; `amf_get_citation` builds it from the site's DOI record in the
+form the FLUXNET DOI landing page shows:
+
+> J. William Munger, Shawn Urbanski, Michael Golden, Carol Barford, Jaclyn Matthes,
+> Steven Wofsy (1991-2012) FLUXNET2015 US-Ha1 Harvard Forest EMS Tower (HFR1), Dataset.
+> https://doi.org/10.18140/FLX/1440071
 
 ## Acknowledgments
 
@@ -1872,15 +2277,16 @@ ameriflux-mcp came through the AmeriFlux APIs.
 
 | Policy | Obligations |
 | --- | --- |
-| AmeriFlux CC-BY-4.0 | Cite each site's DOI; include the DOE acknowledgment; informing data providers about publications is recommended. |
+| AmeriFlux CC-BY-4.0 | Cite each site's DOI; include the DOE acknowledgment; add the data availability sentence when the paper has that section; informing data providers about publications is recommended. |
 | AmeriFlux Legacy | Contact the site PIs when you start in-depth analysis (they may offer co-authorship); cite each DOI; acknowledge site funding; include the DOE "data portal" acknowledgment; inform providers before publication; use the AmeriFlux logo or link in presentations. |
-| FLUXNET2015 Tier 1 | CC-BY-4.0: cite each site's DOI and Pastorello et al. (2020). |
-| FLUXNET2015 Tier 2 | Scientific and educational use; give data providers at least three weeks to contribute after the first draft. Six sites are Tier 2 only (RU-Sam, RU-SkP, RU-Tks, RU-Vrk, SE-St1, ZA-Kru) and are not part of Pastorello et al. (2020). |
+| FLUXNET2015 Tier 1 | CC-BY-4.0: cite Pastorello et al. (2020); list each site by its FLUXNET ID and/or DOI; informing data providers is recommended. |
+| FLUXNET2015 Tier 2 | Scientific and educational use; contact the data providers when you begin research that could lead to a publication; give them at least three weeks to contribute after the first draft; list each site in a table. Six sites are Tier 2 only (RU-Sam, RU-SkP, RU-Tks, RU-Vrk, SE-St1, ZA-Kru) and are not part of Pastorello et al. (2020). |
 
 **Mixing escalates.** A study that combines CC-BY-4.0 and Legacy AmeriFlux data follows
 the Legacy policy for all of it; one that combines FLUXNET2015 Tier 1 and Tier 2 data
 treats all of it as Tier 2. `amf_get_citation` reports the effective policy for the
-sites you name, with each obligation marked required or recommended.
+sites you name, with each obligation marked required or recommended, and
+[Citations and BADM](../tools/citation.md) describes everything it returns.
 
 ## Citing ameriflux-mcp
 
@@ -1989,6 +2395,9 @@ names belong to their respective owners; this site uses its own original artwork
 # Directory Update Log
 
 ## 2026-10-24
+* **Creation**: [Variables](tools/variables.md) — `amf_search_variables` and `amf_describe_variables` (build step 5): the BASE and FLUXNET grammars, units and QC per resolution, the dictionaries, heights and coverage at a site.
+* **Creation**: [Citations and BADM](tools/citation.md) — `amf_get_citation` (versioned citations, effective policy, verbatim acknowledgments, site funding, BibTeX) and `amf_get_badm`.
+* **Update**: [Citing AmeriFlux and FLUXNET data](about/citing-ameriflux.md) — the FLUXNET2015 citation form and the FLUXNET2015 obligations as the policy page words them; [Tool reference](tools/reference.md) regenerated (8 tools); [Roadmap](tools/roadmap.md) — step 5 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
 * **Creation**: [Discovery and availability](tools/discovery.md) — `amf_search_sites`, `amf_get_site` and `amf_get_availability` (build step 4), site naming, policy labelling, empty sites and verdicts, the Köppen caveat, and the reference resources.
 * **Update**: [Tool reference](tools/reference.md) regenerated (4 tools); [Roadmap](tools/roadmap.md) — step 4 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
 
