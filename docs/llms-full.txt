@@ -1270,6 +1270,7 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | `downloadDir` | string \\| null |  |
 | `localRoots` | array of string \\| null | Directories the local file tools may read (stdio only). |
 | `endpoints` | Endpoints |  |
+| `cache` | CacheReport |  |
 | `upstream` | UpstreamCheck \\| null | Present when check_api was requested. |
 
 ---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/roadmap/
@@ -1310,8 +1311,8 @@ descriptions here.
 | --- | --- | --- |
 | 1 | Design, verified API research, a read-only API probe | done |
 | 2 | The MCP core ported from edi-mcp, configuration, identity settings, `amf_ping`, CI | done |
-| 3 | AmeriFlux API client, rate limiting, cache, site catalog and name resolution, policy engine, recorded test fixtures | next |
-| 4 | Site discovery and availability tools | planned |
+| 3 | AmeriFlux API client, rate limiting, cache, site catalog and name resolution, policy engine, recorded test fixtures | done |
+| 4 | Site discovery and availability tools | next |
 | 5 | Variable, citation and BADM tools | planned |
 | 6 | Local file readers and previews | planned |
 | 7 | The download tool (merged only after AmeriFlux confirms third-party use) | planned |
@@ -1712,6 +1713,7 @@ names belong to their respective owners; this site uses its own original artwork
 # Directory Update Log
 
 ## 2026-10-23
+* **Update**: [Tool reference](tools/reference.md) — `amf_ping` reports cache statistics (build step 3); [Roadmap](tools/roadmap.md) — step 3 done.
 * **Creation**: [Tool reference](tools/reference.md), generated from the tool registry by `scripts/gen_tools_reference.py` (`amf_ping`).
 * **Update**: [Configuration](getting-started/configuration.md) — the settings table is now generated from `config.py` by `scripts/gen_config_reference.py` (59 settings); value-free validation errors and the look-alike variables are documented.
 * **Update**: [Install](getting-started/install.md), [home](index.md), [Quickstart](getting-started/quickstart.md), [Roadmap](tools/roadmap.md) and [For AI agents](about/ai-agents.md) — the server now starts and answers `amf_ping`; real `--check` output; troubleshooting for invalid configuration.

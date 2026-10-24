@@ -34,8 +34,8 @@ descriptions here.
 | --- | --- | --- |
 | 1 | Design, verified API research, a read-only API probe | done |
 | 2 | The MCP core ported from edi-mcp, configuration, identity settings, `amf_ping`, CI | done |
-| 3 | AmeriFlux API client, rate limiting, cache, site catalog and name resolution, policy engine, recorded test fixtures | next |
-| 4 | Site discovery and availability tools | planned |
+| 3 | AmeriFlux API client, rate limiting, cache, site catalog and name resolution, policy engine, recorded test fixtures | done |
+| 4 | Site discovery and availability tools | next |
 | 5 | Variable, citation and BADM tools | planned |
 | 6 | Local file readers and previews | planned |
 | 7 | The download tool (merged only after AmeriFlux confirms third-party use) | planned |

@@ -23,6 +23,7 @@ from typing import TYPE_CHECKING, Any, Literal
 import structlog
 
 if TYPE_CHECKING:
+    from ameriflux_mcp.ameriflux.catalog import Catalog
     from ameriflux_mcp.ameriflux.client import AmeriFluxClient
     from ameriflux_mcp.ameriflux.identity import Identity
     from ameriflux_mcp.config import Config
@@ -84,6 +85,8 @@ class ToolContext:
     log: Any
     #: The process-wide upstream client (``None`` only in bare unit tests).
     client: AmeriFluxClient | None = None
+    #: The process-wide site catalog (``None`` only in bare unit tests).
+    catalog: Catalog | None = None
 
 
 def build_tool_context(
@@ -96,6 +99,7 @@ def build_tool_context(
     request_id: str | None = None,
     stats: UpstreamStats | None = None,
     client: AmeriFluxClient | None = None,
+    catalog: Catalog | None = None,
 ) -> ToolContext:
     """Resolve the call's identity and assemble a :class:`ToolContext`."""
     from ameriflux_mcp.ameriflux.identity import resolve_identity
@@ -113,4 +117,5 @@ def build_tool_context(
         stats=stats if stats is not None else UpstreamStats(),
         log=structlog.get_logger("ameriflux_mcp.tool").bind(tool=tool_name, request_id=request_id),
         client=client,
+        catalog=catalog,
     )

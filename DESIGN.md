@@ -1,6 +1,6 @@
 # ameriflux-mcp — design
 
-Status: **build step 2 (core port), 2026-10-23.** Target: MCP **2026-07-28** (stateless core) on the
+Status: **build step 3 (client, cache, catalog), 2026-10-23.** Target: MCP **2026-07-28** (stateless core) on the
 Python `mcp` SDK 2.x (`mcp>=2.0,<3`), Python 3.11+. Repo
 `https://github.com/idss-mesa/ameriflux-mcp`, package `ameriflux_mcp`, console script
 `ameriflux-mcp`, tool prefix `amf_`, MIT (Regents of UNM). Templates:
@@ -50,6 +50,7 @@ hand-off, optional DuckDB extra).
 | D29 | Release | `server.json` (`io.github.idss-mesa/ameriflux-mcp`); README carries `<!-- mcp-name: io.github.idss-mesa/ameriflux-mcp -->`; Dockerfile from neon with a pinned uv image, no `--extra pdf`, uid 10001; release.yml with a `pypi` environment. | [E40, E47]. |
 | D30 | SUBSET (FLUXNET v1.x) | A local column view (`view='subset'`) taken from the SUBSET dictionary; the download variant is fixed at FULLSET until Q3 is answered. | v1.3 zips carry no SUBSET/FULLSET token [E32]. |
 | D31 | Auxiliary tables | FLUXNET2015 AUXMETEO/AUXNEE are `aux_table` files read without the timestamp requirement; ERAI spans 1989–2014 regardless of the site's flux years. | RESEARCH.md §6. |
+| D33 | Client, cache and fixtures (step 3) | Allow-list violations raise `download_denied` before any socket (every host and path prefix of D21 is checked, `..` segments and `paper_test/` refused). The disk cache stores JSON values after `strip_emails`, writes atomically, never fails a call on a disk error, and serves expired disk entries as `stale` within `stale_if_error_s` (7 d) across restarts. Endpoint definitions own version, envelope, query and required keys; `fetch()` caches the unwrapped value. Fixtures are recorded GET-only from a fixed scenario list, filtered to a 15-site fixture set, and every email is rewritten to `<hash>@example.org`; each transform is recorded in the manifest. The test router also checks URL-decoded requests for identity values. | Keeps the security rules in one place (client), restarts cheap, and fixtures small and free of personal data. Step 3, 2026-10-23. |
 | D32 | Value-free configuration errors | `load_config` turns pydantic validation errors into `ConfigError` naming the setting and rule only (pydantic would echo the input); the CLI exits 2 with that message. A YAML section left empty (`cache:` with commented children) counts as absent. Over HTTP, `amf_ping` reports no identity fields at all, not just "unavailable". The upstream client treats any 3xx as an error (redirects are never followed). | A mistyped email must not land in a log; a hosted server's callers have no business learning what its operator configured. Step 2, 2026-10-23. |
 
 ## Tool surface (v0.1: 12 tools on stdio, 8 on HTTP)
@@ -82,7 +83,7 @@ vocabularies,fp-variables,fluxnet-variables,neon-crosswalk,lter-crosswalk}`, tem
    (`docs/install` — docs site, install script ✅)
 2. `feat/core-port` — edi core, `amf_ping`, config with identity, transports, CI ✅
 3. `feat/client-cache` — endpoints, client, ratelimit, cache, catalog, resolve, policy,
-   privacy, fixtures and router
+   privacy, fixtures and router ✅
 4. `feat/discovery-tools` — `amf_search_sites`, `amf_get_site`, `amf_get_availability`
 5. `feat/variables-citation` — grammar, dictionaries, citation, `amf_get_badm`
 6. `feat/local-readers` — `amf_list_files`, `amf_preview_data`, `amf_read_bif`
