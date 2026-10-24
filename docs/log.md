@@ -1,5 +1,9 @@
 # Directory Update Log
 
+## 2026-10-24
+* **Creation**: [Discovery and availability](tools/discovery.md) — `amf_search_sites`, `amf_get_site` and `amf_get_availability` (build step 4), site naming, policy labelling, empty sites and verdicts, the Köppen caveat, and the reference resources.
+* **Update**: [Tool reference](tools/reference.md) regenerated (4 tools); [Roadmap](tools/roadmap.md) — step 4 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
+
 ## 2026-10-23
 * **Update**: [Tool reference](tools/reference.md) — `amf_ping` reports cache statistics (build step 3); [Roadmap](tools/roadmap.md) — step 3 done.
 * **Creation**: [Tool reference](tools/reference.md), generated from the tool registry by `scripts/gen_tools_reference.py` (`amf_ping`).

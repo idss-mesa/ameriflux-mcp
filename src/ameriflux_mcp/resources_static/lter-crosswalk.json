@@ -1,0 +1,35 @@
+{
+ "status": "draft",
+ "curated": "2026-10-24",
+ "description": "AmeriFlux sites linked to LTER sites and their EDI (PASTA) scopes, for cross-server workflows with edi-mcp. Upstream LTER tagging is incomplete, so each row says where its link comes from. EDI scopes verified against the EDI scope list on 2026-10-24.",
+ "basis": {
+  "tag": "the site carries the LTER network tag in the AmeriFlux catalog",
+  "name": "no upstream LTER tag; the site name names the LTER site",
+  "untagged": "not LTER-tagged upstream; LTER affiliation not established"
+ },
+ "rows": [
+  {"siteId": "US-AaG", "lterSite": null, "ediScope": null, "basis": "tag", "note": "LTER-tagged upstream, but the LTER site is not evident from the site record."},
+  {"siteId": "US-CwG", "lterSite": "CWT", "ediScope": "knb-lter-cwt", "basis": "tag"},
+  {"siteId": "US-EML", "lterSite": "BNZ", "ediScope": "knb-lter-bnz", "basis": "tag", "note": "Eight Mile Lake, Healy, Alaska (Bonanza Creek LTER region)."},
+  {"siteId": "US-Elm", "lterSite": "FCE", "ediScope": "knb-lter-fce", "basis": "tag"},
+  {"siteId": "US-Esm", "lterSite": "FCE", "ediScope": "knb-lter-fce", "basis": "tag"},
+  {"siteId": "US-EvM", "lterSite": "FCE", "ediScope": "knb-lter-fce", "basis": "tag"},
+  {"siteId": "US-GCE", "lterSite": "GCE", "ediScope": "knb-lter-gce", "basis": "tag"},
+  {"siteId": "US-Ha1", "lterSite": "HFR", "ediScope": "knb-lter-hfr", "basis": "tag"},
+  {"siteId": "US-Ha2", "lterSite": "HFR", "ediScope": "knb-lter-hfr", "basis": "tag"},
+  {"siteId": "US-Ha3", "lterSite": "HFR", "ediScope": "knb-lter-hfr", "basis": "tag"},
+  {"siteId": "US-Jo1", "lterSite": "JRN", "ediScope": "knb-lter-jrn", "basis": "tag"},
+  {"siteId": "US-Jo2", "lterSite": "JRN", "ediScope": "knb-lter-jrn", "basis": "tag"},
+  {"siteId": "US-Jo3", "lterSite": "JRN", "ediScope": "knb-lter-jrn", "basis": "tag"},
+  {"siteId": "US-PHM", "lterSite": "PIE", "ediScope": "knb-lter-pie", "basis": "tag"},
+  {"siteId": "US-PLM", "lterSite": "PIE", "ediScope": "knb-lter-pie", "basis": "tag"},
+  {"siteId": "US-Skr", "lterSite": "FCE", "ediScope": "knb-lter-fce", "basis": "tag"},
+  {"siteId": "US-TaS", "lterSite": "FCE", "ediScope": "knb-lter-fce", "basis": "tag"},
+  {"siteId": "US-VFP", "lterSite": "VCR", "ediScope": "knb-lter-vcr", "basis": "tag"},
+  {"siteId": "US-Kon", "lterSite": "KNZ", "ediScope": "knb-lter-knz", "basis": "name", "note": "Konza Prairie LTER (KNZ) is in the site name."},
+  {"siteId": "US-Seg", "lterSite": "SEV", "ediScope": "knb-lter-sev", "basis": "name", "note": "Sevilleta grassland."},
+  {"siteId": "US-Ses", "lterSite": "SEV", "ediScope": "knb-lter-sev", "basis": "name", "note": "Sevilleta shrubland."},
+  {"siteId": "US-Wjs", "lterSite": null, "ediScope": null, "basis": "untagged", "note": "New Mexico elevation-gradient site near Sevilleta; LTER affiliation not established."},
+  {"siteId": "US-Mpj", "lterSite": null, "ediScope": null, "basis": "untagged", "note": "New Mexico elevation-gradient site near Sevilleta; LTER affiliation not established."}
+ ]
+}

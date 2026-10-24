@@ -13,8 +13,9 @@ years exist, understand FLUXNET variable names and QC flags, cite data under the
 data policy, and preview files: AmeriFlux BASE and BADM, the AmeriFlux FLUXNET
 (FLUXNET-1F) product, and FLUXNET2015 FULLSET and SUBSET.
 
-> **Status: under construction (build step 2 of 8).** The server installs, starts and
-> answers `amf_ping`; the data tools arrive in steps 4–7. See [DESIGN.md](DESIGN.md) for
+> **Status: under construction (build step 4 of 8).** Site search (`amf_search_sites`),
+> site details (`amf_get_site`) and availability (`amf_get_availability`) work; variables,
+> citations, local files and downloads arrive in steps 5–7. See [DESIGN.md](DESIGN.md) for
 > decisions, [RESEARCH.md](RESEARCH.md) for verified API facts, and
 > `research/2026-10-22-plan.md` for the build plan.
 

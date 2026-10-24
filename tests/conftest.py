@@ -33,6 +33,9 @@ def config(tmp_path: Path) -> Config:
         {
             "downloads": {"directory": str(tmp_path / "downloads")},
             "cache": {"disk_dir": str(tmp_path / "cache")},
+            # Replayed fixtures need no politeness: the largest burst and rate keep tests from
+            # sleeping (the limiter has its own tests with a fake clock).
+            "upstream": {"requests_per_second": 10, "max_concurrency": 16},
         }
     )
 

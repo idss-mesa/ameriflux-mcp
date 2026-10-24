@@ -31,7 +31,10 @@ from ameriflux_mcp import tools as _tools  # noqa: E402,F401  (registration)
 from ameriflux_mcp.registry import get_registered_tools  # noqa: E402
 
 #: Family pages arrive with their tools; until then families link to the roadmap.
-FAMILY_PAGES: dict[str, str] = {}
+FAMILY_PAGES: dict[str, str] = {
+    "discovery": "discovery.md",
+    "availability": "discovery.md",
+}
 
 
 def _ref_name(schema: dict[str, Any]) -> str | None:

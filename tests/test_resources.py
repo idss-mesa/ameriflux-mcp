@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import re
 
 import pytest
@@ -9,6 +10,7 @@ from ameriflux_mcp.instructions import SERVER_INSTRUCTIONS
 from ameriflux_mcp.prompts import PROMPTS, get_prompt, list_prompts
 from ameriflux_mcp.registry import get_registered_tools
 from ameriflux_mcp.resources import (
+    DERIVED_TTL_MS,
     STATIC_DIR,
     STATIC_TTL_MS,
     list_resource_templates,
@@ -37,9 +39,50 @@ PLANNED_TOOLS = {
 def test_listing_is_sorted_and_tagged() -> None:
     resources = list_resources()
     uris = [str(r.uri) for r in resources]
-    assert uris == sorted(uris) == ["ameriflux://guide/identity"]
-    assert all((r.meta or {})["io.ameriflux-mcp/kind"] == "static" for r in resources)
-    assert list_resource_templates() == []
+    assert uris == sorted(uris)
+    assert uris == [
+        "ameriflux://guide/identity",
+        "ameriflux://reference/lter-crosswalk",
+        "ameriflux://reference/neon-crosswalk",
+        "ameriflux://reference/vocabularies",
+    ]
+    kinds = {str(r.uri): (r.meta or {})["io.ameriflux-mcp/kind"] for r in resources}
+    assert kinds["ameriflux://reference/neon-crosswalk"] == "derived"
+    assert kinds["ameriflux://reference/vocabularies"] == "static"
+    assert [t.uri_template for t in list_resource_templates()] == ["ameriflux://site/{site_id}"]
+
+
+async def test_reference_resources(server: AmeriFluxServer) -> None:
+    ctx = server.tool_context("resources/read")
+    vocab = json.loads((await read_resource("ameriflux://reference/vocabularies", ctx)).text)
+    assert vocab["igbp"]["DBF"].startswith("Deciduous Broadleaf Forests")
+    assert len(vocab["igbp"]) == 17 and "Dfb" in vocab["koeppen"]
+    assert "swapped" in vocab["koeppenCaveats"]["Bsk"]
+    assert vocab["products"]["FLUXNET"]["policies"] == ["CCBY4.0"]
+    assert [u["code"] for u in vocab["intendedUse"]] == [1, 2, 3, 4, 5, 6]
+    lter = json.loads((await read_resource("ameriflux://reference/lter-crosswalk", ctx)).text)
+    assert lter["status"] == "draft"
+    by_site = {r["siteId"]: r for r in lter["rows"]}
+    assert by_site["US-Ha1"]["ediScope"] == "knb-lter-hfr"
+    assert by_site["US-Seg"]["basis"] == "name" and by_site["US-Wjs"]["ediScope"] is None
+    neon = await read_resource("ameriflux://reference/neon-crosswalk", ctx)
+    assert neon.kind == "derived" and neon.cache_scope == "public"
+    walk = json.loads(neon.text)
+    assert walk["neonDataProduct"] == "DP4.00200.001"
+    assert {r["neonSiteCode"]: r["siteId"] for r in walk["sites"]} == {
+        "GUAN": "PR-xGU",
+        "SRER": "US-xSR",
+    }
+
+
+async def test_site_template(server: AmeriFluxServer) -> None:
+    ctx = server.tool_context("resources/read")
+    card = await read_resource("ameriflux://site/SRER", ctx)
+    payload = json.loads(card.text)
+    assert payload["siteId"] == "US-xSR" and card.ttl_ms == DERIVED_TTL_MS
+    with pytest.raises(ToolError) as missing:
+        await read_resource("ameriflux://site/US-Ha9", ctx)
+    assert missing.value.code == "not_found"
 
 
 async def test_identity_guide(server: AmeriFluxServer) -> None:

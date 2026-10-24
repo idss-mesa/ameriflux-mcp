@@ -35,7 +35,7 @@ the same way once connected ([Clients](clients.md)).
 
     The tools below arrive in build steps 2–7 ([roadmap](../tools/roadmap.md)); the
     arguments and results follow the design[^design] and may change in detail before
-    v0.1.0. `amf_ping` (step 2) works today.
+    v0.1.0. Steps 2–4 below (`amf_ping`, site search, availability) work today.
 
 ## 1. Register the server
 
