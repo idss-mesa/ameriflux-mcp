@@ -1,7 +1,7 @@
 """Static reference data: vocabularies and the curated LTER crosswalk.
 
 ``resources_static/vocabularies.json`` is built by ``scripts/build_site_vocabularies.py``
-from AmeriFlux's own IGBP and Köppen descriptions (E53); ``lter-crosswalk.json`` is
+from AmeriFlux's own IGBP and Köppen descriptions (E56); ``lter-crosswalk.json`` is
 curated (status draft, D20). Lookups are case-insensitive because catalog codes vary
 in case (``Bsk``, ``BSk``).
 """

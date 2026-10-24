@@ -7,13 +7,19 @@ the nightly job but a broken endpoint or a changed contract does.
 
 from __future__ import annotations
 
+import asyncio
+import html
 import os
+import re
 from collections.abc import AsyncIterator
 
+import httpx
 import pytest
 
+from ameriflux_mcp.ameriflux import acknowledgments as ack
 from ameriflux_mcp.ameriflux.catalog import Catalog
-from ameriflux_mcp.ameriflux.client import AmeriFluxClient
+from ameriflux_mcp.ameriflux.citation import parse_datacite
+from ameriflux_mcp.ameriflux.client import AmeriFluxClient, user_agent
 from ameriflux_mcp.ameriflux.crosswalk import neon_crosswalk
 from ameriflux_mcp.ameriflux.endpoints import (
     DATA_AVAILABILITY,
@@ -24,6 +30,8 @@ from ameriflux_mcp.ameriflux.endpoints import (
     SITE_INFO,
 )
 from ameriflux_mcp.ameriflux.resolve import resolve_site
+from ameriflux_mcp.ameriflux.variables import coverage, heights
+from ameriflux_mcp.ameriflux.variables.dictionaries import fluxnet_sources
 from ameriflux_mcp.config import CacheConfig, UpstreamConfig
 from ameriflux_mcp.context import UpstreamStats
 from ameriflux_mcp.errors import AmeriFluxApiError
@@ -111,3 +119,54 @@ async def test_live_variables_and_dois(client: AmeriFluxClient) -> None:
         )
     f15 = await client.fetch(FLUXNET_SITES, stats=UpstreamStats(), product="FLUXNET2015")
     assert about(len(f15), 212)
+
+
+async def test_live_variable_sources(client: AmeriFluxClient) -> None:
+    """The step-5 sources: heights page and CSV, coverage snapshot, webdoc ETags, DataCite."""
+    stats = UpstreamStats()
+    link = await client.fetch_url(
+        heights.HEIGHTS_PAGE, family="heights", parse=heights.parse_page, stats=stats
+    )
+    rows = await client.fetch_url(
+        link["url"], family="heights", parse=heights.parse_csv, stats=stats
+    )
+    assert about(len(rows), 587)  # sites in BASE_MeasurementHeight_20260908.csv
+    assert any(r[0] == "TA_1_1_1" for r in rows["US-Ha1"])
+    snapshot = await client.fetch_url(
+        coverage.COVERAGE_URL,
+        family="coverage",
+        parse=coverage.parse_csv,
+        stats=stats,
+        max_bytes=coverage.MAX_BYTES,
+    )
+    assert snapshot["created"] and "US-Ha1" in snapshot["sites"]
+    for key, meta in fluxnet_sources().items():
+        if key in ("fullset", "subset"):
+            head = await client.request("HEAD", meta["url"], stats=stats)
+            assert head.headers.get("etag") == meta["etag"], f"{key} dictionary changed upstream"
+    meta = await client.fetch_url(
+        "https://api.datacite.org/dois/10.17190/AMF/1246059",
+        family="citations",
+        parse=parse_datacite,
+        stats=stats,
+    )
+    assert meta["creators"] and meta["year"]
+
+
+async def test_live_policy_texts_unchanged() -> None:
+    """Every verbatim acknowledgment still appears on its policy page (test-only GETs)."""
+    await asyncio.sleep(15)  # ameriflux.lbl.gov asks for a 15 s crawl delay (E37)
+    headers = {"User-Agent": user_agent("live-tests")}
+    async with httpx.AsyncClient(headers=headers, timeout=60, follow_redirects=False) as http:
+        amf = await http.get(ack.AMERIFLUX_POLICY_URL)
+        fluxnet = await http.get(ack.FLUXNET_POLICY_URL)
+    amf_text, fluxnet_text = _page_text(amf.text), _page_text(fluxnet.text)
+    for text in ack.ALL:
+        assert text.text in amf_text, text.key
+    assert ack.as_resource()["fluxnet2015"]["mixing"] in fluxnet_text
+
+
+def _page_text(page: str) -> str:
+    page = re.sub(r"<script.*?</script>|<style.*?</style>", " ", page, flags=re.S)
+    text = html.unescape(re.sub(r"<[^>]+>", " ", page))
+    return re.sub(r"\s+", " ", text).replace("“", "").replace("”", "")

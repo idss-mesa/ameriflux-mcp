@@ -9,27 +9,142 @@ the build step that brings the material into the repository.
 Current contents
 ----------------
 
-None. As of build step 1 the repository contains no third-party code or data. The
-research notes (RESEARCH.md, research/) quote short passages from public AmeriFlux and
+1. amerifluxr (https://github.com/chuhousen/amerifluxr), BSD-3-Clause.
+   src/ameriflux_mcp/ameriflux/variables/grammar.py classifies BASE variable names
+   (gap-filled, PI-provided, quadruplet, replicate and layer aggregates, _SD, _N, fetch)
+   following the rules of amerifluxr's amf_parse_basename (R/amf_parse_basename.R). The
+   implementation is new (a tokenizer, not a translation of the R code), but it follows
+   that function's design, so its notice is reproduced here.
+
+2. ONEFlux (https://github.com/fluxnet/ONEFlux), LBNL BSD-3-Clause with the Enhancements
+   clause. src/ameriflux_mcp/resources_static/fluxnet-variables.json records, per
+   variable, the resolutions and timestamp formats defined in
+   oneflux/metadata/var_info_definitions_{hh,dd,ww,mm,yy}.txt at commit
+   d4ecebef96b83b33c82c8c0449aad308adf604cd (built by
+   scripts/build_variable_dictionaries.py).
+
+3. FLUXNET2015 variable dictionaries
+   (https://ftp.fluxdata.org/.fluxnet_downloads_67934/webdoc/variable_codes_FULLSET_20200504.csv,
+   ETag "10afb-5a4e12f9d7b40"; …/variable_codes_SUBSET_20200504.csv, ETag
+   "48fd-5a4e12bcceb40"; fetched 2026-10-24). No licence is stated, so only a derived
+   table (names, descriptions, units and notes per resolution, SUBSET membership) is
+   committed, in fluxnet-variables.json, with these sources recorded in the file
+   (licence question Q7 in research/questions.md). The original files are not
+   redistributed.
+
+4. AmeriFlux FP Standard variable list (https://amfcdn.lbl.gov/api/v1/fp_var?limits=True,
+   fetched 2026-10-24): a snapshot in resources_static/fp-variables.json, used only when
+   the live list cannot be fetched.
+
+5. Verbatim policy text: the acknowledgment, data-availability and processing-reference
+   sentences in src/ameriflux_mcp/ameriflux/acknowledgments.py are quoted from
+   https://ameriflux.lbl.gov/data/data-policy/ and https://fluxnet.org/data/data-policy/
+   (checked 2026-10-24) so that users reproduce them exactly.
+
+Test fixtures in tests/fixtures/ are recorded AmeriFlux, AmeriFlux file-server, amerifluxr
+and DataCite responses, cut to a few sites and with every email address replaced by a
+synthetic example.org address (scripts/record_fixtures.py records each transform).
+
+The research notes (RESEARCH.md, research/) quote short passages from public AmeriFlux and
 FLUXNET web pages, data-policy text and API responses for reference, with their sources.
+
+amerifluxr licence
+------------------
+
+amerifluxr Copyright (c) 2021, The Regents of the University of California,
+through Lawrence Berkeley National Laboratory (subject to receipt of
+any required approvals from the U.S. Dept. of Energy) and Koen Hufkens.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+(1) Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.
+
+(2) Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+
+(3) Neither the name of the University of California, Lawrence Berkeley
+National Laboratory, U.S. Dept. of Energy, nor the name of the contributors
+may be used to endorse or promote products derived from this software
+without specific prior written permission.
+
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+You are under no obligation whatsoever to provide any bug fixes, patches,
+or upgrades to the features, functionality or performance of the source
+code ("Enhancements") to anyone; however, if you choose to make your
+Enhancements available either publicly, or directly to Lawrence Berkeley
+National Laboratory, without imposing a separate written license agreement
+for such Enhancements, then you hereby grant the following license: a
+non-exclusive, royalty-free perpetual license to install, use, modify,
+prepare derivative works, incorporate into other computer software,
+distribute, and sublicense such enhancements or derivative works thereof,
+in binary and source code form.
+
+ONEFlux licence
+---------------
+
+Copyright (c) 2014-2018, The Regents of the University of California,
+through Lawrence Berkeley National Laboratory (subject to receipt
+of any required approvals from the U.S. Dept. of Energy).
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+(1) Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer. (2) Redistributions
+in binary form must reproduce the above copyright notice, this list of
+conditions and the following disclaimer in the documentation and/or other
+materials provided with the distribution. (3) Neither the name of the
+University of California, Lawrence Berkeley National Laboratory, U.S.
+Dept. of Energy nor the names of its contributors may be used to endorse or
+promote products derived from this software without specific prior written
+permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+
+You are under no obligation whatsoever to provide any bug fixes, patches,
+or upgrades to the features, functionality or performance of the source
+code ("Enhancements") to anyone; however, if you choose to make your
+Enhancements available either publicly, or directly to Lawrence Berkeley
+National Laboratory, without imposing a separate written license agreement
+for such Enhancements, then you hereby grant the following license:
+a non-exclusive, royalty-free perpetual license to install, use, modify,
+prepare derivative works, incorporate into other computer software,
+distribute, and sublicense such enhancements or derivative works thereof,
+in binary and source code form.
 
 Planned entries
 ---------------
 
-- amerifluxr (https://github.com/chuhousen/amerifluxr), BSD-3-Clause: the variable-name
-  parsing logic of amf_parse_basename (step 5) and the US-CRT sample files used as test
-  fixtures (step 6).
 - FLUXNET Shuttle (https://github.com/fluxnet/shuttle), BSD-3-Clause: the FLUXNET v1.3+
   zip filename pattern (step 6).
-- ONEFlux (https://github.com/fluxnet/ONEFlux), LBNL BSD-3-Clause with the
-  Enhancements clause: units derived from var_info_definitions_{hh,dd,ww,mm,yy}.txt
-  (step 5).
-- FLUXNET2015 variable dictionaries
-  (https://ftp.fluxdata.org/.fluxnet_downloads_67934/webdoc/variable_codes_{FULLSET,SUBSET}_20200504.csv):
-  no licence is stated, so only derived tables are committed, with source URL, fetch date
-  and ETag (step 5; licence question Q7 in research/questions.md).
 - US-CRT sample data are AmeriFlux data under CC-BY-4.0, not BSD: Jiquan Chen, Housen Chu,
   AmeriFlux BASE US-CRT Curtice Walter-Berger cropland, Ver. 2-5 (outdated; current is
   Ver. 5-5), AmeriFlux AMP, (Dataset). https://doi.org/10.17190/AMF/1246156. Funding for
   the AmeriFlux data service was provided by the U.S. Department of Energy Office of
-  Science.
+  Science. They come from amerifluxr's inst/extdata (step 6).

@@ -9,7 +9,7 @@ description = "Model Context Protocol (MCP 2026-07-28) server for AmeriFlux and 
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
-license-files = ["LICENSE"]
+license-files = ["LICENSE", "NOTICE"]
 authors = [{ name = "IDSS / MESA contributors, University of New Mexico" }]
 keywords = ["mcp", "ameriflux", "fluxnet", "eddy-covariance", "oneflux", "badm", "carbon-flux", "ecology", "model-context-protocol"]
 classifiers = [
@@ -67,7 +67,7 @@ path = "src/ameriflux_mcp/__init__.py"
 packages = ["src/ameriflux_mcp"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src/ameriflux_mcp", "tests", "README.md", "CHANGELOG.md", "LICENSE"]
+include = ["src/ameriflux_mcp", "tests", "README.md", "CHANGELOG.md", "LICENSE", "NOTICE"]
 
 [tool.ruff]
 line-length = 100

@@ -9,7 +9,7 @@ tags:
   - doi
 generated:
   by: "claude/opus-5.5"
-  at: "2026-10-23T00:00:00Z"
+  at: "2026-10-24T00:00:00Z"
 sources:
   - id: amf-policy
     resource: "https://ameriflux.lbl.gov/data/data-policy/"
@@ -56,8 +56,12 @@ supplementary material. AmeriFlux's recommended form includes the product versio
 The version, year and publisher in this form differ from what generic DOI services
 (DataCite, doi.org) return, so prefer AmeriFlux's form. BADM metadata downloaded with a
 product is cited with that product's DOI. AmeriFlux does not publish ready-made citation
-text for FLUXNET2015 sites; `amf_get_citation` builds it from the site's DOI, title and
-contributors.
+text for FLUXNET2015 sites; `amf_get_citation` builds it from the site's DOI record in the
+form the FLUXNET DOI landing page shows:
+
+> J. William Munger, Shawn Urbanski, Michael Golden, Carol Barford, Jaclyn Matthes,
+> Steven Wofsy (1991-2012) FLUXNET2015 US-Ha1 Harvard Forest EMS Tower (HFR1), Dataset.
+> https://doi.org/10.18140/FLX/1440071
 
 ## Acknowledgments
 
@@ -102,15 +106,16 @@ ameriflux-mcp came through the AmeriFlux APIs.
 
 | Policy | Obligations |
 | --- | --- |
-| AmeriFlux CC-BY-4.0 | Cite each site's DOI; include the DOE acknowledgment; informing data providers about publications is recommended. |
+| AmeriFlux CC-BY-4.0 | Cite each site's DOI; include the DOE acknowledgment; add the data availability sentence when the paper has that section; informing data providers about publications is recommended. |
 | AmeriFlux Legacy | Contact the site PIs when you start in-depth analysis (they may offer co-authorship); cite each DOI; acknowledge site funding; include the DOE "data portal" acknowledgment; inform providers before publication; use the AmeriFlux logo or link in presentations. |
-| FLUXNET2015 Tier 1 | CC-BY-4.0: cite each site's DOI and Pastorello et al. (2020). |
-| FLUXNET2015 Tier 2 | Scientific and educational use; give data providers at least three weeks to contribute after the first draft. Six sites are Tier 2 only (RU-Sam, RU-SkP, RU-Tks, RU-Vrk, SE-St1, ZA-Kru) and are not part of Pastorello et al. (2020). |
+| FLUXNET2015 Tier 1 | CC-BY-4.0: cite Pastorello et al. (2020); list each site by its FLUXNET ID and/or DOI; informing data providers is recommended. |
+| FLUXNET2015 Tier 2 | Scientific and educational use; contact the data providers when you begin research that could lead to a publication; give them at least three weeks to contribute after the first draft; list each site in a table. Six sites are Tier 2 only (RU-Sam, RU-SkP, RU-Tks, RU-Vrk, SE-St1, ZA-Kru) and are not part of Pastorello et al. (2020). |
 
 **Mixing escalates.** A study that combines CC-BY-4.0 and Legacy AmeriFlux data follows
 the Legacy policy for all of it; one that combines FLUXNET2015 Tier 1 and Tier 2 data
 treats all of it as Tier 2. `amf_get_citation` reports the effective policy for the
-sites you name, with each obligation marked required or recommended.
+sites you name, with each obligation marked required or recommended, and
+[Citations and BADM](../tools/citation.md) describes everything it returns.
 
 ## Citing ameriflux-mcp
 

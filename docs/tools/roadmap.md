@@ -8,7 +8,7 @@ tags:
   - planning
 generated:
   by: "claude/opus-5.5"
-  at: "2026-10-23T00:00:00Z"
+  at: "2026-10-24T00:00:00Z"
 sources:
   - id: design
     resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md"
@@ -36,8 +36,8 @@ descriptions here.
 | 2 | The MCP core ported from edi-mcp, configuration, identity settings, `amf_ping`, CI | done |
 | 3 | AmeriFlux API client, rate limiting, cache, site catalog and name resolution, policy engine, recorded test fixtures | done |
 | 4 | Site discovery and availability tools | done |
-| 5 | Variable, citation and BADM tools | next |
-| 6 | Local file readers and previews | planned |
+| 5 | Variable, citation and BADM tools | done |
+| 6 | Local file readers and previews | next |
 | 7 | The download tool (merged only after AmeriFlux confirms third-party use) | planned |
 | 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | planned |
 
@@ -55,7 +55,7 @@ exactly the tools the current build offers.
 | `amf_search_variables` | 5 | yes | Search the FP Standard (145 base names) and FLUXNET FULLSET/SUBSET dictionaries, with units per time resolution. |
 | `amf_describe_variables` | 5 | yes | Parse names such as `TA_F_1_1_1` or `GPP_NT_VUT_REF`: qualifiers, gap-filling and partitioning method, QC scheme, units by resolution, sign convention, measurement heights. |
 | `amf_get_citation` | 5 | yes | The versioned citation AmeriFlux recommends per site, required acknowledgments, the obligations of the CC-BY-4.0, Legacy or Tier 2 policy, and a data-availability sentence. |
-| `amf_get_badm` | 5 | yes | Site metadata (BADM) from the catalog: location, IGBP, climate, team, DOI, disturbance and management, funding. |
+| `amf_get_badm` | 5 | yes | Site metadata (BADM) the API exposes: location, IGBP, climate, team, disturbance and management, funding, reference papers, instruments and measurement heights. |
 | `amf_download_data` | 7 | no | BASE-BADM, AmeriFlux FLUXNET and bulk BADM through AmeriFlux's logged download route: a plan first, then `confirm=true`; checksummed files. Needs a [download identity](../getting-started/identity.md). |
 | `amf_list_files` | 6 | no | Classify downloaded zips and CSVs by product, site, resolution, years and version. |
 | `amf_preview_data` | 6 | no | Column summaries and row windows from local BASE, FLUXNET and FLUXNET2015 files, with time windows, QC filtering, missing values as nulls and a SUBSET view. |

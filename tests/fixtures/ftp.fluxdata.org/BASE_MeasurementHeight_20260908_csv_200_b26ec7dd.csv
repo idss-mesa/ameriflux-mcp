@@ -1,0 +1,269 @@
+Site_ID,Variable,Start_Date,Height,Instrument_Model,Instrument_Model2,Comment,BASE_Version
+AR-Bal,CO2,,5,GA_OP-LI-COR LI-7500A,,201301,2-5
+AR-Bal,CO2_SIGMA,,5,GA_OP-LI-COR LI-7500A,,201301,2-5
+AR-Bal,FC,,5,GA_OP-LI-COR LI-7500A,SA-Young 81000,201301,2-5
+AR-Bal,FC_SSITC_TEST,,5,GA_OP-LI-COR LI-7500A,,201301,2-5
+AR-Bal,G_1_1_1,,-0.1,SOIL_H-Plate,,201301,2-5
+AR-Bal,G_2_1_1,,-0.1,SOIL_H-Plate,,201301,2-5
+AR-Bal,H,,5,GA_OP-LI-COR LI-7500A,,201301,2-5
+AR-Bal,H2O,,5,GA_OP-LI-COR LI-7500A,,201301,2-5
+AR-Bal,H2O_SIGMA,,5,GA_OP-LI-COR LI-7500A,,201301,2-5
+AR-Bal,H_SSITC_TEST,,5,GA_OP-LI-COR LI-7500A,,201301,2-5
+AR-Bal,LE,,5,GA_OP-LI-COR LI-7500A,SA-Young 81000,201301,2-5
+AR-Bal,LE_SSITC_TEST,,5,GA_OP-LI-COR LI-7500A,,201301,2-5
+AR-Bal,MO_LENGTH,,5,SA-Young 81000,,201301,2-5
+AR-Bal,NEE_PI,,5,GA_OP-LI-COR LI-7500A,SA-Young 81000,201301,2-5
+AR-Bal,P,,1.5,PREC-TipBucGauge,,201301,2-5
+AR-Bal,PA,,5,GA_OP-LI-COR LI-7500A,,201301,2-5
+AR-Bal,PPFD_IN,,1.5,RAD-PAR Quantum,,201301,2-5
+AR-Bal,RH_1_1_1,,5.95,RH-Capac,,201301,2-5
+AR-Bal,RH_1_2_1,,3.55,RH-Capac,,201301,2-5
+AR-Bal,RH_1_3_1,,2.63,RH-Capac,,201301,2-5
+AR-Bal,RH_1_4_1,,2,RH-Capac,,201301,2-5
+AR-Bal,RH_1_5_1,,1.35,RH-Capac,,201301,2-5
+AR-Bal,SW_IN,,1.5,RAD-SW Pyran SecSt,,201301,2-5
+AR-Bal,TA_1_1_1,,5.95,TEMP-ElectResis,,201301,2-5
+AR-Bal,TA_1_2_1,,3.55,TEMP-ElectResis,,201301,2-5
+AR-Bal,TA_1_3_1,,2.63,TEMP-ElectResis,,201301,2-5
+AR-Bal,TA_1_4_1,,2,TEMP-ElectResis,,201301,2-5
+AR-Bal,TA_1_5_1,,1.35,TEMP-ElectResis,,201301,2-5
+AR-Bal,TAU_SSITC_TEST,,5,SA-Young 81000,,201301,2-5
+AR-Bal,TS_1_1_1,,-0.01,TEMP-Other,,201301,2-5
+AR-Bal,TS_2_1_1,,-0.01,TEMP-Other,,201301,2-5
+AR-Bal,TS_2_2_1,,-0.03,TEMP-Other,,201301,2-5
+AR-Bal,TS_2_3_1,,-0.09,TEMP-Other,,201301,2-5
+AR-Bal,TS_2_4_1,,-0.27,TEMP-Other,,201301,2-5
+AR-Bal,TS_2_5_1,,-0.8,TEMP-Other,,201301,2-5
+AR-Bal,T_SONIC,,5,SA-Young 81000,,201301,2-5
+AR-Bal,T_SONIC_SIGMA,,5,SA-Young 81000,,201301,2-5
+AR-Bal,U_SIGMA,,5,SA-Young 81000,,201301,2-5
+AR-Bal,USTAR,,5,SA-Young 81000,,201301,2-5
+AR-Bal,V_SIGMA,,5,SA-Young 81000,,201301,2-5
+AR-Bal,WD_1_1_1,,6.05,WIND-CupAn,,201301,2-5
+AR-Bal,WD_1_2_1,,3.7,WIND-CupAn,,201301,2-5
+AR-Bal,WD_1_3_1,,2.75,WIND-CupAn,,201301,2-5
+AR-Bal,WD_1_4_1,,2.1,WIND-CupAn,,201301,2-5
+AR-Bal,WD_1_5_1,,1.5,WIND-CupAn,,201301,2-5
+AR-Bal,WS_1_1_1,,6.05,WIND-CupAn,,201301,2-5
+AR-Bal,WS_1_2_1,,3.7,WIND-CupAn,,201301,2-5
+AR-Bal,WS_1_3_1,,2.75,WIND-CupAn,,201301,2-5
+AR-Bal,WS_1_4_1,,2.1,WIND-CupAn,,201301,2-5
+AR-Bal,WS_1_5_1,,1.5,WIND-CupAn,,201301,2-5
+AR-Bal,W_SIGMA,,5,SA-Young 81000,,201301,2-5
+AR-Bal,ZL,,5,SA-Young 81000,,201301,2-5
+CA-Let,CO2,,6,,,,1-5
+CA-Let,G_1_1_1,,-0.02,SOIL_H-Plate,,,1-5
+CA-Let,G_1_1_2,,-0.02,SOIL_H-Plate,,,1-5
+CA-Let,G_1_1_3,,-0.02,SOIL_H-Plate,,,1-5
+CA-Let,G_1_1_4,,-0.02,SOIL_H-Plate,,,1-5
+CA-Let,H,,6,,,,1-5
+CA-Let,H2O,,6,,,,1-5
+CA-Let,LE,,6,,,,1-5
+CA-Let,MO_LENGTH,,6,,,,1-5
+CA-Let,NEE_PI,,6,,,,1-5
+CA-Let,NETRAD,,3,,,,1-5
+CA-Let,PPFD_IN,,3,RAD-PAR Quantum,,,1-5
+CA-Let,PPFD_OUT,,3,RAD-PAR Quantum,,,1-5
+CA-Let,P_RAIN,,,RAIN-TipBucGauge,,,1-5
+CA-Let,RH,,1,RH-Capac,,,1-5
+CA-Let,SWC_1_1_1,,-0.15,SWC-TDR,,,1-5
+CA-Let,SWC_1_2_1,,-0.3,SWC-TDR,,,1-5
+CA-Let,SWC_2_1_1,,-0.15,SWC-TDR,,,1-5
+CA-Let,SWC_2_2_1,,-0.3,SWC-TDR,,,1-5
+CA-Let,SWC_3_1_1,,-0.075,SWC-TDR,,,1-5
+CA-Let,SWC_4_1_1,,-0.075,SWC-TDR,,,1-5
+CA-Let,SWC_5_1_1,,-0.075,SWC-TDR,,,1-5
+CA-Let,SWC_6_1_1,,-0.075,SWC-TDR,,,1-5
+CA-Let,SW_IN,,,RAD-Pyrrad-SW+LW,,,1-5
+CA-Let,SW_OUT,,,RAD-Pyrrad-SW+LW,,,1-5
+CA-Let,TA_1_1_1,,5,TEMP-TCouple,,Aspirated,1-5
+CA-Let,TA_1_2_1,,1,TEMP-ElectResis,,,1-5
+CA-Let,TA_1_2_2,,1,TEMP-TCouple,,Aspirated,1-5
+CA-Let,TAU,,6,,,,1-5
+CA-Let,TS_1_1_1,,-0.02,TEMP-TCouple,,,1-5
+CA-Let,TS_1_2_1,,-0.04,TEMP-TCouple,,,1-5
+CA-Let,TS_1_3_1,,-0.08,TEMP-TCouple,,,1-5
+CA-Let,TS_1_4_1,,-0.16,TEMP-TCouple,,,1-5
+CA-Let,TS_1_5_1,,-0.32,TEMP-TCouple,,,1-5
+CA-Let,TS_2_1_1,,-0.02,TEMP-TCouple,,,1-5
+CA-Let,TS_2_2_1,,-0.04,TEMP-TCouple,,,1-5
+CA-Let,TS_2_3_1,,-0.08,TEMP-TCouple,,,1-5
+CA-Let,TS_2_4_1,,-0.16,TEMP-TCouple,,,1-5
+CA-Let,TS_2_5_1,,-0.32,TEMP-TCouple,,,1-5
+CA-Let,USTAR,,6,,,,1-5
+CA-Let,VPD_PI,,,,,Calculated. Difference between e sat and e atm,1-5
+CA-Let,WD,,6,,,,1-5
+CA-Let,WS,,6,,,,1-5
+US-CRT,CH4,,2,GA_OP-LI-COR LI-7700,,,5-5
+US-CRT,CO2,,2,GA_OP-LI-COR LI-7500,,,5-5
+US-CRT,FC,,2,GA_OP-LI-COR LI-7500,SA-Campbell CSAT-3,,5-5
+US-CRT,FCH4,,2,GA_OP-LI-COR LI-7700,SA-Campbell CSAT-3,,5-5
+US-CRT,G_1_1_1,,-0.1,SOIL_H-Plate,,,5-5
+US-CRT,G_2_1_1,,-0.1,SOIL_H-Plate,,,5-5
+US-CRT,H,,2,SA-Campbell CSAT-3,,,5-5
+US-CRT,H2O,,2,GA_OP-LI-COR LI-7500,,,5-5
+US-CRT,LE,,2,GA_OP-LI-COR LI-7500,SA-Campbell CSAT-3,,5-5
+US-CRT,LW_IN,,2,RAD-Pyrrad-SW+LW,,,5-5
+US-CRT,LW_OUT,,2,RAD-Pyrrad-SW+LW,,,5-5
+US-CRT,MO_LENGTH,,2,SA-Campbell CSAT-3,,,5-5
+US-CRT,NEE_PI,,2,GA_OP-LI-COR LI-7500,SA-Campbell CSAT-3,,5-5
+US-CRT,NETRAD,,2,RAD-Pyrrad-SW+LW,,,5-5
+US-CRT,P,,2.5,RAIN-TipBucGauge,,,5-5
+US-CRT,PA,,0.5,PRES-ElectBar,,,5-5
+US-CRT,PPFD_IN,,2.5,RAD-PAR Quantum,,,5-5
+US-CRT,RH,,2,RH-Capac,,,5-5
+US-CRT,SWC,,-0.15,SWC-TDR,,,5-5
+US-CRT,SW_IN,,2,RAD-Pyrrad-SW+LW,,,5-5
+US-CRT,SW_OUT,,2,RAD-Pyrrad-SW+LW,,,5-5
+US-CRT,SWP,,,,,Please complete,5-5
+US-CRT,TA,,2,TEMP-ElectResis,,,5-5
+US-CRT,TS_1_1_1,,-0.1,TEMP-Thermis,,,5-5
+US-CRT,TS_2_1_1,,-0.1,TEMP-Thermis,,,5-5
+US-CRT,T_SONIC,,2,SA-Campbell CSAT-3,,,5-5
+US-CRT,T_SONIC_SIGMA,,2,SA-Campbell CSAT-3,,,5-5
+US-CRT,U_SIGMA,,2,SA-Campbell CSAT-3,,,5-5
+US-CRT,USTAR,,2,SA-Campbell CSAT-3,,,5-5
+US-CRT,V_SIGMA,,2,SA-Campbell CSAT-3,,,5-5
+US-CRT,WD,,2,SA-Campbell CSAT-3,,,5-5
+US-CRT,WS,,2,SA-Campbell CSAT-3,,,5-5
+US-CRT,W_SIGMA,,2,SA-Campbell CSAT-3,,,5-5
+US-CRT,WTD,,-3,WTD-Press,,,5-5
+US-CRT,ZL,,2,SA-Campbell CSAT-3,,,5-5
+US-Ha1,CO2_1_1_1,,29,GA_CP-LI-COR LI-6262,,,28-5
+US-Ha1,CO2_1_1_2,,29,GA_CP-LI-COR LI-7200,,20141007,28-5
+US-Ha1,FC_1_1_1,,29,GA_CP-LI-COR LI-6262,SA-ATI SATI K Style,,28-5
+US-Ha1,FC_1_1_2,,29,GA_CP-LI-COR LI-7200,SA-ATI SATI K Style,201410107,28-5
+US-Ha1,FH2O_1_1_1,,29,SA-ATI SATI K Style,GA_CP-LI-COR LI-6262,,28-5
+US-Ha1,FH2O_1_1_2,,29,GA_CP-LI-COR LI-7200,SA-ATI SATI K Style,20141007,28-5
+US-Ha1,H,,29,SA-ATI SATI K Style,,,28-5
+US-Ha1,H2O_1_1_1,,29,GA_CP-LI-COR LI-6262,,Licor CO2/H2O sensor,28-5
+US-Ha1,H2O_1_1_2,,29,GA_CP-LI-COR LI-7200,,20141007,28-5
+US-Ha1,LE_1_1_1,,29,SA-ATI SATI K Style,GA_CP-LI-COR LI-6262,,28-5
+US-Ha1,LE_1_1_2,,29,GA_CP-LI-COR LI-7200,SA-ATI SATI K Style,20141007,28-5
+US-Ha1,NETRAD,,29,RAD-Net radiometer,,,28-5
+US-Ha1,NETRAD_PI_F,,29,RAD-Net radiometer,,,28-5
+US-Ha1,P,,1,RAIN-TipBucGauge,,obtained from standard met station in clearing 1km from tower,28-5
+US-Ha1,PA,,3,PRES-Other,,,28-5
+US-Ha1,PA_PI_F,,3,PRES-Other,,,28-5
+US-Ha1,PPFD_DIF,,29,RAD-PAR Quantum,,20120422,28-5
+US-Ha1,PPFD_DIR,,29,RAD-PAR Quantum,,20120422,28-5
+US-Ha1,PPFD_IN_1_1_1,,29,RAD-PAR Quantum,,,28-5
+US-Ha1,PPFD_IN_1_2_1,,12.7,RAD-PAR Quantum,,,28-5
+US-Ha1,PPFD_IN_PI_F_1_1_1,,29,RAD-PAR Quantum,,,28-5
+US-Ha1,PPFD_OUT_1_1_1,,29,RAD-PAR Quantum,,20180327,28-5
+US-Ha1,RH_1_1_1,,27.9,RH-Capac,,,28-5
+US-Ha1,RH_1_2_1,,22.6,RH-Capac,,,28-5
+US-Ha1,RH_1_3_1,,15.4,RH-Capac,,,28-5
+US-Ha1,RH_1_4_1,,7.6,RH-Capac,,,28-5
+US-Ha1,RH_1_5_1,,2.5,RH-Capac,,,28-5
+US-Ha1,RH_PI_F_1_1_1,,27.9,RH-Capac,,,28-5
+US-Ha1,RH_PI_F_1_2_1,,22.6,RH-Capac,,1991,28-5
+US-Ha1,SC,,29,GA_SR-Other,,Storage computed from integral of CO2 concentration profile measured at 8 heights,28-5
+US-Ha1,SWC_10_1_1,,-0.05,SWC-TDR,,20220902 - soilvue sensor #2,28-5
+US-Ha1,SWC_10_2_1,,-0.1,SWC-TDR,,20220902 - soilvue sensor #2,28-5
+US-Ha1,SWC_10_3_1,,-0.2,SWC-TDR,,20220902 - soilvue sensor #2,28-5
+US-Ha1,SWC_10_4_1,,-0.3,SWC-TDR,,20220902 - soilvue sensor #2,28-5
+US-Ha1,SWC_10_5_1,,-0.4,SWC-TDR,,20220902 - soilvue sensor #2,28-5
+US-Ha1,SWC_10_6_1,,-0.5,SWC-TDR,,20220902 - soilvue sensor #2,28-5
+US-Ha1,SWC_11_1_1,,-0.05,SWC-TDR,,20220902 - soilvue sensor #3,28-5
+US-Ha1,SWC_11_2_1,,-0.1,SWC-TDR,,20220902 - soilvue sensor #3,28-5
+US-Ha1,SWC_11_3_1,,-0.2,SWC-TDR,,20220902 - soilvue sensor #3,28-5
+US-Ha1,SWC_11_4_1,,-0.3,SWC-TDR,,20220902 - soilvue sensor #3,28-5
+US-Ha1,SWC_11_5_1,,-0.4,SWC-TDR,,20220902 - soilvue sensor #3,28-5
+US-Ha1,SWC_11_6_1,,-0.5,SWC-TDR,,20220902 - soilvue sensor #3,28-5
+US-Ha1,SWC_7_1_1,20170721,-0.15,SWC-TDR,,replace degraded soil sensors in new pit immediately adjacent to existing pit,28-5
+US-Ha1,SWC_7_1_1,,-0.15,SWC-TDR,,20070828 - Soil array pit #1; 15m North of shed which is the drier site using thermistors and Campbell CS616,28-5
+US-Ha1,SWC_7_2_1,20170721,-0.35,SWC-TDR,,Soil array pit #1; 15m North of shed which is the drier site using thermistors and Campbell CS616,28-5
+US-Ha1,SWC_7_2_1,,-0.4,SWC-TDR,,20070828 - Soil array pit #1; 15m North of shed which is the drier site using thermistors and Campbell CS616,28-5
+US-Ha1,SWC_7_3_1,20170721,-0.5,SWC-TDR,,Replaced degraded sensor with new pit adjacent to old,28-5
+US-Ha1,SWC_7_3_1,,-0.5,SWC-TDR,,20070828 - Soil array pit #1; 15m North of shed which is the drier site using thermistors and Campbell CS616,28-5
+US-Ha1,SWC_7_4_1,20170721,-0.9,SWC-TDR,,replaced degraded sensors in new pit adjacent to old,28-5
+US-Ha1,SWC_7_4_1,,-0.9,SWC-TDR,,20070828 - Soil array pit #1; 15m North of shed which is the drier site using thermistors and Campbell CS616,28-5
+US-Ha1,SWC_8_1_1,20170721,-0.15,TEMP-Thermis,,Soil array pit #2 replacement of degraded sensors,28-5
+US-Ha1,SWC_8_1_1,,-0.15,SWC-TDR,,20070828 - Soil array pit #2; 15m east of shack which is the wetter site using thermistors and Campbell CS616,28-5
+US-Ha1,SWC_8_2_1,20170721,-0.35,SWC-TDR,,replacement of degraded soil sensor,28-5
+US-Ha1,SWC_8_2_1,,-0.4,SWC-TDR,,20070828 - Soil array pit #2; 15m east of shack which is the wetter site using thermistors and Campbell CS616,28-5
+US-Ha1,SWC_8_3_1,20170721,-0.5,SWC-TDR,,replace degraded sensors in new pit,28-5
+US-Ha1,SWC_8_3_1,,-0.5,SWC-TDR,,20070828 - Soil array pit #2; 15m east of shack which is the wetter site using thermistors and Campbell CS616,28-5
+US-Ha1,SWC_8_4_1,20170721,-0.9,SWC-TDR,,replaced degraded sensors in new pit adjacent to old,28-5
+US-Ha1,SWC_8_4_1,,-0.9,SWC-TDR,,20070828 - Soil array pit #2; 15m east of shack which is the wetter site using thermistors and Campbell CS616,28-5
+US-Ha1,SWC_9_1_1,,-0.05,SWC-TDR,,20220902 - soilvue sensor #1local ridge,28-5
+US-Ha1,SWC_9_2_1,,-0.1,SWC-TDR,,20220902 - soilvue sensor #1local ridge,28-5
+US-Ha1,SWC_9_3_1,,-0.2,SWC-TDR,,20220902 - soilvue sensor #1local ridge,28-5
+US-Ha1,SWC_9_4_1,,-0.3,SWC-TDR,,20220902 - soilvue sensor #1local ridge,28-5
+US-Ha1,SWC_9_5_1,,-0.4,SWC-TDR,,20220902- soilvue sensor #1local ridge,28-5
+US-Ha1,SWC_9_6_1,,-0.5,SWC-TDR,,20220902 - soilvue sensor #1local ridge,28-5
+US-Ha1,SWC_9_7_1,,-0.6,SWC-TDR,,20220902 - soilvue sensor #1local ridge,28-5
+US-Ha1,SWC_9_8_1,,-0.75,SWC-TDR,,20220902 - soilvue sensor #1local ridge,28-5
+US-Ha1,SWC_9_9_1,,-1,SWC-TDR,,20220902 - soilvue sensor #1local ridge,28-5
+US-Ha1,TA_1_1_1,,27.9,TEMP-Thermis,,,28-5
+US-Ha1,TA_1_2_1,,22.6,TEMP-Thermis,,,28-5
+US-Ha1,TA_1_3_1,,15.4,TEMP-Thermis,,,28-5
+US-Ha1,TA_1_4_1,,7.6,TEMP-Thermis,,,28-5
+US-Ha1,TA_1_5_1,,2.5,TEMP-Thermis,,,28-5
+US-Ha1,TA_PI_F_1_1_1,,27.9,TEMP-Thermis,,,28-5
+US-Ha1,TA_PI_F_1_2_1,,22.6,TEMP-Thermis,,,28-5
+US-Ha1,TA_PI_F_1_3_1,,15.4,TEMP-Thermis,,,28-5
+US-Ha1,TA_PI_F_1_4_1,,7.6,TEMP-Thermis,,,28-5
+US-Ha1,TA_PI_F_1_5_1,,2.5,TEMP-Thermis,,,28-5
+US-Ha1,TAU,,29,SA-ATI SATI K Style,,,28-5
+US-Ha1,TS_10_1_1,,-.05,TEMP-Other,,20220902 - soilvue sensor #2 -mid-slope probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_10_2_1,,-0.1,TEMP-Other,,20220902 - soilvue sensor #2 -mid-slope probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_10_3_1,,-0.2,TEMP-Other,,20220902 - soilvue sensor #2 -mid-slope probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_10_4_1,,-0.3,TEMP-Other,,20220902 - soilvue sensor #2 -mid-slope probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_10_5_1,,-0.4,TEMP-Other,,20220902 - soilvue sensor #2 -mid-slope probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_10_6_1,,-0.5,TEMP-Other,,20220902 - soilvue sensor #2 -mid-slope probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_11_1_1,,-.05,TEMP-Other,,20220902 - soilvue sensor #3 lowest position at edge of seasonally flooded areadprobe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_11_2_1,,-0.1,TEMP-Other,,20220902 - soilvue sensor #3 lowest position at edge of seasonally flooded areadprobe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_11_3_1,,-0.2,TEMP-Other,,20220902 - soilvue sensor #3 lowest position at edge of seasonally flooded areadprobe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_11_4_1,,-0.3,TEMP-Other,,20220902 - soilvue sensor #3 lowest position at edge of seasonally flooded areadprobe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_11_5_1,,-0.4,TEMP-Other,,20220902 - soilvue sensor #3 lowest position at edge of seasonally flooded areadprobe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_11_6_1,,-0.5,TEMP-Other,,20220902 - soilvue sensor #3 lowest position at edge of seasonally flooded areadprobe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_PI_1_1_A,,-0.1,TEMP-Thermis,,Average of multiple sensors at same depth,28-5
+US-Ha1,TS_2_1_1,,-0.2,TEMP-Thermis,,,28-5
+US-Ha1,TS_3_1_1,,-0.5,TEMP-Thermis,,,28-5
+US-Ha1,TS_4_1_1,,-0.05,TEMP-Thermis,,20160907,28-5
+US-Ha1,TS_4_2_1,,-0.1,TEMP-Thermis,,20160907,28-5
+US-Ha1,TS_4_3_1,,-0.2,TEMP-Thermis,,20160907,28-5
+US-Ha1,TS_4_4_1,,-0.5,TEMP-Thermis,,20160907,28-5
+US-Ha1,TS_5_1_1,,-0.05,TEMP-Thermis,,20160907,28-5
+US-Ha1,TS_5_2_1,,-0.2,TEMP-Thermis,,20160907,28-5
+US-Ha1,TS_5_3_1,,-0.5,TEMP-Thermis,,20160907,28-5
+US-Ha1,TS_6_1_1,,-0.05,TEMP-Thermis,,20160907,28-5
+US-Ha1,TS_6_1_2,,-0.05,TEMP-Thermis,,20160907,28-5
+US-Ha1,TS_6_2_1,,-0.2,TEMP-Thermis,,20160907,28-5
+US-Ha1,TS_6_3_1,,-0.5,TEMP-Thermis,,20160907,28-5
+US-Ha1,TS_7_1_1,20170721,-.15,TEMP-Thermis,,replace degraded soil sensors in new pit immediately adjacent to existing pit,28-5
+US-Ha1,TS_7_1_1,,-0.15,TEMP-Thermis,,20070828 - Soil array pit #1 at drier site using thermistors and Campbell CS616,28-5
+US-Ha1,TS_7_2_1,20170721,-0.35,TEMP-Thermis,,replacement of degraded soil sensor,28-5
+US-Ha1,TS_7_2_1,,-0.4,TEMP-Thermis,,20070828 - soilvue sensor #1 probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_7_3_1,20170721,-.5,TEMP-Thermis,,replace degraded sensors in new pit,28-5
+US-Ha1,TS_7_3_1,,-0.5,TEMP-Thermis,,20070828 - Soil array pit #1 at drier site using thermistors and Campbell CS616,28-5
+US-Ha1,TS_7_4_1,20170721,-.9,TEMP-Thermis,,replaced degraded sensors in new pit adjacent to old,28-5
+US-Ha1,TS_7_4_1,,-0.9,TEMP-Thermis,,20070828 - Soil array pit #1 at drier site using thermistors and Campbell CS616,28-5
+US-Ha1,TS_8_1_1,20170721,-.15,TEMP-Thermis,,replaced degraded sensor in new pit adjacent ot old,28-5
+US-Ha1,TS_8_1_1,,-0.15,TEMP-Thermis,,20070828 - Soil array pit #2 at wetter site using thermistors and Campbell CS616,28-5
+US-Ha1,TS_8_2_1,20170721,-.35,TEMP-Thermis,,replaced degraded sensors in new pit adjacent to old,28-5
+US-Ha1,TS_8_2_1,,-0.4,TEMP-Thermis,,20070828 - Soil array pit #2 at drier site using thermistors and Campbell CS616,28-5
+US-Ha1,TS_8_3_1,20170721,-.5,TEMP-Thermis,,replaced degraded sensors in new pit adjacent to old,28-5
+US-Ha1,TS_8_3_1,,-0.5,TEMP-Thermis,,20070828 - Soil array pit #2 at wetter site using thermistors and Campbell CS616,28-5
+US-Ha1,TS_8_4_1,20170721,-.9,TEMP-Thermis,,replaced degraded sensors in new pit adjacent to old,28-5
+US-Ha1,TS_8_4_1,,-0.9,TEMP-Thermis,,20070828 - Soil array pit #2 at wetter site using thermistors and Campbell CS616,28-5
+US-Ha1,TS_9_1_1,,-.05,TEMP-Other,,20220902 - soilvue sensor #1 probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_9_2_1,,-0.1,TEMP-Other,,20220902 - soilvue sensor #1 probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_9_3_1,,-0.2,TEMP-Other,,20220902 - soilvue sensor #1 probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_9_4_1,,-0.3,TEMP-Other,,20220902 - soilvue sensor #1 probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_9_5_1,,-0.4,TEMP-Other,,20220902 - soilvue sensor #1 probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_9_6_1,,-0.5,TEMP-Other,,20220902 - soilvue sensor #1 probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_9_7_1,,-0.6,TEMP-Other,,20220902 - soilvue sensor #1 probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_9_8_1,,-0.75,TEMP-Other,,20220902 - soilvue sensor #1 probe installed as part of Year_of _water initiative,28-5
+US-Ha1,TS_9_9_1,,-1,TEMP-Other,,20220902 - soilvue sensor #1 probe installed as part of Year_of _water initiative,28-5
+US-Ha1,T_SONIC,,29,SA-ATI SATI K Style,,,28-5
+US-Ha1,T_SONIC_SIGMA_1_1_1,,29,SA-ATI SATI K Style,,,28-5
+US-Ha1,U_SIGMA_1_1_1,,29,SA-ATI SATI K Style,,,28-5
+US-Ha1,USTAR,,29,SA-ATI SATI K Style,,,28-5
+US-Ha1,V_SIGMA_1_1_1,,29,SA-ATI SATI K Style,,,28-5
+US-Ha1,WD,,29,SA-ATI SATI K Style,,,28-5
+US-Ha1,WS,,29,SA-ATI SATI K Style,,,28-5
+US-Ha1,WS_PI_F,,29,GA_CP-LI-COR LI-7200,,,28-5
+US-Ha1,W_SIGMA_1_1_1,,29,SA-ATI SATI K Style,,,28-5

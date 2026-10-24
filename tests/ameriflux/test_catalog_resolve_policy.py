@@ -208,5 +208,11 @@ async def test_union_across_collections(index: SiteIndex) -> None:
 
 
 def test_obligation_tables() -> None:
-    assert obligations("fluxnet_ch4", "CCBY4.0")[0].text.startswith("Cite each site's DOI")
-    assert not any("Pastorello" in o.text for o in obligations("fluxnet_ch4", "CCBY4.0"))
+    ch4 = obligations("fluxnet_ch4", "CCBY4.0")
+    assert ch4[0].text.startswith("List each site used by its FLUXNET ID")
+    assert not any("Pastorello" in o.text for o in ch4)
+    assert [o.level for o in ch4] == ["required", "recommended"]
+    tier2 = [o.text for o in obligations("fluxnet2015", "TIER2")]
+    assert any("in a table" in t for t in tier2)
+    assert any(t.startswith("Contact the data providers when you begin") for t in tier2)
+    assert not any("Inform the data providers" in t for t in tier2)

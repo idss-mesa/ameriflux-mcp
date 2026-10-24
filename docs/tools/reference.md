@@ -19,14 +19,45 @@ status: stable
 
 # Tool reference
 
-Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edit by hand. 4 tools are registered. Inputs are snake_case and outputs camelCase. Every result also carries `resolved`, `notes`, `nextSteps` and `source` (whose `backend` says what answered: the AmeriFlux API, its file server, or nothing upstream), and failures return `structuredContent.error` with a stable `code`. Tools still to come are on the [roadmap](roadmap.md).
+Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edit by hand. 8 tools are registered. Inputs are snake_case and outputs camelCase. Every result also carries `resolved`, `notes`, `nextSteps` and `source` (whose `backend` says what answered: the AmeriFlux API, its file server, or nothing upstream), and failures return `structuredContent.error` with a stable `code`. Tools still to come are on the [roadmap](roadmap.md).
 
 | Tool | Title | Family | Download identity |
 | --- | --- | --- | --- |
+| [`amf_describe_variables`](#amf_describe_variables) | Describe variable names: grammar, units, QC and sites | [variables](variables.md) | no |
 | [`amf_get_availability`](#amf_get_availability) | Get data availability per site and product | [availability](discovery.md) | no |
+| [`amf_get_badm`](#amf_get_badm) | Get a site's BADM metadata | [metadata](citation.md) | no |
+| [`amf_get_citation`](#amf_get_citation) | Get citations and acknowledgments for sites | [citation](citation.md) | no |
 | [`amf_get_site`](#amf_get_site) | Get one AmeriFlux or FLUXNET site | [discovery](discovery.md) | no |
 | [`amf_ping`](#amf_ping) | Check ameriflux-mcp status | [core](roadmap.md) | no |
 | [`amf_search_sites`](#amf_search_sites) | Search AmeriFlux and FLUXNET sites | [discovery](discovery.md) | no |
+| [`amf_search_variables`](#amf_search_variables) | Search the FP Standard and FLUXNET variable dictionaries | [variables](variables.md) | no |
+
+## amf_describe_variables
+
+**Describe variable names: grammar, units, QC and sites.** Decode up to 20 variable names from BASE or FLUXNET files: base name and FP Standard definition with QA/QC range, qualifiers (_PI, _QC, _F, _IU), position (_H_V_R, _H_V_A, _#), FLUXNET processing tokens (MDS, VUT/CUT, NT/DT, REF, percentiles), units and QC meaning per resolution, sign conventions. With site: whether the site measures it, sensor heights and instruments, yearly coverage. Next: call amf_get_availability for the site's years.
+
+| | |
+| --- | --- |
+| Surface | `variables` |
+| Download identity | not needed |
+| Transports | http, stdio |
+| Annotations | readOnly=true, destructive=false, idempotent=true, openWorld=true |
+| Upstream endpoints | `GET amfcdn.lbl.gov/api/v1/fp_var` |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `names` | array of string | yes |  | Variable names as in file headers: TA_F_1_1_1, FC_PI_F_1_1_A, GPP_NT_VUT_REF, NEE_VUT_05, TS_F_MDS_2_QC … (min items 1; max items 20) |
+| `resolution` | string \\| null |  | null | HH (also HR), DD, WW, MM or YY: units and QC meaning at this resolution (FLUXNET). Default: all resolutions. |
+| `site` | string \\| null |  | null | A site (ID, NEON code or name): adds whether it measures the variable, its measurement heights and instruments, and yearly coverage. (max length 200) |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `variables` | array of VariableDescription |  |
+| `page` | Page |  |
 
 ## amf_get_availability
 
@@ -60,6 +91,79 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | `policyVerdict` | array of PolicyVerdict | The policy the requested sites must follow, per product, with obligations. |
 | `combinedObligations` | array of ObligationOut | Every obligation once, across all collections. |
 | `summary` | AvailabilitySummary |  |
+| `page` | Page |  |
+
+## amf_get_badm
+
+**Get a site's BADM metadata.** A site's Biological, Ancillary, Disturbance and Metadata as the API exposes it, by group: location, IGBP and climate, tower dates, team (no emails by default), disturbance and management, funding sponsors and organizations (needed to acknowledge Legacy sites), reference papers, and instruments with measurement heights. The full BADM ships as the BIF file in BASE-BADM downloads. Next: call amf_get_citation to cite the site.
+
+| | |
+| --- | --- |
+| Surface | `metadata` |
+| Download identity | not needed |
+| Transports | http, stdio |
+| Annotations | readOnly=true, destructive=false, idempotent=true, openWorld=true |
+| Upstream endpoints | `GET amfcdn.lbl.gov/api/v2/site_info_display/AmeriFlux`<br>`GET amfcdn.lbl.gov/api/v1/site_display/FLUXNET/FLUXNET2015`<br>`GET amfcdn.lbl.gov/api/v1/site_display/FLUXNET/FLUXNET-CH4`<br>`GET amfcdn.lbl.gov/api/v1/DOI/{site}/{product}` |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `site` | string | yes |  | Site ID (any case), NEON code, FLUXNET2015 old ID or name. (max length 200) |
+| `include` | array of `site` \\| `team` \\| `disturbance` \\| `funding` \\| `references` \\| `instruments` \\| null |  | null | Sections; default all: site, team, disturbance, funding, references, instruments. |
+| `variables` | array of string \\| null |  | null | Instruments: only these base names or exact variables (e.g. ['TA', 'SWC_1_1_1']). (max items 20) |
+| `references_limit` | integer |  | `20` | Reference papers per page. (>= 1; <= 200) |
+| `references_offset` | integer |  | `0` | >= 0 |
+| `include_contacts` | boolean |  | false | Team emails, if the server allows it (privacy.allow_contact_emails). |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `siteId` | string |  |
+| `name` | string |  |
+| `policy` | string \\| null |  |
+| `site` | SiteGroup \\| null |  |
+| `team` | array of TeamEntry \\| null |  |
+| `disturbance` | array of string \\| null | Dominant disturbance and management (catalog summary of GRP_DM). |
+| `fluxMeasurements` | array of string \\| null | Flux gas species measured. |
+| `funding` | FundingGroup \\| null |  |
+| `references` | ReferencesGroup \\| null |  |
+| `instruments` | InstrumentsGroup \\| null |  |
+
+## amf_get_citation
+
+**Get citations and acknowledgments for sites.** Citations for up to 50 sites and one product (BASE-BADM, BIF, FLUXNET, FLUXNET2015): AmeriFlux's own versioned text per site DOI (e.g. 'Ver. 28-5'), the policy the selection must follow with its obligations (mixing CC-BY and Legacy means Legacy; mixing tiers means Tier Two), verbatim acknowledgments, Legacy site funding, the data-availability sentence and processing papers. Optional BibTeX. Next: cite every site in the reference list and follow the obligations.
+
+| | |
+| --- | --- |
+| Surface | `citation` |
+| Download identity | not needed |
+| Transports | http, stdio |
+| Annotations | readOnly=true, destructive=false, idempotent=true, openWorld=true |
+| Upstream endpoints | `GET amfcdn.lbl.gov/api/v1/DOI/{site}/{product}` |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `sites` | array of string | yes |  | Site IDs (any case), NEON codes, FLUXNET2015 old IDs or names. (min items 1; max items 50) |
+| `product` | string |  | `"BASE-BADM"` | BASE-BADM, BIF (cited with the BASE DOI), FLUXNET (FLUXNET-1F) or FLUXNET2015. FLUXNET-CH4 citations arrive in v0.2. |
+| `include_bibtex` | boolean |  | false | Add a BibTeX @misc entry per citation. |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `product` | string |  |
+| `citations` | array of CitationOut |  |
+| `missing` | array of MissingCitation | Requested sites without a citation, and why. |
+| `effectivePolicy` | EffectivePolicyOut |  |
+| `acknowledgments` | array of AcknowledgmentOut |  |
+| `siteFunding` | array of SiteFunding | Legacy policy: acknowledge each site's funding (DOI record sponsors). |
+| `dataAvailability` | DataAvailabilityOut \\| null |  |
+| `processingReferences` | array of ReferenceOut |  |
+| `bibtexElided` | boolean \\| null |  |
 | `page` | Page |  |
 
 ## amf_get_site
@@ -183,4 +287,35 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | --- | --- | --- |
 | `sites` | array of SiteSummary |  |
 | `facets` | Facets | Counts over every match, not just this page. |
+| `page` | Page |  |
+
+## amf_search_variables
+
+**Search the FP Standard and FLUXNET variable dictionaries.** Find variable names in the FP Standard list (AmeriFlux BASE, live, with QA/QC ranges) and the FLUXNET dictionaries (AmeriFlux FLUXNET from ONEFlux v1.3; FLUXNET2015 FULLSET and SUBSET), by words, category or resolution. FLUXNET units change with resolution (NEE is umol m-2 s-1 at HH, gC m-2 d-1 at DD), so each result lists units per resolution and SUBSET membership. Next: call amf_describe_variables on the names.
+
+| | |
+| --- | --- |
+| Surface | `variables` |
+| Download identity | not needed |
+| Transports | http, stdio |
+| Annotations | readOnly=true, destructive=false, idempotent=true, openWorld=true |
+| Upstream endpoints | `GET amfcdn.lbl.gov/api/v1/fp_var` |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `query` | string \\| null |  | null | Words matched against name, description and units (prefixes count: 'soil temp', 'GPP', 'methane'). (max length 200) |
+| `dictionary` | `fp` \\| `fluxnet` \\| `fluxnet_fullset` \\| `fluxnet_subset` \\| `all` |  | `"all"` | fp (FP Standard, BASE), fluxnet (AmeriFlux FLUXNET, ONEFlux v1.3), fluxnet_fullset / fluxnet_subset (FLUXNET2015), or all. |
+| `category` | string \\| null |  | null | FP type (GASES, MET_RAD, MET_SOIL, …) or FLUXNET section (PARTITIONING, NET ECOSYSTEM EXCHANGE, …); prefixes count. (max length 60) |
+| `resolution` | string \\| null |  | null | HH (also HR), DD, WW, MM or YY: FLUXNET variables available at it, with its units. |
+| `limit` | integer |  | `25` | >= 1; <= 200 |
+| `offset` | integer |  | `0` | >= 0 |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `variables` | array of VariableSummary |  |
+| `facets` | VariableFacets |  |
 | `page` | Page |  |

@@ -8,6 +8,43 @@ All notable changes to ameriflux-mcp are documented here. The format follows
 
 ### Added
 
+- `amf_search_variables` (build step 5): the FP Standard list (live, with QA/QC ranges)
+  and the FLUXNET dictionaries (AmeriFlux FLUXNET from ONEFlux v1.3; FLUXNET2015 FULLSET
+  and SUBSET) by words, category and resolution, with units per resolution and SUBSET
+  membership.
+- `amf_describe_variables`: decodes BASE and FLUXNET names (qualifiers, positions,
+  processing tokens, dictionary templates such as `NEE_VUT_XX` and `TS_F_MDS_#`), with
+  units and QC meaning per resolution, sign conventions and `didYouMean`; with `site`,
+  whether the site measures it, sensor heights and instruments, and yearly coverage from
+  amerifluxr's dated snapshot.
+- `amf_get_citation`: AmeriFlux's versioned citation per site DOI (BASE-BADM, BADM via
+  the BASE DOI, FLUXNET), FLUXNET2015 citations built as the FLUXNET DOI page shows them,
+  a DataCite fallback with a `versionMissing` warning, the effective policy with its
+  obligations, verbatim acknowledgments, Legacy site funding, the data-availability
+  sentence, processing references and optional BibTeX.
+- `amf_get_badm`: a site's BADM as the API exposes it (location, IGBP and climate, team,
+  disturbance, funding, reference papers, instruments and measurement heights).
+- Resources: `ameriflux://guide/data-policy`, `ameriflux://guide/variable-grammar`,
+  `ameriflux://reference/fp-variables`, `ameriflux://reference/fluxnet-variables` and
+  `ameriflux://reference/acknowledgments`.
+- `scripts/build_variable_dictionaries.py` builds `fluxnet-variables.json` (webdoc
+  dictionaries plus ONEFlux var_info at a pinned commit, µ restored) and the
+  `fp-variables.json` snapshot.
+- `scripts/record_fixtures.py record --add` records only new scenarios; fixtures now
+  cover the measurement-height page and CSV, the coverage snapshot and DataCite.
+- Nightly live tests for the new sources, the webdoc ETags and every verbatim policy
+  sentence.
+- Docs: the Variables and Citations and BADM pages.
+
+### Changed
+
+- FLUXNET2015 obligations follow the FLUXNET policy page's wording (list sites by ID or
+  DOI, in a table for Tier Two; contact providers when research begins); the Data
+  Availability sentence is required when a paper has that section.
+- `source.backend` is `mixed` when one call reads several services.
+- NOTICE credits amerifluxr, ONEFlux and the FLUXNET2015 dictionaries, and ships in the
+  wheel and sdist.
+
 - `amf_search_sites` (build step 4): AmeriFlux, FLUXNET2015 and FLUXNET-CH4 sites by
   words, collection, product and policy, IGBP, Köppen, country, state, status, member
   network, bounding box or distance, data years, measured variables and gas species; years

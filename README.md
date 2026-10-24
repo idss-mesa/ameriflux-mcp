@@ -13,9 +13,10 @@ years exist, understand FLUXNET variable names and QC flags, cite data under the
 data policy, and preview files: AmeriFlux BASE and BADM, the AmeriFlux FLUXNET
 (FLUXNET-1F) product, and FLUXNET2015 FULLSET and SUBSET.
 
-> **Status: under construction (build step 4 of 8).** Site search (`amf_search_sites`),
-> site details (`amf_get_site`) and availability (`amf_get_availability`) work; variables,
-> citations, local files and downloads arrive in steps 5–7. See [DESIGN.md](DESIGN.md) for
+> **Status: under construction (build step 5 of 8).** Site search (`amf_search_sites`),
+> site details (`amf_get_site`), availability (`amf_get_availability`), variables
+> (`amf_search_variables`, `amf_describe_variables`), citations (`amf_get_citation`) and
+> BADM (`amf_get_badm`) work; local files and downloads arrive in steps 6–7. See [DESIGN.md](DESIGN.md) for
 > decisions, [RESEARCH.md](RESEARCH.md) for verified API facts, and
 > `research/2026-10-22-plan.md` for the build plan.
 
@@ -60,7 +61,7 @@ claude mcp add ameriflux -s user -- /absolute/path/to/ameriflux-mcp/.venv/bin/am
 | `amf_search_variables` | Search the FP Standard and FLUXNET variable dictionaries |
 | `amf_describe_variables` | Parse variable names (qualifiers, QC, units per resolution, heights) |
 | `amf_get_citation` | Versioned citations, required acknowledgments and policy obligations |
-| `amf_get_badm` | Site metadata (BADM) from the catalog |
+| `amf_get_badm` | Site metadata (BADM): location, team, disturbance, funding, references, instruments and heights |
 | `amf_download_data` | Opt-in, consented download through AmeriFlux's logged route (stdio only) |
 | `amf_list_files` | Classify downloaded zips and CSVs |
 | `amf_preview_data` | Summaries and row windows from local files, with QC filtering |

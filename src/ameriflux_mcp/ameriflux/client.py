@@ -38,7 +38,7 @@ import httpx
 import structlog
 
 from ameriflux_mcp import __version__
-from ameriflux_mcp.ameriflux.cache import CacheStats, TTLCache, cache_key
+from ameriflux_mcp.ameriflux.cache import CacheFamily, CacheStats, TTLCache, cache_key
 from ameriflux_mcp.ameriflux.endpoints import Endpoint, unwrap
 from ameriflux_mcp.ameriflux.privacy import EMAIL_RE
 from ameriflux_mcp.ameriflux.ratelimit import RateLimiter
@@ -256,9 +256,7 @@ class AmeriFluxClient:
                     continue
                 raise self._error(0, type(exc).__name__, url, kind="transport") from None
             stats.requests += 1
-            backend = BACKENDS.get(host, "amfcdn" if host == self.api_host else None)
-            if backend is not None:
-                stats.backend = backend
+            _note_backend(stats, BACKENDS.get(host, "amfcdn" if host == self.api_host else None))
             log.debug(
                 "upstream.http",
                 endpoint=endpoint_label(method, url),
@@ -376,7 +374,39 @@ class AmeriFluxClient:
         )
         if hit in ("hit", "stale", "disk"):
             stats.cache_hits += 1
-            stats.backend = stats.backend or "amfcdn"
+            _note_backend(stats, "amfcdn")
+        return value
+
+    async def fetch_url(
+        self,
+        url: str,
+        *,
+        family: CacheFamily,
+        parse: Callable[[Fetched], Any],
+        stats: UpstreamStats,
+        accept: str | None = None,
+        max_bytes: int | None = None,
+    ) -> Any:
+        """GET an allow-listed URL outside the API and cache ``parse(response)`` per family.
+
+        For the measurement-height page and CSV, the amerifluxr coverage snapshot and
+        DataCite. The parsed value must be JSON-serializable (it may go to the disk
+        cache, after :func:`~ameriflux_mcp.ameriflux.privacy.strip_emails`).
+        """
+        self.check_request("GET", url)
+        label = endpoint_label("GET", url)
+
+        async def load() -> Any:
+            fetched = await self.request(
+                "GET", url, accept=accept, stats=stats, max_bytes=max_bytes
+            )
+            return parse(fetched)
+
+        stats.record_endpoint(label)
+        value, hit = await self.cache.get_or_fetch(family, cache_key("GET", url), load)
+        if hit in ("hit", "stale", "disk"):
+            stats.cache_hits += 1
+            _note_backend(stats, BACKENDS.get((urlsplit(url).hostname or "").lower()))
         return value
 
     def cache_stats(self) -> CacheStats:
@@ -384,6 +414,16 @@ class AmeriFluxClient:
 
     async def aclose(self) -> None:
         await self._http.aclose()
+
+
+def _note_backend(stats: UpstreamStats, backend: BackendName | None) -> None:
+    """Record which backend served a call; two different ones make it ``mixed``."""
+    if backend is None:
+        return
+    if stats.backend is None or stats.backend == backend:
+        stats.backend = backend
+    else:
+        stats.backend = "mixed"
 
 
 def _content_type(response: httpx.Response) -> str | None:

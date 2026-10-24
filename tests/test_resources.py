@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+from typing import Any
 
 import pytest
 
@@ -18,6 +19,7 @@ from ameriflux_mcp.resources import (
     read_resource,
 )
 from ameriflux_mcp.server import AmeriFluxServer
+from tests.fixture_router import Reply
 
 #: The v0.1 tool surface (DESIGN.md "Tool surface"); text may name planned tools.
 PLANNED_TOOLS = {
@@ -41,14 +43,21 @@ def test_listing_is_sorted_and_tagged() -> None:
     uris = [str(r.uri) for r in resources]
     assert uris == sorted(uris)
     assert uris == [
+        "ameriflux://guide/data-policy",
         "ameriflux://guide/identity",
+        "ameriflux://guide/variable-grammar",
+        "ameriflux://reference/acknowledgments",
+        "ameriflux://reference/fluxnet-variables",
+        "ameriflux://reference/fp-variables",
         "ameriflux://reference/lter-crosswalk",
         "ameriflux://reference/neon-crosswalk",
         "ameriflux://reference/vocabularies",
     ]
     kinds = {str(r.uri): (r.meta or {})["io.ameriflux-mcp/kind"] for r in resources}
     assert kinds["ameriflux://reference/neon-crosswalk"] == "derived"
+    assert kinds["ameriflux://reference/fp-variables"] == "derived"
     assert kinds["ameriflux://reference/vocabularies"] == "static"
+    assert kinds["ameriflux://reference/fluxnet-variables"] == "static"
     assert [t.uri_template for t in list_resource_templates()] == ["ameriflux://site/{site_id}"]
 
 
@@ -83,6 +92,37 @@ async def test_site_template(server: AmeriFluxServer) -> None:
     with pytest.raises(ToolError) as missing:
         await read_resource("ameriflux://site/US-Ha9", ctx)
     assert missing.value.code == "not_found"
+
+
+async def test_variable_and_policy_references(server: AmeriFluxServer) -> None:
+    ctx = server.tool_context("resources/read")
+    fp = json.loads((await read_resource("ameriflux://reference/fp-variables", ctx)).text)
+    assert fp["source"] == "live" and fp["count"] == len(fp["variables"]) >= 100
+    fc = next(v for v in fp["variables"] if v["name"] == "FC")
+    assert fc["units"] == "µmolCO2 m-2 s-1" and fc["min"] == -100.0
+    fluxnet = json.loads((await read_resource("ameriflux://reference/fluxnet-variables", ctx)).text)
+    by_name = {v["name"]: v for v in fluxnet["variables"]}
+    assert by_name["NEE_VUT_REF"]["units"]["YY"] == "gC m-2 y-1"
+    assert fluxnet["sources"]["oneflux"]["commit"].startswith("d4ecebe")
+    acks = json.loads((await read_resource("ameriflux://reference/acknowledgments", ctx)).text)
+    texts = {t["key"]: t["text"] for t in acks["texts"]}
+    assert "data service" in texts["doe_data_service"] and "data portal" in texts["doe_data_portal"]
+    assert "Tier Two" in acks["fluxnet2015"]["mixing"]
+    for uri, phrases in {
+        "ameriflux://guide/data-policy": ("CC-BY + Legacy = Legacy", "Tier Two", "RU-Sam"),
+        "ameriflux://guide/variable-grammar": ("_H_V_R", "GPP_NT_VUT_REF", "gC m-2 d-1"),
+    }.items():
+        text = (await read_resource(uri, ctx)).text
+        for phrase in phrases:
+            assert phrase in text, (uri, phrase)
+
+
+async def test_fp_variables_falls_back_to_snapshot(server: AmeriFluxServer, router: Any) -> None:
+    router.add("GET amfcdn.lbl.gov/api/v1/fp_var?limits=True", Reply(503, b"down", "text/plain"))
+    ctx = server.tool_context("resources/read")
+    fp = json.loads((await read_resource("ameriflux://reference/fp-variables", ctx)).text)
+    assert fp["source"].startswith("snapshot ") and "snapshot" in fp["notes"][0]
+    assert any(v["name"] == "FCH4" for v in fp["variables"])
 
 
 async def test_identity_guide(server: AmeriFluxServer) -> None:
