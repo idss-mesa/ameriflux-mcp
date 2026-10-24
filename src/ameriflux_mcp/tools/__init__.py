@@ -5,6 +5,7 @@ from ameriflux_mcp.tools import (  # noqa: F401  (registration side effects)
     badm,
     citation,
     core,
+    local,
     sites,
     variables,
 )

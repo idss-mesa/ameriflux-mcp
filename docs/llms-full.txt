@@ -383,7 +383,7 @@ commit.
 | `limits.preview_scan_max_bytes` | `AMERIFLUX_MCP_LIMITS__PREVIEW_SCAN_MAX_BYTES` | int | `268435456` | Most bytes a preview scans (256 MiB). |
 | `limits.preview_time_budget_s` | `AMERIFLUX_MCP_LIMITS__PREVIEW_TIME_BUDGET_S` | float | `20.0` | Wall-clock budget for one preview scan. |
 | `limits.zip_member_max_bytes` | `AMERIFLUX_MCP_LIMITS__ZIP_MEMBER_MAX_BYTES` | int | `1073741824` | Largest zip member read (uncompressed). |
-| `limits.tools_list_max_bytes` | `AMERIFLUX_MCP_LIMITS__TOOLS_LIST_MAX_BYTES` | int | `48000` | Conformance bound on the serialized tools/list result (tightened in step 8). |
+| `limits.tools_list_max_bytes` | `AMERIFLUX_MCP_LIMITS__TOOLS_LIST_MAX_BYTES` | int | `80000` | Conformance bound on the serialized tools/list result (59,945 B with the 11 stdio tools of step 6; reset to measured x1.25 in step 8, as in neon-mcp). |
 | `downloads.enabled` | `AMERIFLUX_MCP_DOWNLOADS__ENABLED` | bool \| null | unset | Offer the download tool. Unset: true on stdio; never available over http. |
 | `downloads.directory` | `AMERIFLUX_MCP_DOWNLOADS__DIRECTORY` | Path | `~/ameriflux-downloads` | Directory every download is confined to (created on first use). |
 | `downloads.max_files_per_call` | `AMERIFLUX_MCP_DOWNLOADS__MAX_FILES_PER_CALL` | int | `50` | Most files one download call transfers. |
@@ -645,7 +645,7 @@ tags:
   - windows
 generated:
   by: "claude/opus-5.5"
-  at: "2026-10-23T00:00:00Z"
+  at: "2026-10-24T00:00:00Z"
 sources:
   - id: uv
     resource: "https://docs.astral.sh/uv/"
@@ -672,12 +672,12 @@ stale_after: "2027-04-23T00:00:00Z"
 ameriflux-mcp is a Python 3.11+ package with one command, `ameriflux-mcp`, that MCP
 clients start over stdio. These instructions cover macOS, Linux and Windows.
 
-!!! warning "Under construction: build step 5 of 8"
+!!! warning "Under construction: build step 6 of 8"
 
     ameriflux-mcp is being built in eight steps (see the [roadmap](../tools/roadmap.md)).
     The server installs and starts on every client below, and site search, site details,
-    data availability, variables, citations and BADM work today; local files and
-    downloads arrive in steps 6–7. The [tool reference](../tools/reference.md) always lists what the
+    data availability, variables, citations, BADM and local file previews work today;
+    downloads arrive in step 7. The [tool reference](../tools/reference.md) always lists what the
     current build offers. Every step on this page works as written today.
 
 !!! note "Private repository and no PyPI release yet"
@@ -1128,7 +1128,8 @@ the same way once connected ([Clients](clients.md)).
     The tools below arrive in build steps 2–7 ([roadmap](../tools/roadmap.md)); the
     arguments and results follow the design[^design] and may change in detail before
     v0.1.0. Steps 2–5 and 7 below (`amf_ping`, site search, availability, variables,
-    citations) work today; step 6 (downloads and previews) arrives in build steps 6–7.
+    citations) work today; in step 6 the preview works on files you already have, and
+    the download tool arrives in build step 7.
 
 ## 1. Register the server
 
@@ -1479,6 +1480,141 @@ with empty rows rather than an error.
 [^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
 [^amf-sites]: AmeriFlux site search. <https://ameriflux.lbl.gov/sites/site-search/>
 
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/local-files/
+
+---
+title: "Local files"
+description: "Find, preview and read AmeriFlux and FLUXNET files on your computer with amf_list_files, amf_preview_data and amf_read_bif, inside their zips and offline."
+type: Guide
+tags:
+  - tools
+  - local-files
+  - fluxnet
+  - badm
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-24T00:00:00Z"
+sources:
+  - id: research
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md"
+    title: "ameriflux-mcp verified research (section 6)"
+    author: "team:idss-mesa"
+  - id: design
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md"
+    title: "ameriflux-mcp design (D23, D36)"
+    author: "team:idss-mesa"
+  - id: oneflux-readme
+    resource: "https://github.com/fluxnet/ONEFlux/blob/main/oneflux/metadata/fluxnet_data_docs/README.txt"
+    title: "ONEFlux FLUXNET data product README"
+    author: "team:fluxnet"
+status: stable
+stale_after: "2027-04-24T00:00:00Z"
+---
+
+# Local files
+
+Three tools read the AmeriFlux and FLUXNET files already on your computer. They run only
+over **stdio** (a hosted server has no access to your disk), never use the network, and
+read archives **in place**: nothing is extracted. Inputs and result fields are in the
+[Tool reference](reference.md).
+
+## Where they look
+
+Files are readable only inside the **download directory** (`downloads.directory`,
+default `~/ameriflux-downloads`) and any folder in **`local.roots`**
+([Configuration](../getting-started/configuration.md)):
+
+```bash
+export AMERIFLUX_MCP_LOCAL__ROOTS=~/fluxnet2015,~/flux-archive
+```
+
+Paths are relative to a root (or absolute inside one). `archive.zip::member.csv` names
+a member. A path that leaves the roots, including through a symbolic link, fails with
+`invalid_argument` (`outside_local_roots`). FLUXNET2015 zips need a fluxnet.org account,
+so you download them yourself and add their folder to `local.roots`; the server never
+automates that login.
+
+## amf_list_files
+
+Lists every file whose name AmeriFlux or FLUXNET gave it, and classifies each archive
+member[^research]:
+
+| Family | Files |
+| --- | --- |
+| `base` | `AMF_<SITE>_BASE-BADM_<X-Y>.zip` holding `AMF_<SITE>_BASE_(HH\|HR)_<X-Y>.csv` and the site's BIF workbook |
+| `bif` | `AMF_<SITE>_BIF_<date>.xlsx`, and the bulk `AA-Flx`/`AA-Net` files |
+| `fluxnet` | AmeriFlux FLUXNET (ONEFlux v1.3) zips: FLUXMET, ERA5 and BIFVARINFO files per resolution, a BIF CSV, README and licence[^oneflux-readme] |
+| `fluxnet2015` | FULLSET and SUBSET zips: data per resolution, ERAI, AUXMETEO and AUXNEE |
+| `fluxnet_ch4` | Listed; reading arrives in v0.2 |
+
+Each entry gives the site, resolution, years and version; members that cannot be read
+say why (see [Safety](#safety)). Filter by `family` or `site`, or give a folder or a
+single archive as `path`.
+
+## amf_preview_data
+
+Reads one CSV, by `file` or by `site` and `product` (the newest local version), and by
+default the half-hourly or hourly member of an archive (`resolution` picks another).
+
+- **Summary** (default): per column the count, missing values (`-9999`), min, max, mean,
+  units at the file's resolution, and `outOfRange`: values beyond the FP Standard range
+  ±5%, counted but kept. The file info gives the time step read from the timestamps,
+  the time range, the `#` header lines of BASE files, and the site's UTC offsets.
+- **Rows** (`mode='rows'`): a page of rows (`max_rows`, `offset`) within `start`/`end`.
+  `to_utc=true` adds UTC timestamps, applying the offset in force on each row's date.
+- **QC**: `qc_max` keeps HH/HR values whose `_QC` flag is at most the threshold (0
+  measured … 3 poor); `qc_min_fraction` keeps DD and coarser values whose QC fraction
+  is at least the threshold. Rejected values become null and are counted in
+  `qcFiltered`.
+- **SUBSET view**: `view='subset'` keeps only the FLUXNET2015 SUBSET variables of an
+  AmeriFlux FLUXNET file.
+- **Aux tables**: AUXMETEO and AUXNEE are read as plain tables, with text values
+  listed.
+
+```json
+{"tool": "amf_preview_data", "arguments": {"site": "US-Ha1", "product": "FLUXNET", "resolution": "DD", "columns": ["NEE_VUT_REF", "GPP_NT_VUT_REF"], "qc_min_fraction": 0.8}}
+{"tool": "amf_preview_data", "arguments": {"file": "AMF_US-Ha1_BASE-BADM_28-5.zip", "mode": "rows", "start": "2020-07-01", "end": "2020-07-02", "to_utc": true}}
+```
+
+!!! note "HH can mean hourly"
+
+    ONEFlux v1.3 names its finest resolution `HH` even for hourly sites; the preview
+    reads the step from `TIMESTAMP_START`/`TIMESTAMP_END` and says so when they differ.
+
+A scan stops after `end`, or once it has read 256 MiB or run for 20 s
+(`truncatedReason: budget`). Half-hourly BASE files reach hundreds of megabytes, so for
+long records start with the DD or MM file, or narrow `start`, `end` and `columns`.
+
+## amf_read_bif
+
+Reads BADM Interchange Format files: the BIF workbook of a BASE-BADM zip, the BIF CSV of
+a FLUXNET zip, or a BIF file on its own. It returns entries by group (filter with
+`groups`, and with `site_id` in bulk files), the UTC offsets with their start dates, the
+DOI and citation recorded for that version, and the funding acknowledgments.
+
+**Personal data is withheld by default**: emails, postal and shipping addresses, and the
+names of private land owners. They are shown only when you pass `include_contacts` and
+the operator enabled `privacy.allow_contact_emails`. The citation in a BIF is the one of
+that file's version; `amf_get_citation` gives the current one.
+
+## Safety
+
+Archives are read in place through a checker that refuses members with absolute or
+`..` paths, symbolic links, encrypted members, members over 1 GiB uncompressed, and
+members over 1 MiB that compress more than 200:1 (zip bombs)[^design]. Reads also stop if
+a member decompresses past its declared size.
+
+## Resources
+
+| URI | Content |
+| --- | --- |
+| `ameriflux://guide/file-formats` | File names, CSV conventions, BIF and previews, for agents |
+| `ameriflux://guide/fluxnet2015-access` | Getting FLUXNET2015 zips yourself and reading them here |
+
+[^research]: ameriflux-mcp verified research. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md>
+[^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
+[^oneflux-readme]: ONEFlux FLUXNET data product README. <https://github.com/fluxnet/ONEFlux/blob/main/oneflux/metadata/fluxnet_data_docs/README.txt>
+
 ---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/reference/
 
 ---
@@ -1502,7 +1638,7 @@ status: stable
 
 # Tool reference
 
-Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edit by hand. 8 tools are registered. Inputs are snake_case and outputs camelCase. Every result also carries `resolved`, `notes`, `nextSteps` and `source` (whose `backend` says what answered: the AmeriFlux API, its file server, or nothing upstream), and failures return `structuredContent.error` with a stable `code`. Tools still to come are on the [roadmap](roadmap.md).
+Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edit by hand. 11 tools are registered; `amf_list_files`, `amf_preview_data`, `amf_read_bif` are offered only over stdio. Inputs are snake_case and outputs camelCase. Every result also carries `resolved`, `notes`, `nextSteps` and `source` (whose `backend` says what answered: the AmeriFlux API, its file server, or nothing upstream), and failures return `structuredContent.error` with a stable `code`. Tools still to come are on the [roadmap](roadmap.md).
 
 | Tool | Title | Family | Download identity |
 | --- | --- | --- | --- |
@@ -1511,7 +1647,10 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | [`amf_get_badm`](#amf_get_badm) | Get a site's BADM metadata | [metadata](citation.md) | no |
 | [`amf_get_citation`](#amf_get_citation) | Get citations and acknowledgments for sites | [citation](citation.md) | no |
 | [`amf_get_site`](#amf_get_site) | Get one AmeriFlux or FLUXNET site | [discovery](discovery.md) | no |
+| [`amf_list_files`](#amf_list_files) | List local AmeriFlux and FLUXNET files | [local](local-files.md) | no |
 | [`amf_ping`](#amf_ping) | Check ameriflux-mcp status | [core](roadmap.md) | no |
+| [`amf_preview_data`](#amf_preview_data) | Preview a local AmeriFlux or FLUXNET data file | [local](local-files.md) | no |
+| [`amf_read_bif`](#amf_read_bif) | Read a local BADM (BIF) file | [local](local-files.md) | no |
 | [`amf_search_sites`](#amf_search_sites) | Search AmeriFlux and FLUXNET sites | [discovery](discovery.md) | no |
 | [`amf_search_variables`](#amf_search_variables) | Search the FP Standard and FLUXNET variable dictionaries | [variables](variables.md) | no |
 
@@ -1693,6 +1832,40 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | `baseVariables` | array of string \\| null | FP Standard base names in the site's BASE data (up to 60). |
 | `baseVariablesTotal` | integer \\| null |  |
 
+## amf_list_files
+
+**List local AmeriFlux and FLUXNET files.** Find the AmeriFlux and FLUXNET files already on this computer, in the download directory and configured local roots: BASE and BASE-BADM zips, BIF files, AmeriFlux FLUXNET (ONEFlux) and FLUXNET2015 archives, with each archive's members classified by kind (data, ERA, BIFVARINFO, BIF, aux tables), site, resolution, years and version. Unsafe members are flagged. stdio only. Next: call amf_preview_data(file=...) on one.
+
+| | |
+| --- | --- |
+| Surface | `local` |
+| Download identity | not needed |
+| Transports | stdio |
+| Annotations | readOnly=true, destructive=false, idempotent=true, openWorld=false |
+| Upstream endpoints | none |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `path` | string \\| null |  | null | A folder or archive inside the download directory or a local root; default: every root. (max length 1000) |
+| `family` | array of `base` \\| `bif` \\| `fluxnet` \\| `fluxnet2015` \\| `fluxnet_ch4` \\| null |  | null | Only these families. |
+| `site` | string \\| null |  | null | Only this site ID (any case). (max length 20) |
+| `include_members` | boolean |  | true | Classify the members of each archive. |
+| `limit` | integer |  | `50` | >= 1; <= 200 |
+| `offset` | integer |  | `0` | >= 0 |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `roots` | array of string |  |
+| `files` | array of FileEntry |  |
+| `facets` | ListFacets |  |
+| `unrecognized` | integer | Files skipped because their names are not ours. |
+| `membersElided` | boolean \\| null |  |
+| `page` | Page |  |
+
 ## amf_ping
 
 **Check ameriflux-mcp status.** Liveness and capability report: server version, protocol and transport; whether a download identity is configured (booleans and profile names only, never the values) and which tools need it; whether downloads are enabled and where files go. With check_api=true it also makes one small request to the AmeriFlux API to confirm connectivity. Next: read ameriflux://guide/identity to set up downloads.
@@ -1727,6 +1900,84 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | `endpoints` | Endpoints |  |
 | `cache` | CacheReport |  |
 | `upstream` | UpstreamCheck \\| null | Present when check_api was requested. |
+
+## amf_preview_data
+
+**Preview a local AmeriFlux or FLUXNET data file.** Summarize or page through a local BASE, AmeriFlux FLUXNET or FLUXNET2015 CSV, in place or inside its zip: time step and range, per-column count, missing (-9999), min, max, mean and out-of-range counts, units per resolution, a time window, a QC filter, UTC timestamps from the site's BIF, a SUBSET column view, and aux tables. Stops within a byte and time budget. stdio only. Next: call amf_describe_variables on columns to decode.
+
+| | |
+| --- | --- |
+| Surface | `local` |
+| Download identity | not needed |
+| Transports | stdio |
+| Annotations | readOnly=true, destructive=false, idempotent=true, openWorld=false |
+| Upstream endpoints | none |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `file` | string \\| null |  | null | A file or 'archive.zip::member.csv', relative to a local root (see amf_list_files). Or give site and product instead. (max length 1000) |
+| `site` | string \\| null |  | null | Newest local file of this site. (max length 20) |
+| `product` | string \\| null |  | null | With site: BASE-BADM (default), FLUXNET or FLUXNET2015. |
+| `resolution` | `HH` \\| `HR` \\| `DD` \\| `WW` \\| `MM` \\| `YY` \\| null |  | null | Member of an archive to read (default HH; HR sites match HH). |
+| `columns` | array of string \\| null |  | null | Columns by name (default: up to 80 in summaries). (max items 60) |
+| `start` | string \\| null |  | null | First time, e.g. 2012, 2012-06, 2012-06-01T12:00. |
+| `end` | string \\| null |  | null | Last time (inclusive): end='2012' keeps all of 2012. |
+| `mode` | `summary` \\| `rows` |  | `"summary"` | summary: per-column statistics; rows: a window of rows. |
+| `max_rows` | integer |  | `100` | Rows per page (capped by the server). (>= 1; <= 5000) |
+| `offset` | integer |  | `0` | Rows to skip within the time window. (>= 0) |
+| `qc_max` | integer \\| null |  | null | HH/HR FLUXNET: keep values whose _QC flag is at most this. (>= 0; <= 3) |
+| `qc_min_fraction` | number \\| null |  | null | DD and coarser FLUXNET: keep values whose _QC fraction is at least this. (>= 0; <= 1) |
+| `to_utc` | boolean |  | false | Add UTC timestamps (offset from the site's BIF). |
+| `view` | `full` \\| `subset` |  | `"full"` | subset: only FLUXNET2015 SUBSET variables (AmeriFlux FLUXNET files). |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `fileInfo` | FileInfo |  |
+| `columns` | array of ColumnSummary |  |
+| `rowColumns` | array of string \\| null |  |
+| `rows` | array of array of number \\| string \\| null \\| null |  |
+| `scan` | ScanInfo |  |
+| `page` | Page \\| null |  |
+
+## amf_read_bif
+
+**Read a local BADM (BIF) file.** Read a local BADM Interchange Format file, the site metadata shipped in BASE-BADM (xlsx) and AmeriFlux FLUXNET (CSV) downloads, also from inside the zip: entries by group (location, IGBP, team, instruments, disturbance …), UTC offsets with their start dates, the DOI and citation recorded for that version, and funding acknowledgments. Emails and addresses are withheld by default. stdio only. Next: call amf_get_citation for the current citation.
+
+| | |
+| --- | --- |
+| Surface | `local` |
+| Download identity | not needed |
+| Transports | stdio |
+| Annotations | readOnly=true, destructive=false, idempotent=true, openWorld=false |
+| Upstream endpoints | none |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `file` | string \\| null |  | null | A BIF xlsx or CSV, or an archive holding one (BASE-BADM, FLUXNET), relative to a local root. Or give site. (max length 1000) |
+| `site` | string \\| null |  | null | The newest local BIF of this site. (max length 20) |
+| `groups` | array of string \\| null |  | null | Only these groups, e.g. ['GRP_UTC_OFFSET', 'GRP_DOI']. (max items 40) |
+| `site_id` | string \\| null |  | null | In a bulk file (AA-Flx, AA-Net): only this site. (max length 20) |
+| `include_contacts` | boolean |  | false | Emails and addresses, if the server allows it (privacy settings). |
+| `limit` | integer |  | `100` | >= 1; <= 500 |
+| `offset` | integer |  | `0` | >= 0 |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `fileInfo` | BifFileInfo |  |
+| `entries` | array of BifEntryOut |  |
+| `utcOffsets` | array of UtcOffsetOut |  |
+| `citations` | array of BifCitation |  |
+| `acknowledgments` | array of BifAcknowledgment |  |
+| `withheld` | integer | Personal values withheld (emails, addresses, land owners). |
+| `page` | Page |  |
 
 ## amf_search_sites
 
@@ -1844,8 +2095,8 @@ descriptions here.
 | 3 | AmeriFlux API client, rate limiting, cache, site catalog and name resolution, policy engine, recorded test fixtures | done |
 | 4 | Site discovery and availability tools | done |
 | 5 | Variable, citation and BADM tools | done |
-| 6 | Local file readers and previews | next |
-| 7 | The download tool (merged only after AmeriFlux confirms third-party use) | planned |
+| 6 | Local file readers and previews | done |
+| 7 | The download tool (merged only after AmeriFlux confirms third-party use) | next |
 | 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | planned |
 
 The [tool reference](reference.md) is generated from the server's registry and lists
@@ -2395,6 +2646,8 @@ names belong to their respective owners; this site uses its own original artwork
 # Directory Update Log
 
 ## 2026-10-24
+* **Creation**: [Local files](tools/local-files.md) — `amf_list_files`, `amf_preview_data` and `amf_read_bif` (build step 6): local roots, file families, summaries, rows, QC filters, UTC offsets, the SUBSET view, BIF privacy and the archive safety rules.
+* **Update**: [Tool reference](tools/reference.md) regenerated (11 tools); [Roadmap](tools/roadmap.md) — step 6 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
 * **Creation**: [Variables](tools/variables.md) — `amf_search_variables` and `amf_describe_variables` (build step 5): the BASE and FLUXNET grammars, units and QC per resolution, the dictionaries, heights and coverage at a site.
 * **Creation**: [Citations and BADM](tools/citation.md) — `amf_get_citation` (versioned citations, effective policy, verbatim acknowledgments, site funding, BibTeX) and `amf_get_badm`.
 * **Update**: [Citing AmeriFlux and FLUXNET data](about/citing-ameriflux.md) — the FLUXNET2015 citation form and the FLUXNET2015 obligations as the policy page words them; [Tool reference](tools/reference.md) regenerated (8 tools); [Roadmap](tools/roadmap.md) — step 5 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.

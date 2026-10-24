@@ -85,6 +85,10 @@ Build steps 4 and 5 (2026-10-24; GET only):
 | E60 | `doi.org/10.18140/FLX/1440071` redirects to `fluxnet.org/doi/FLUXNET2015/US-Ha1`, whose template renders the citation as `{{author.name}} , ({{doiObject.tier2}}) {{dataProduct}} {{siteId}} {{doiObject.siteName}}, Dataset. https://doi.org/{{doiObject.DOI}}` from the same DOI API record: authors, the Tier Two year range, title, "Dataset", DOI. |
 | E61 | fluxnet.org/data/data-policy/ (FLUXNET2015): CC-BY-4.0 asks to cite Pastorello et al. 2020 and list each site by FLUXNET ID and/or per-site DOI (informing providers recommended); Tier Two asks to contact the providers "when you begin research that could lead to a publication", to give them at least three weeks after the first draft, and to list sites in a table; "In case of a synthesis using both CC-BY-4.0 and Tier Two data, all data should be treated as Tier Two." |
 | E62 | The measurement-height CSV of 2026-09-08 covers 587 sites (US-Ha1 138 rows, US-Myb 278, RU-Sam none); the amerifluxr coverage snapshot is unchanged since commit `7319e63` (2025-11-03, `create_date:2025-10-20`, 561 sites, years Y1990–Y2025). DataCite still records US-Ha1's BASE DOI without a version (2016, Harvard University). `fp_var` `HeightDirection` is `pos` for 125 names, `neg` for 7 (soil and water: SWC, TS, WTD …), null for 13. |
+| E63 | amerifluxr `inst/extdata` (2026-10-24): `AMF_US-CRT_BASE-BADM_2-5.zip` (22 226 B) holds `AMF_US-CRT_BASE_HH_2-5.csv` (28 098 B, 96 rows, 36 columns, `# Site:`/`# Version:` lines) and `AMF_US-CRT_BIF_20201005.xlsx` (12 172 B); `AMF_AA-Flx_BIF_CCBY4_20201218.xlsx` (27 839 B) covers US-CRT, US-Oho and US-WPT. The workbooks have one sheet, shared strings, numeric GROUP_IDs and the five BIF columns. They carry personal data: TEAM_MEMBER_EMAIL, TEAM_MEMBER_ADDRESS, DOI_CONTRIBUTOR_EMAIL, SHIPPING_ADDRESS and a private LAND_OWNER. GRP_UTC_OFFSET has UTC_OFFSET only. The BIF's DOI_CITATION uses the older form "Authors (2011-2013) AmeriFlux US-CRT …, Dataset. https://doi.org/…". One GRP_REFERENCE_PAPER entry is spam ("Bank Instrument (2020) …"), passed on as written. |
+| E64 | ONEFlux README (version 20260106): FLUXMET, BIFVARINFO and ERA5 files per resolution and one BIF file, named `[N]_[CC-###]_FLUXNET_<KIND>_[T]_[YS]-[YE]_[V]_[R].csv`; "comma delimited, with first row as header", missing -9999, local standard time without DST; BIF and BIFVARINFO follow the BIF standard (Pastorello et al. 2020, Table SM8). |
+| E65 | fluxnet.org FULLSET and SUBSET pages: AUXMETEO holds ERA-Interim downscaling results for TA, PA, VPD, WS, P, SW_IN, LW_IN, LW_IN_JSB (ERA_SLOPE, ERA_INTERCEPT, ERA_RMSE, ERA_CORRELATION); AUXNEE holds USTAR results (USTAR_MP_METHOD, USTAR_CP_METHOD, NEE_USTAR50_[UT], NEE_[UT]_REF …). The column layout is not documented, so both are read as plain tables (D31). |
+| E66 | Preview throughput (stdio, one core): a 95 MB BASE HH file (64 columns, 210 240 rows) summarizes 2 columns in 0.73 s and all 64 in 4.3 s; a one-month window stops after reading 84 MB (0.52 s). |
 
 ## 1. The amfcdn.lbl.gov API (verified 2026-10-22)
 
@@ -327,8 +331,10 @@ server.json; edi has no Dockerfile or release workflow; the umbrella installer i
   FLUXNET v1.3 (Q3).
 - Whether `data_download` accepts FLUXNET2015; whether `paper_test/` is sanctioned (Q6).
 - `If-Match` support on ftp.fluxdata.org (D16).
-- BIF CSV columns and the UTC offset location inside FLUXNET zips (P5); README/licence
-  files inside current BASE-BADM zips (P6); AUXMETEO/AUXNEE layout.
+- BIF CSV columns and the UTC offset location inside FLUXNET zips (P5; the README says
+  BIF standard, E64); README/licence files inside current BASE-BADM zips (P6);
+  AUXMETEO/AUXNEE column layout (E65). The readers were tested on amerifluxr's real
+  BASE-BADM sample (E63) and on synthetic archives, not yet on a current download.
 - Measurement Height release cadence.
 - The FLUXNET-CH4 reference paper for citations (Q8).
 - The comma in the FLUXNET DOI page template (`{{author.name}} , (…)`) is presumably the

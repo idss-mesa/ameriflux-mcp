@@ -10,7 +10,7 @@ tags:
   - windows
 generated:
   by: "claude/opus-5.5"
-  at: "2026-10-23T00:00:00Z"
+  at: "2026-10-24T00:00:00Z"
 sources:
   - id: uv
     resource: "https://docs.astral.sh/uv/"
@@ -37,12 +37,12 @@ stale_after: "2027-04-23T00:00:00Z"
 ameriflux-mcp is a Python 3.11+ package with one command, `ameriflux-mcp`, that MCP
 clients start over stdio. These instructions cover macOS, Linux and Windows.
 
-!!! warning "Under construction: build step 5 of 8"
+!!! warning "Under construction: build step 6 of 8"
 
     ameriflux-mcp is being built in eight steps (see the [roadmap](../tools/roadmap.md)).
     The server installs and starts on every client below, and site search, site details,
-    data availability, variables, citations and BADM work today; local files and
-    downloads arrive in steps 6–7. The [tool reference](../tools/reference.md) always lists what the
+    data availability, variables, citations, BADM and local file previews work today;
+    downloads arrive in step 7. The [tool reference](../tools/reference.md) always lists what the
     current build offers. Every step on this page works as written today.
 
 !!! note "Private repository and no PyPI release yet"

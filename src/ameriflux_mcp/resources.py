@@ -1,8 +1,9 @@
 """MCP resources: static guides and references, derived references and the site template.
 
-* Static (``resources_static/``, ``cacheScope: public``): the identity, data-policy and
-  variable-grammar guides, the vocabularies (built from AmeriFlux's own IGBP and Köppen
-  text), the FLUXNET variable dictionary and the curated LTER crosswalk (draft).
+* Static (``resources_static/``, ``cacheScope: public``): the identity, data-policy,
+  variable-grammar, file-formats and FLUXNET2015-access guides, the vocabularies (built
+  from AmeriFlux's own IGBP and Köppen text), the FLUXNET variable dictionary and the
+  curated LTER crosswalk (draft).
 * Derived (``public``: nothing depends on the caller): the NEON crosswalk and the
   ``ameriflux://site/{site_id}`` card (the ``amf_get_site`` payload) from the site
   catalog, the FP Standard list (live, or the bundled snapshot) and the verbatim
@@ -72,6 +73,22 @@ class _Template:
 
 
 STATIC: tuple[_Static, ...] = (
+    _Static(
+        "ameriflux://guide/file-formats",
+        "file-formats.md",
+        "text/markdown",
+        "File formats",
+        "Names and contents of BASE, BADM (BIF), AmeriFlux FLUXNET and FLUXNET2015 files: "
+        "members, timestamps, -9999, UTC offsets, QC, previews and the safety rules.",
+    ),
+    _Static(
+        "ameriflux://guide/fluxnet2015-access",
+        "fluxnet2015-access.md",
+        "text/markdown",
+        "FLUXNET2015 access",
+        "How to get FLUXNET2015 zips from fluxnet.org yourself and read them here through "
+        "local.roots; why the server never automates the login or uses unofficial copies.",
+    ),
     _Static(
         "ameriflux://guide/identity",
         "identity.md",

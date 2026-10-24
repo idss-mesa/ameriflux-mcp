@@ -37,8 +37,8 @@ descriptions here.
 | 3 | AmeriFlux API client, rate limiting, cache, site catalog and name resolution, policy engine, recorded test fixtures | done |
 | 4 | Site discovery and availability tools | done |
 | 5 | Variable, citation and BADM tools | done |
-| 6 | Local file readers and previews | next |
-| 7 | The download tool (merged only after AmeriFlux confirms third-party use) | planned |
+| 6 | Local file readers and previews | done |
+| 7 | The download tool (merged only after AmeriFlux confirms third-party use) | next |
 | 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | planned |
 
 The [tool reference](reference.md) is generated from the server's registry and lists
