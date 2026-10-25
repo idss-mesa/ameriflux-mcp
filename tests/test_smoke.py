@@ -74,8 +74,19 @@ def test_check_without_identity_is_offline(
         "protocolVersion": "2026-07-28",
         "transport": "stdio",
         "identityConfigured": False,
-        "downloadsEnabled": True,
+        "downloadsEnabled": False,
     }
+
+
+def test_downloads_flag_enables_and_conflicts(
+    clean_env: pytest.MonkeyPatch, no_network: None, capsys: pytest.CaptureFixture[str]
+) -> None:
+    assert cli.main(["--check", "--log-level", "error", "--downloads"]) == 0
+    report = json.loads(capsys.readouterr().out.strip().splitlines()[-1])
+    assert report["downloadsEnabled"] is True
+    with pytest.raises(SystemExit) as exc:
+        cli.main(["--check", "--downloads", "--no-downloads"])
+    assert exc.value.code == 2
 
 
 def test_check_with_identity_never_prints_it(

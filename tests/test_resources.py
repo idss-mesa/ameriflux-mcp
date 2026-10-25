@@ -8,7 +8,6 @@ import pytest
 
 from ameriflux_mcp.errors import ToolError
 from ameriflux_mcp.instructions import SERVER_INSTRUCTIONS
-from ameriflux_mcp.prompts import PROMPTS, get_prompt, list_prompts
 from ameriflux_mcp.registry import get_registered_tools
 from ameriflux_mcp.resources import (
     DERIVED_TTL_MS,
@@ -43,10 +42,12 @@ def test_listing_is_sorted_and_tagged() -> None:
     uris = [str(r.uri) for r in resources]
     assert uris == sorted(uris)
     assert uris == [
+        "ameriflux://guide/agent-workflow",
         "ameriflux://guide/data-policy",
         "ameriflux://guide/file-formats",
         "ameriflux://guide/fluxnet2015-access",
         "ameriflux://guide/identity",
+        "ameriflux://guide/products",
         "ameriflux://guide/variable-grammar",
         "ameriflux://reference/acknowledgments",
         "ameriflux://reference/fluxnet-variables",
@@ -112,6 +113,8 @@ async def test_variable_and_policy_references(server: AmeriFluxServer) -> None:
     assert "Tier Two" in acks["fluxnet2015"]["mixing"]
     for uri, phrases in {
         "ameriflux://guide/data-policy": ("CC-BY + Legacy = Legacy", "Tier Two", "RU-Sam"),
+        "ameriflux://guide/agent-workflow": ("confirm=true", "never write the", "nextOffset"),
+        "ameriflux://guide/products": ("fluxnet_requires_ccby", "AA-Net", "view='subset'"),
         "ameriflux://guide/variable-grammar": ("_H_V_R", "GPP_NT_VUT_REF", "gC m-2 d-1"),
         "ameriflux://guide/file-formats": ("-9999", "UTC_OFFSET_DATE_START", "200:1"),
         "ameriflux://guide/fluxnet2015-access": ("AMERIFLUX_MCP_LOCAL__ROOTS", "never automates"),
@@ -164,15 +167,9 @@ def test_instructions() -> None:
         "confirm=true",
         "never invent",
         "DOI",
+        "ameriflux://guide/agent-workflow",
     ):
         assert phrase in SERVER_INSTRUCTIONS, phrase
-
-
-def test_prompts_are_empty_until_step_8() -> None:
-    assert PROMPTS == () and list_prompts() == []
-    with pytest.raises(ToolError) as exc:
-        get_prompt("find_flux_sites")
-    assert exc.value.code == "not_found"
 
 
 _TOOL_NAME_RE = re.compile(r"\bamf_[a-z_]+\b")

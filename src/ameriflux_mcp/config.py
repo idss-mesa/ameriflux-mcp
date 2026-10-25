@@ -293,19 +293,20 @@ class LimitsConfig(_Section):
         1024**3, ge=1024, description="Largest zip member read (uncompressed)."
     )
     tools_list_max_bytes: int = Field(
-        80_000,
+        85_000,
         ge=1000,
-        description="Conformance bound on the serialized tools/list result (67,948 B with the 12 "
-        "stdio tools of step 7; reset to measured x1.25 in step 8, as in neon-mcp).",
+        description="Conformance bound on the serialized tools/list result: 67,948 B measured "
+        "with the 12 stdio tools of v0.1.0, x1.25 (as neon-mcp).",
     )
 
 
 class DownloadsConfig(_Section):
     """Local downloads (stdio only, DESIGN.md D18)."""
 
-    enabled: bool | None = Field(
-        None,
-        description="Offer the download tool. Unset: true on stdio; never available over http.",
+    enabled: bool = Field(
+        False,
+        description="Offer the download tool (stdio only; never over http). Off by default until "
+        "AmeriFlux confirms third-party use of its download request (research/questions.md Q1).",
     )
     directory: Path = Field(
         Path("~/ameriflux-downloads"),
@@ -406,8 +407,8 @@ class Config(BaseModel):
         return data
 
     def effective_downloads_enabled(self, transport: str) -> bool:
-        """Downloads exist only on stdio, and only unless explicitly disabled."""
-        return transport == "stdio" and self.downloads.enabled is not False
+        """Downloads exist only on stdio, and only when explicitly enabled (DESIGN.md D18)."""
+        return transport == "stdio" and self.downloads.enabled
 
     def effective_disk_cache(self, transport: str) -> Path | None:
         """The disk cache directory: configured, else the default on stdio, else none."""

@@ -8,19 +8,16 @@
 
 A [Model Context Protocol](https://modelcontextprotocol.io) server (spec **2026-07-28**)
 for [AmeriFlux](https://ameriflux.lbl.gov) and [FLUXNET](https://fluxnet.org)
-eddy-covariance data. It will let agents find flux tower sites, check which products and
+eddy-covariance data. It lets agents find flux tower sites, check which products and
 years exist, understand FLUXNET variable names and QC flags, cite data under the right
-data policy, and preview files: AmeriFlux BASE and BADM, the AmeriFlux FLUXNET
+data policy, download with the user's consent, and preview files: AmeriFlux BASE and BADM, the AmeriFlux FLUXNET
 (FLUXNET-1F) product, and FLUXNET2015 FULLSET and SUBSET.
 
-> **Status: under construction (build step 7 of 8).** Site search (`amf_search_sites`),
-> site details (`amf_get_site`), availability (`amf_get_availability`), variables
-> (`amf_search_variables`, `amf_describe_variables`), citations (`amf_get_citation`),
-> BADM (`amf_get_badm`), local files (`amf_list_files`, `amf_preview_data`,
-> `amf_read_bif`) and consented downloads (`amf_download_data`, stdio only) work;
-> prompts, Docker and the v0.1.0 release arrive in step 8. See [DESIGN.md](DESIGN.md) for
-> decisions, [RESEARCH.md](RESEARCH.md) for verified API facts, and
-> `research/2026-10-22-plan.md` for the build plan.
+> **Status: v0.1.0.** Twelve tools (eight over HTTP), three prompts and the guide and
+> reference resources described below. The AmeriFlux API is undocumented, so the server
+> checks every response's shape and reports drift instead of guessing. See
+> [DESIGN.md](DESIGN.md) for decisions, [RESEARCH.md](RESEARCH.md) for verified API
+> facts, and [CHANGELOG.md](CHANGELOG.md) for what changed.
 
 ## Installation
 
@@ -52,7 +49,11 @@ claude mcp add ameriflux -s user -- /absolute/path/to/ameriflux-mcp/.venv/bin/am
 
 [Clients](docs/getting-started/clients.md) has the entries for every other client.
 
-## Planned tools (v0.1)
+Once v0.1.0 is on PyPI: `uvx ameriflux-mcp` (or `uv tool install ameriflux-mcp`). A
+`Dockerfile` serves the read-only HTTP tools: `docker compose up -d`, then
+`http://127.0.0.1:8080/mcp`.
+
+## Tools
 
 | Tool | What it does |
 |---|---|
@@ -69,13 +70,20 @@ claude mcp add ameriflux -s user -- /absolute/path/to/ameriflux-mcp/.venv/bin/am
 | `amf_preview_data` | Summaries and row windows from local files, with QC filtering |
 | `amf_read_bif` | Read BADM Interchange Format files |
 
+The last four run only over stdio, on the user's machine. Prompts: `find_flux_sites`,
+`plan_site_analysis`, `cite_flux_data`. Guides for agents: `ameriflux://guide/agent-workflow`,
+`products`, `data-policy`, `variable-grammar`, `identity`, `file-formats`,
+`fluxnet2015-access`.
+
 ## Downloads disclose who you are
 
 AmeriFlux downloads go through a request that sends your name, email and stated purpose
 to the site's principal investigators and to the AmeriFlux download log. ameriflux-mcp
-will never invent that information or let a model write it: it comes only from your own
+never invents that information or lets a model write it: it comes only from your own
 configuration, every download shows you the exact text first, and nothing is sent until
-you confirm. Discovery, availability, variables and citations need no identity at all.
+you confirm. Downloads are **off by default** until AmeriFlux confirms third-party use
+of its download request; `AMERIFLUX_MCP_DOWNLOADS__ENABLED=true` (or `--downloads`)
+turns them on. Discovery, availability, variables and citations need no identity at all.
 
 ## Data policy
 

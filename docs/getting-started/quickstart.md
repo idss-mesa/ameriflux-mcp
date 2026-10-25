@@ -31,12 +31,13 @@ stale_after: "2027-04-23T00:00:00Z"
 This walks through a first session in Claude Code[^claude-code-mcp]; other clients work
 the same way once connected ([Clients](clients.md)).
 
-!!! warning "A preview of the planned session"
+!!! note "Results abbreviated"
 
-    The tools below arrive in build steps 2–7 ([roadmap](../tools/roadmap.md)); the
-    arguments and results follow the design[^design] and may change in detail before
-    v0.1.0. Every step below works in the current build; step 6 needs a
-    [download identity](identity.md) before `confirm=true` sends anything.
+    The results below are shortened; the [tool reference](../tools/reference.md) lists
+    every field, following the design[^design]. Step 6 needs downloads turned on
+    (`AMERIFLUX_MCP_DOWNLOADS__ENABLED=true`; they are off by default) and a
+    [download identity](identity.md) before `confirm=true` sends anything. The
+    `plan_site_analysis` prompt runs the same sequence for chosen sites.
 
 ## 1. Register the server
 

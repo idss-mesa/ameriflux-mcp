@@ -20,9 +20,10 @@ privacy + recorded fixtures ✅ → 4 discovery tools (`amf_search_sites`, `amf_
 (`amf_search_variables`, `amf_describe_variables`, `amf_get_citation`, `amf_get_badm`,
 policy/grammar guides, FP/FLUXNET/acknowledgment references) ✅ → 6 local readers
 (`amf_list_files`, `amf_preview_data`, `amf_read_bif`, file-formats and FLUXNET2015-access
-guides) ✅ → 7 downloads (`amf_download_data`, ledger, verified transfers; built, merge
-gated on AmeriFlux support answering Q1 and Q4; see `research/questions.md`) → 8
-prompts, docs, server.json, Docker, v0.1.0.
+guides) ✅ → 7 downloads (`amf_download_data`, ledger, verified transfers) ✅ → 8
+prompts, guides, docs, server.json, Docker, release workflow ✅. Next: tag v0.1.0 after
+three green nightly runs (date the CHANGELOG heading first). AmeriFlux support has not
+yet answered Q1/Q4 (`research/questions.md`).
 
 ## Commands
 
@@ -42,7 +43,14 @@ scripts/install.sh --agents all --dry-run       # installer (test only in a sand
 uv run python scripts/gen_tools_reference.py && uv run python scripts/gen_config_reference.py
 uv run python scripts/okf_validate.py docs && uv run python scripts/gen_llms_txt.py
 uv run zensical build --clean --strict
+docker build -t ameriflux-mcp:local . && docker compose up -d   # HTTP image; /healthz on :8080
 ```
+
+Release: set `## [x.y.z] - YYYY-MM-DD` in CHANGELOG, bump `__version__` and both
+versions in `server.json`, merge, push tag `vX.Y.Z` (the `release` workflow checks they
+agree and publishes to PyPI from the `pypi` environment), then publish `server.json`
+with `mcp-publisher` (needs the public repo and the PyPI package). The only POSTing
+test is the manual `live-download` workflow.
 
 Docs follow AGENTS.md (OKF frontmatter, `docs/log.md` entry, regenerate `llms.txt` and the
 two references; CI fails on drift). GitHub Pages deploys only once the repository is
@@ -63,7 +71,8 @@ public (free plan).
 - Contact emails are stripped by default and never persisted (D19).
 - Validate the product × policy matrix client-side: the AmeriFlux network answers bad
   enums with 200 and empty rows (D6).
-- Read-mostly v1; downloads stdio-only, confined, behind `downloads.enabled` (D18).
+- Read-mostly v1; downloads stdio-only, confined, behind `downloads.enabled`, which is
+  **off by default** until AmeriFlux answers Q1 and Q4 (D18).
 - Config: `AMERIFLUX_MCP_<SECTION>__<FIELD>`; precedence flag > env > YAML > defaults;
   `.env` is not auto-loaded.
 - MIT, Copyright (c) 2026 The Regents of the University of New Mexico.
@@ -100,7 +109,8 @@ logged requests returned (the only files fetched; `?=` tag stripped) and
 root walker (`inventory.py`); `transport/` holds stdio and stateless HTTP; `resources.py`
 serves the guides (identity, data policy, variable grammar), the references and
 `ameriflux://site/{site_id}`;
-`prompts.py` is empty until step 8. `scripts/build_site_vocabularies.py` rebuilds
+`prompts.py` holds the three prompts (`find_flux_sites`, `plan_site_analysis`,
+`cite_flux_data`). `scripts/build_site_vocabularies.py` rebuilds
 `resources_static/vocabularies.json` (one GET of the site-search page);
 `scripts/build_variable_dictionaries.py` rebuilds `fluxnet-variables.json` and
 `fp-variables.json`. Tests: `conftest.py`

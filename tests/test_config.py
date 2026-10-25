@@ -25,7 +25,14 @@ def test_defaults_and_effective_values() -> None:
     assert cfg.privacy.allow_contact_emails is False
     assert cfg.limits.max_result_bytes == 50_000 and cfg.limits.preview_max_rows == 500
     assert cfg.limits.preview_scan_max_bytes == 256 * 1024 * 1024
-    assert cfg.effective_downloads_enabled("stdio") and not cfg.effective_downloads_enabled("http")
+    # Off until AmeriFlux confirms third-party use (D18); never over HTTP.
+    assert cfg.downloads.enabled is False
+    assert not cfg.effective_downloads_enabled("stdio")
+    assert not cfg.effective_downloads_enabled("http")
+    on = load_config(env={"AMERIFLUX_MCP_DOWNLOADS__ENABLED": "true"})
+    assert on.effective_downloads_enabled("stdio") and not on.effective_downloads_enabled("http")
+    flag = load_config(env={}, flag_overrides={"downloads_enabled": True})
+    assert flag.effective_downloads_enabled("stdio")
     assert cfg.downloads.directory.name == "ameriflux-downloads"
     assert cfg.local_roots() == [cfg.downloads.directory]
 

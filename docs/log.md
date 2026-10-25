@@ -1,6 +1,9 @@
 # Directory Update Log
 
 ## 2026-10-24
+* **Update**: downloads are off by default until AmeriFlux answers — [Downloads](tools/downloads.md), [Download identity](getting-started/identity.md), [Configuration](getting-started/configuration.md) (`--downloads`), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md).
+* **Creation**: [Prompts, resources and status](tools/prompts-and-resources.md) — the three prompts (build step 8), every guide and reference resource, the site template and `amf_ping`; [Sync downloads to CyVerse](getting-started/sync-cyverse.md), ported from neon-mcp with the download-in-progress check.
+* **Update**: v0.1.0 — [home](index.md), [Install](getting-started/install.md) (Docker ships; PyPI from the v0.1.0 tag), [Quickstart](getting-started/quickstart.md), [For AI agents](about/ai-agents.md), [Configuration](getting-started/configuration.md) and [Roadmap](tools/roadmap.md) (all eight steps done); [Downloads](tools/downloads.md) links the CyVerse sync.
 * **Creation**: [Downloads](tools/downloads.md) — `amf_download_data` (build step 7): products, the plan and its disclosure, the consent call and its checks, the transfer and integrity checks, what is written to disk.
 * **Update**: [Download identity](getting-started/identity.md) — the tool now exists; the `?=<user ID>` tag is stripped and nothing written holds the identity; [Tool reference](tools/reference.md) regenerated (12 tools); [Roadmap](tools/roadmap.md) — step 7 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
 * **Creation**: [Local files](tools/local-files.md) — `amf_list_files`, `amf_preview_data` and `amf_read_bif` (build step 6): local roots, file families, summaries, rows, QC filters, UTC offsets, the SUBSET view, BIF privacy and the archive safety rules.

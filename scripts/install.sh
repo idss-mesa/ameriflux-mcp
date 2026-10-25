@@ -586,6 +586,9 @@ if [[ $UNINSTALL -eq 0 ]]; then
   [[ -n "${SERVER_VERSION:-}" ]] && log "Version: $SERVER_VERSION"
   if [[ -n "$ID_USER" ]]; then
     log "Download identity: stored in each agent's server env (sent to site PIs only when you confirm a download)"
+    if [[ " ${EXTRA_ENV[*]:-} " != *" AMERIFLUX_MCP_DOWNLOADS__ENABLED=true "* ]]; then
+      log "Downloads: off (the default); add --env AMERIFLUX_MCP_DOWNLOADS__ENABLED=true to offer the download tool"
+    fi
   else
     log "Download identity: not stored; everything except downloads works without it (see --with-identity)"
   fi

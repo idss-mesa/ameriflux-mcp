@@ -30,7 +30,7 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | [`amf_get_citation`](#amf_get_citation) | Get citations and acknowledgments for sites | [citation](citation.md) | no |
 | [`amf_get_site`](#amf_get_site) | Get one AmeriFlux or FLUXNET site | [discovery](discovery.md) | no |
 | [`amf_list_files`](#amf_list_files) | List local AmeriFlux and FLUXNET files | [local](local-files.md) | no |
-| [`amf_ping`](#amf_ping) | Check ameriflux-mcp status | [core](roadmap.md) | no |
+| [`amf_ping`](#amf_ping) | Check ameriflux-mcp status | [core](prompts-and-resources.md) | no |
 | [`amf_preview_data`](#amf_preview_data) | Preview a local AmeriFlux or FLUXNET data file | [local](local-files.md) | no |
 | [`amf_read_bif`](#amf_read_bif) | Read a local BADM (BIF) file | [local](local-files.md) | no |
 | [`amf_search_sites`](#amf_search_sites) | Search AmeriFlux and FLUXNET sites | [discovery](discovery.md) | no |

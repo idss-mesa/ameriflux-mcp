@@ -74,6 +74,22 @@ class _Template:
 
 STATIC: tuple[_Static, ...] = (
     _Static(
+        "ameriflux://guide/agent-workflow",
+        "agent-workflow.md",
+        "text/markdown",
+        "Agent workflow",
+        "From a question to previewed, cited flux data in seven calls: search, site, "
+        "availability, variables, a consented download, preview, citation; inputs and errors.",
+    ),
+    _Static(
+        "ameriflux://guide/products",
+        "products.md",
+        "text/markdown",
+        "Data products",
+        "BASE-BADM, BIF, FLUXNET (FLUXNET-1F), FLUXNET2015 and FLUXNET-CH4: policies, which "
+        "to use, FULLSET vs SUBSET, bulk BADM and versions.",
+    ),
+    _Static(
         "ameriflux://guide/file-formats",
         "file-formats.md",
         "text/markdown",

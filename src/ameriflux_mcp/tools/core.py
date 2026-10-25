@@ -185,6 +185,12 @@ async def amf_ping(args: PingIn, ctx: ToolContext) -> PingResult:
         notes.append(
             "AMERIFLUX_MCP_IDENTITY__IS_TEST is unset; downloads refuse until it is true or false."
         )
+    if ctx.transport == "stdio" and not downloads:
+        notes.append(
+            "Downloads are off (the default until AmeriFlux confirms third-party use of its "
+            "download request): amf_download_data is not listed. The user turns it on with "
+            "AMERIFLUX_MCP_DOWNLOADS__ENABLED=true or --downloads; local files can always be read."
+        )
     if upstream is None:
         steps.append("amf_ping(check_api=true) to confirm the AmeriFlux API answers")
     return PingResult(

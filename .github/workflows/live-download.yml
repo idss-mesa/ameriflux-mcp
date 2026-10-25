@@ -41,6 +41,7 @@ jobs:
       - run: uv run pytest -q -s -m live_download tests/live/test_live_download.py
         env:
           AMERIFLUX_MCP_LIVE_DOWNLOAD: "1"
+          AMERIFLUX_MCP_DOWNLOADS__ENABLED: "true"
           AMERIFLUX_MCP_LIVE_SITE: ${{ inputs.site }}
           AMERIFLUX_MCP_IDENTITY__IS_TEST: ${{ inputs.is_test }}
           AMERIFLUX_USER_ID: ${{ secrets.AMERIFLUX_USER_ID }}

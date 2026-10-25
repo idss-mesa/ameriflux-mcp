@@ -41,8 +41,9 @@ FLUXNET data — sites, availability, variables, citations — do not scrape the
 pages: connect to the server and call its tools. Locally, run it over `stdio`
 (`claude mcp add ameriflux -s user -- ameriflux-mcp --transport stdio`); against a
 hosted instance, use Streamable HTTP at `https://<host>/mcp`
-(`claude mcp add --transport http ameriflux https://<host>/mcp`). The server is
-under construction; the [roadmap](../tools/roadmap.md) says which tools exist. The server
+(`claude mcp add --transport http ameriflux https://<host>/mcp`). Read
+`ameriflux://guide/agent-workflow` first; the
+[prompts](../tools/prompts-and-resources.md) package the usual tasks. The server
 implements MCP 2026-07-28[^mcp-spec]: `server/discover` and `tools/list`
 return the live, authoritative tool catalogue with JSON Schema inputs and
 outputs, and every list result carries cache hints. Use this documentation

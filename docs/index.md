@@ -22,12 +22,11 @@ Desktop, and stateless Streamable HTTP at `/mcp` when hosted. It is developed by
 [idss-mesa](https://github.com/idss-mesa){target=_blank} at the University of New
 Mexico and released under the MIT license.
 
-!!! warning "Under construction: build step 7 of 8"
+!!! info "Version 0.1.0"
 
-    Site search, site details, data availability, variables, citations, BADM, local
-    file previews and consented downloads work today; prompts, the Docker image and the
-    v0.1.0 release arrive in build step 8 (see the [roadmap](tools/roadmap.md)).
-    The [tool reference](tools/reference.md) lists what the current build offers.
+    Twelve tools (eight over HTTP), three [prompts](tools/prompts-and-resources.md) and
+    the guide and reference resources. The [tool reference](tools/reference.md) lists
+    every tool; the [roadmap](tools/roadmap.md) says what comes in 0.2.
 
 ## Install in one minute
 

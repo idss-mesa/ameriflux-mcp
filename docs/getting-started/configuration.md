@@ -46,9 +46,7 @@ mistyped email does not end up in a log). ameriflux-mcp does not load `.env` fil
 itself; export the variables (`set -a; . ./.env; set +a`) before starting it.
 
 The table at the end is generated from the code[^config-module]
-(`scripts/gen_config_reference.py`); CI fails if it drifts. Some settings configure
-tools that arrive in later build steps (previews, downloads, the cache); they are
-accepted now so configuration files do not need to change later.
+(`scripts/gen_config_reference.py`); CI fails if it drifts.
 
 ## The download identity
 
@@ -72,6 +70,7 @@ server logs a warning, without the value, when one is set. See
 | `--bind-address`, `--bind-port` | `server.bind_address`, `server.bind_port` |
 | `--log-level` | `server.log_level` |
 | `--download-dir PATH` | `downloads.directory` |
+| `--downloads` | `downloads.enabled = true` (stdio only) |
 | `--no-downloads` | `downloads.enabled = false` |
 | `--print-config` | print the effective configuration as YAML (identity shown as `***`) and exit |
 | `--check` | load the configuration, call `amf_ping` in-process (no network request), print a JSON report, exit 0 or 1 |
@@ -101,8 +100,10 @@ commit.
 
 ## Automatic values
 
-* `downloads.enabled`: the download tool exists only on stdio; over HTTP it is never
-  listed, whatever this says. `--no-downloads` (or `false`) removes it on stdio too.
+* `downloads.enabled`: **off by default** until AmeriFlux confirms third-party use of
+  its download request. Set it to `true` (or pass `--downloads`) to list the download
+  tool on stdio; over HTTP it is never listed, whatever this says. `--no-downloads`
+  forces it off.
 * `cache.disk_dir`: the on-disk cache is on for stdio and off for HTTP unless a
   directory is configured, so containers without a writable home still start.
 * `privacy.allow_contact_emails`: off on every transport. Contact emails of tower teams
@@ -154,8 +155,8 @@ commit.
 | `limits.preview_scan_max_bytes` | `AMERIFLUX_MCP_LIMITS__PREVIEW_SCAN_MAX_BYTES` | int | `268435456` | Most bytes a preview scans (256 MiB). |
 | `limits.preview_time_budget_s` | `AMERIFLUX_MCP_LIMITS__PREVIEW_TIME_BUDGET_S` | float | `20.0` | Wall-clock budget for one preview scan. |
 | `limits.zip_member_max_bytes` | `AMERIFLUX_MCP_LIMITS__ZIP_MEMBER_MAX_BYTES` | int | `1073741824` | Largest zip member read (uncompressed). |
-| `limits.tools_list_max_bytes` | `AMERIFLUX_MCP_LIMITS__TOOLS_LIST_MAX_BYTES` | int | `80000` | Conformance bound on the serialized tools/list result (67,948 B with the 12 stdio tools of step 7; reset to measured x1.25 in step 8, as in neon-mcp). |
-| `downloads.enabled` | `AMERIFLUX_MCP_DOWNLOADS__ENABLED` | bool \| null | unset | Offer the download tool. Unset: true on stdio; never available over http. |
+| `limits.tools_list_max_bytes` | `AMERIFLUX_MCP_LIMITS__TOOLS_LIST_MAX_BYTES` | int | `85000` | Conformance bound on the serialized tools/list result: 67,948 B measured with the 12 stdio tools of v0.1.0, x1.25 (as neon-mcp). |
+| `downloads.enabled` | `AMERIFLUX_MCP_DOWNLOADS__ENABLED` | bool | `false` | Offer the download tool (stdio only; never over http). Off by default until AmeriFlux confirms third-party use of its download request (research/questions.md Q1). |
 | `downloads.directory` | `AMERIFLUX_MCP_DOWNLOADS__DIRECTORY` | Path | `~/ameriflux-downloads` | Directory every download is confined to (created on first use). |
 | `downloads.max_files_per_call` | `AMERIFLUX_MCP_DOWNLOADS__MAX_FILES_PER_CALL` | int | `50` | Most files one download call transfers. |
 | `downloads.max_bytes_per_call` | `AMERIFLUX_MCP_DOWNLOADS__MAX_BYTES_PER_CALL` | int | `2147483648` | Most bytes one download call transfers (2 GiB). |
