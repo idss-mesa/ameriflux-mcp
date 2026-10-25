@@ -383,7 +383,7 @@ commit.
 | `limits.preview_scan_max_bytes` | `AMERIFLUX_MCP_LIMITS__PREVIEW_SCAN_MAX_BYTES` | int | `268435456` | Most bytes a preview scans (256 MiB). |
 | `limits.preview_time_budget_s` | `AMERIFLUX_MCP_LIMITS__PREVIEW_TIME_BUDGET_S` | float | `20.0` | Wall-clock budget for one preview scan. |
 | `limits.zip_member_max_bytes` | `AMERIFLUX_MCP_LIMITS__ZIP_MEMBER_MAX_BYTES` | int | `1073741824` | Largest zip member read (uncompressed). |
-| `limits.tools_list_max_bytes` | `AMERIFLUX_MCP_LIMITS__TOOLS_LIST_MAX_BYTES` | int | `80000` | Conformance bound on the serialized tools/list result (59,945 B with the 11 stdio tools of step 6; reset to measured x1.25 in step 8, as in neon-mcp). |
+| `limits.tools_list_max_bytes` | `AMERIFLUX_MCP_LIMITS__TOOLS_LIST_MAX_BYTES` | int | `80000` | Conformance bound on the serialized tools/list result (67,948 B with the 12 stdio tools of step 7; reset to measured x1.25 in step 8, as in neon-mcp). |
 | `downloads.enabled` | `AMERIFLUX_MCP_DOWNLOADS__ENABLED` | bool \| null | unset | Offer the download tool. Unset: true on stdio; never available over http. |
 | `downloads.directory` | `AMERIFLUX_MCP_DOWNLOADS__DIRECTORY` | Path | `~/ameriflux-downloads` | Directory every download is confined to (created on first use). |
 | `downloads.max_files_per_call` | `AMERIFLUX_MCP_DOWNLOADS__MAX_FILES_PER_CALL` | int | `50` | Most files one download call transfers. |
@@ -451,11 +451,11 @@ exist, describing variables, getting citations and previewing files you already 
 all work anonymously. Only **downloading data from AmeriFlux** needs an identity, and
 this page explains why, what is disclosed, and how to configure it.
 
-!!! info "Available from build step 7"
+!!! info "Used by amf_download_data"
 
-    The download tool (`amf_download_data`) is the seventh build step, and it ships only
-    once AmeriFlux confirms that third-party clients may use its download request. Until
-    then you can store an identity with the installer, but nothing uses it.
+    The download tool (build step 7) is the only part of ameriflux-mcp that uses the
+    identity. [Downloads](../tools/downloads.md) walks through the plan, the consent
+    call and what is written to disk.
 
 ## What a download discloses, and to whom
 
@@ -481,7 +481,10 @@ ameriflux-mcp therefore follows four rules:
 
 ameriflux-mcp never builds download links itself and never uses unofficial mirrors: every
 file comes through AmeriFlux's logged route, so PIs are notified as they are for
-downloads from the AmeriFlux website.
+downloads from the AmeriFlux website. The links AmeriFlux returns end in a
+`?=<user ID>` tag; ameriflux-mcp strips it before fetching, so only the logged request
+carries your identity, and nothing it writes to disk (files, checksum sidecars,
+manifests) contains your user ID, email, name or description.
 
 ## Create an AmeriFlux account
 
@@ -672,12 +675,12 @@ stale_after: "2027-04-23T00:00:00Z"
 ameriflux-mcp is a Python 3.11+ package with one command, `ameriflux-mcp`, that MCP
 clients start over stdio. These instructions cover macOS, Linux and Windows.
 
-!!! warning "Under construction: build step 6 of 8"
+!!! warning "Under construction: build step 7 of 8"
 
     ameriflux-mcp is being built in eight steps (see the [roadmap](../tools/roadmap.md)).
     The server installs and starts on every client below, and site search, site details,
-    data availability, variables, citations, BADM and local file previews work today;
-    downloads arrive in step 7. The [tool reference](../tools/reference.md) always lists what the
+    data availability, variables, citations, BADM, local file previews and consented
+    downloads work today; prompts, Docker and the release arrive in step 8. The [tool reference](../tools/reference.md) always lists what the
     current build offers. Every step on this page works as written today.
 
 !!! note "Private repository and no PyPI release yet"
@@ -1127,9 +1130,8 @@ the same way once connected ([Clients](clients.md)).
 
     The tools below arrive in build steps 2–7 ([roadmap](../tools/roadmap.md)); the
     arguments and results follow the design[^design] and may change in detail before
-    v0.1.0. Steps 2–5 and 7 below (`amf_ping`, site search, availability, variables,
-    citations) work today; in step 6 the preview works on files you already have, and
-    the download tool arrives in build step 7.
+    v0.1.0. Every step below works in the current build; step 6 needs a
+    [download identity](identity.md) before `confirm=true` sends anything.
 
 ## 1. Register the server
 
@@ -1189,7 +1191,8 @@ temperature in each day.
 → a **plan**, not a download: the exact user ID (masked), email (masked), intended use
 and description that would be sent to the US-Ha1 PIs, the data policy (`CCBY4.0`) and
 what it asks of you. Only `confirm=true` with `accept_data_policy="CCBY4.0"` sends the
-request; the files land in `~/ameriflux-downloads` with a checksum record. Then
+request; the files land in `~/ameriflux-downloads/FLUXNET/` with a checksum record
+(see [Downloads](../tools/downloads.md)). Then
 `amf_preview_data(site="US-Ha1", product="FLUXNET", resolution="DD")` summarizes the
 daily file without loading it all.
 
@@ -1480,6 +1483,150 @@ with empty rows rather than an error.
 [^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
 [^amf-sites]: AmeriFlux site search. <https://ameriflux.lbl.gov/sites/site-search/>
 
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/downloads/
+
+---
+title: "Downloads"
+description: "Download AmeriFlux BASE-BADM, FLUXNET and bulk BADM with amf_download_data: a plan first, consent with confirm=true, verified files and sidecars."
+type: Guide
+tags:
+  - tools
+  - downloads
+  - identity
+  - data-policy
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-24T00:00:00Z"
+sources:
+  - id: amf-policy
+    resource: "https://ameriflux.lbl.gov/data/data-policy/"
+    title: "AmeriFlux Data Policy"
+    author: "team:ameriflux"
+  - id: research
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md"
+    title: "ameriflux-mcp verified research (section 5, downloads)"
+    author: "team:idss-mesa"
+  - id: design
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md"
+    title: "ameriflux-mcp design (D11-D18, D37)"
+    author: "team:idss-mesa"
+status: draft
+stale_after: "2027-01-24T00:00:00Z"
+---
+
+# Downloads
+
+`amf_download_data` downloads AmeriFlux data through the route the AmeriFlux website
+uses: one request that tells the site PIs who is downloading and why[^amf-policy]. It
+runs only over **stdio**, needs a [download identity](../getting-started/identity.md),
+and can be switched off with `downloads.enabled=false` (or `--no-downloads`). Inputs and
+result fields are in the [Tool reference](reference.md).
+
+| Product | `sites` | What arrives |
+| --- | --- | --- |
+| `BASE-BADM` (default) | up to 20 sites | `AMF_<SITE>_BASE-BADM_<ver>.zip`: the BASE CSV and the site's BIF |
+| `FLUXNET` | up to 20 CC-BY-4.0 sites | `AMF_<SITE>_FLUXNET_<years>_v1.3_r1.zip` (FULLSET) |
+| `BIF` | `AA-Flx` (sites with data) or `AA-Net` (all sites) | the bulk BADM workbook |
+
+FLUXNET2015 and FLUXNET-CH4 files come from fluxnet.org's login-protected form, which
+ameriflux-mcp does not automate (`feature_unavailable`; see
+`ameriflux://guide/fluxnet2015-access`).
+
+## 1. The plan
+
+Without `confirm`, the tool returns a plan and sends nothing:
+
+```json
+{"tool": "amf_download_data", "arguments": {"sites": ["AR-Bal", "CA-Let"], "product": "FLUXNET"}}
+```
+
+- `disclosure`: the request AmeriFlux would receive. The user ID, email and name show as
+  `configured (not shown)`; the intended-use category and the description appear in
+  full, with ` [ameriflux-mcp]` appended, because that is what the PIs read. `recipients`
+  says who receives it: the PIs of each site and the AmeriFlux Data Download Log.
+- `eligible` and `ineligible`: here CA-Let is ineligible, because it shares its data
+  under the Legacy policy and the FLUXNET product is CC-BY-4.0 only.
+- `policy`: the policy code to accept (`CCBY4.0` or `LEGACY`), why, and its
+  obligations. For BASE-BADM, one Legacy site makes the whole request Legacy, unless you
+  ask for `policy='CCBY4.0'`, which leaves the Legacy sites out.
+- `blockers` and `ready`: what must be configured first (the identity, a complete
+  profile, `is_test`).
+- `localCopies`: matching files already in the download directory. A new request still
+  notifies the PIs, so read those first if they are current.
+
+## 2. Consent
+
+The agent shows the user the plan. Only if they agree does it call again with
+`confirm=true` and `accept_data_policy` set to the plan's policy:
+
+```json
+{"tool": "amf_download_data", "arguments": {"sites": ["AR-Bal"], "product": "FLUXNET", "accept_data_policy": "CCBY4.0", "confirm": true}}
+```
+
+The checks run in this order, and each fails before anything is sent: the product and
+policy combination, then the accepted policy (`policy_not_accepted`,
+`policy_mismatch`), then the identity (`auth_required` with `identity_missing`,
+`profile_missing`, `profile_incomplete` or `is_test_unset`), then at least one eligible
+site.
+
+!!! warning "Each confirmed call is a new request"
+
+    Every `confirm=true` call sends one request, and AmeriFlux notifies the PIs again,
+    so the tool is marked not idempotent[^design]. A file already on disk is kept rather than
+    fetched twice, but the request is still logged.
+
+## 3. The transfer
+
+AmeriFlux answers with links to static files on `ftp.fluxdata.org`[^research]. The
+server:
+
+1. keeps only links on its allow-list (`/.ameriflux_downloads/`), with a plain file name,
+   for a requested site; `FLUXNET-BIF` links are skipped, as amerifluxr does. Each skipped
+   link is listed in `skipped` with the reason;
+2. strips the `?=<user_id>` tag from each link, so the file server never receives the
+   identity. The file is the same with or without it;
+3. sends a HEAD for the size and ETag, and checks `downloads.max_file_bytes` (1 GiB),
+   `downloads.max_bytes_per_call` (2 GiB), `downloads.max_files_per_call` and the free
+   disk space;
+4. streams the file to `<name>.part` with `If-Match`, then checks that the ETag, the
+   Content-Length and the byte count match the HEAD, and that every zip member passes
+   its CRC;
+5. moves it to `<downloads.directory>/<product>/<name>` and writes `<name>.amf.json`
+   beside it.
+
+A file that fails any check is not kept (`status: failed`, `checksum_mismatch`) and no
+`.part` file is left behind. With `if_exists='skip'` (the default) an existing file is
+kept, and `identical` says whether it matches the server copy; `if_exists='replace'`
+fetches it again unless it is identical.
+
+## What is written
+
+```text
+~/ameriflux-downloads/
+  FLUXNET/AMF_AR-Bal_FLUXNET_2012-2013_v1.3_r1.zip
+  FLUXNET/AMF_AR-Bal_FLUXNET_2012-2013_v1.3_r1.zip.amf.json
+  manifests/amf_download_20261024T120000Z_FLUXNET.json
+```
+
+| File | Holds |
+| --- | --- |
+| `<name>.amf.json` | sha256, bytes, ETag, Last-Modified, the link without its tag, site, product, policy, version, download time, `isTest`, the site's citation and the policy obligations |
+| `manifests/…json` | the request (sites, product, policy, profile name, intended-use category, `isTest`), each file's outcome, skipped links, AmeriFlux's manifest rows and the citations |
+
+Neither file holds the user ID, email, name or description. AmeriFlux also returns the
+PIs' contact emails: the result reports how many (`piContactCount`), and the emails are
+never stored or shown.
+
+## After the download
+
+`amf_preview_data(file=…)` reads the zip in place, `amf_read_bif(file=…)` reads the
+site's BADM, and `amf_get_citation` gives the citations and obligations for the
+reference list. See [Local files](local-files.md).
+
+[^amf-policy]: AmeriFlux Data Policy. <https://ameriflux.lbl.gov/data/data-policy/>
+[^research]: ameriflux-mcp verified research. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md>
+[^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
+
 ---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/local-files/
 
 ---
@@ -1627,7 +1774,7 @@ tags:
   - generated
 generated:
   by: "process:gen_tools_reference"
-  at: "2026-10-24T00:00:00Z"
+  at: "2026-10-25T00:00:00Z"
 sources:
   - id: registry
     resource: "https://github.com/idss-mesa/ameriflux-mcp/tree/main/src/ameriflux_mcp/tools"
@@ -1638,11 +1785,12 @@ status: stable
 
 # Tool reference
 
-Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edit by hand. 11 tools are registered; `amf_list_files`, `amf_preview_data`, `amf_read_bif` are offered only over stdio. Inputs are snake_case and outputs camelCase. Every result also carries `resolved`, `notes`, `nextSteps` and `source` (whose `backend` says what answered: the AmeriFlux API, its file server, or nothing upstream), and failures return `structuredContent.error` with a stable `code`. Tools still to come are on the [roadmap](roadmap.md).
+Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edit by hand. 12 tools are registered; `amf_download_data`, `amf_list_files`, `amf_preview_data`, `amf_read_bif` are offered only over stdio. Inputs are snake_case and outputs camelCase. Every result also carries `resolved`, `notes`, `nextSteps` and `source` (whose `backend` says what answered: the AmeriFlux API, its file server, or nothing upstream), and failures return `structuredContent.error` with a stable `code`. Tools still to come are on the [roadmap](roadmap.md).
 
 | Tool | Title | Family | Download identity |
 | --- | --- | --- | --- |
 | [`amf_describe_variables`](#amf_describe_variables) | Describe variable names: grammar, units, QC and sites | [variables](variables.md) | no |
+| [`amf_download_data`](#amf_download_data) | Download AmeriFlux data (with consent) | [data](downloads.md) | required |
 | [`amf_get_availability`](#amf_get_availability) | Get data availability per site and product | [availability](discovery.md) | no |
 | [`amf_get_badm`](#amf_get_badm) | Get a site's BADM metadata | [metadata](citation.md) | no |
 | [`amf_get_citation`](#amf_get_citation) | Get citations and acknowledgments for sites | [citation](citation.md) | no |
@@ -1680,6 +1828,53 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | --- | --- | --- |
 | `variables` | array of VariableDescription |  |
 | `page` | Page |  |
+
+## amf_download_data
+
+**Download AmeriFlux data (with consent).** Download AmeriFlux BASE-BADM, FLUXNET (FULLSET) or bulk BADM (BIF: AA-Flx/AA-Net) through AmeriFlux's logged route; stdio only. confirm=false (default) returns a plan: the exact text sent to the site PIs and the download log, eligible sites and the data policy; nothing is sent. Only after the user approves it, call again with confirm=true and accept_data_policy set to the plan's policy. Files are verified (size, ETag, zip CRC; sha256 sidecar). Next: amf_preview_data on a downloaded file.
+
+| | |
+| --- | --- |
+| Surface | `data` |
+| Download identity | required (stdio only) |
+| Transports | stdio |
+| Annotations | readOnly=false, destructive=false, idempotent=false, openWorld=true |
+| Upstream endpoints | `POST amfcdn.lbl.gov/api/v1/data_download`<br>`HEAD ftp.fluxdata.org/.ameriflux_downloads/{product}/{file}`<br>`GET ftp.fluxdata.org/.ameriflux_downloads/{product}/{file}`<br>`GET amfcdn.lbl.gov/api/v1/data_availability/AmeriFlux/{product}/{policy}`<br>`GET amfcdn.lbl.gov/api/v1/DOI/{site}/{product}` |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `sites` | array of string | yes |  | Site IDs, NEON codes or names (up to 20); for product='BIF', AA-Flx (sites with flux data) or AA-Net (all sites). (min items 1; max items 20) |
+| `product` | string |  | `"BASE-BADM"` | BASE-BADM, FLUXNET (FLUXNET-1F, FULLSET) or BIF (bulk BADM). FLUXNET2015 and FLUXNET-CH4 come from fluxnet.org (ameriflux://guide/fluxnet2015-access). |
+| `policy` | string \\| null |  | null | CCBY4.0 or LEGACY. Default: the policy the sites require (Legacy if any selected site is Legacy). FLUXNET is CC-BY-4.0 only. |
+| `profile` | string |  | `"default"` | Name of the configured identity profile (intended use and description). (pattern `^[A-Za-z0-9_.-]{1,64}$`) |
+| `accept_data_policy` | string \\| null |  | null | With confirm=true: the policy code the plan showed (CCBY4.0 or LEGACY), meaning the user accepts it. |
+| `confirm` | boolean |  | false | false: return the plan only. true: send the request, only after the user approved the plan. |
+| `if_exists` | `skip` \\| `replace` |  | `"skip"` | A file already downloaded: skip keeps it; replace fetches it again unless it is identical. |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `mode` | `plan` \\| `download` |  |
+| `product` | string |  |
+| `dataProduct` | string | The product AmeriFlux receives (BIF goes as BASE-BADM). |
+| `policy` | PolicyOut |  |
+| `eligible` | array of SiteChoice |  |
+| `ineligible` | array of IneligibleSite |  |
+| `disclosure` | DisclosureOut |  |
+| `identity` | IdentityOut |  |
+| `ready` | boolean | Whether confirm=true would send the request now. |
+| `blockers` | array of string | What must change first. |
+| `localCopies` | array of LocalCopy |  |
+| `downloadDir` | string |  |
+| `files` | array of FileOut |  |
+| `skipped` | array of SkippedLink |  |
+| `manifest` | ManifestOut \\| null |  |
+| `piContactCount` | integer \\| null | PI contact emails AmeriFlux returned (never stored or shown). |
+| `citations` | array of CitationRef |  |
+| `totals` | Totals \\| null |  |
 
 ## amf_get_availability
 
@@ -2096,8 +2291,8 @@ descriptions here.
 | 4 | Site discovery and availability tools | done |
 | 5 | Variable, citation and BADM tools | done |
 | 6 | Local file readers and previews | done |
-| 7 | The download tool (merged only after AmeriFlux confirms third-party use) | next |
-| 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | planned |
+| 7 | The download tool (merged only after AmeriFlux confirms third-party use) | done |
+| 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | next |
 
 The [tool reference](reference.md) is generated from the server's registry and lists
 exactly the tools the current build offers.
@@ -2646,6 +2841,8 @@ names belong to their respective owners; this site uses its own original artwork
 # Directory Update Log
 
 ## 2026-10-24
+* **Creation**: [Downloads](tools/downloads.md) — `amf_download_data` (build step 7): products, the plan and its disclosure, the consent call and its checks, the transfer and integrity checks, what is written to disk.
+* **Update**: [Download identity](getting-started/identity.md) — the tool now exists; the `?=<user ID>` tag is stripped and nothing written holds the identity; [Tool reference](tools/reference.md) regenerated (12 tools); [Roadmap](tools/roadmap.md) — step 7 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
 * **Creation**: [Local files](tools/local-files.md) — `amf_list_files`, `amf_preview_data` and `amf_read_bif` (build step 6): local roots, file families, summaries, rows, QC filters, UTC offsets, the SUBSET view, BIF privacy and the archive safety rules.
 * **Update**: [Tool reference](tools/reference.md) regenerated (11 tools); [Roadmap](tools/roadmap.md) — step 6 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
 * **Creation**: [Variables](tools/variables.md) — `amf_search_variables` and `amf_describe_variables` (build step 5): the BASE and FLUXNET grammars, units and QC per resolution, the dictionaries, heights and coverage at a site.

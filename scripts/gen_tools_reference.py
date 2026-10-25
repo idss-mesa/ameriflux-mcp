@@ -38,6 +38,7 @@ FAMILY_PAGES: dict[str, str] = {
     "citation": "citation.md",
     "metadata": "citation.md",
     "local": "local-files.md",
+    "data": "downloads.md",
 }
 
 

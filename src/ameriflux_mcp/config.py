@@ -295,8 +295,8 @@ class LimitsConfig(_Section):
     tools_list_max_bytes: int = Field(
         80_000,
         ge=1000,
-        description="Conformance bound on the serialized tools/list result (59,945 B with the 11 "
-        "stdio tools of step 6; reset to measured x1.25 in step 8, as in neon-mcp).",
+        description="Conformance bound on the serialized tools/list result (67,948 B with the 12 "
+        "stdio tools of step 7; reset to measured x1.25 in step 8, as in neon-mcp).",
     )
 
 

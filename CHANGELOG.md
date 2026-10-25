@@ -8,6 +8,25 @@ All notable changes to ameriflux-mcp are documented here. The format follows
 
 ### Added
 
+- `amf_download_data` (build step 7, stdio only, behind `downloads.enabled`): BASE-BADM,
+  AmeriFlux FLUXNET (FULLSET) and bulk BADM (BIF as BASE-BADM for AA-Flx/AA-Net) through
+  AmeriFlux's logged `data_download` route. `confirm=false` returns a plan with the exact
+  disclosure (identity masked), eligible sites and the policy; `confirm=true` with
+  `accept_data_policy` sends one request with the configured identity and profile.
+  Not idempotent: each confirmed call notifies the PIs.
+- The URL ledger: only links from a logged request are fetched, with the `?=<user_id>`
+  tag stripped; links off the allow-list, unrequested sites and `FLUXNET-BIF` are
+  skipped and reported.
+- Verified transfers: HEAD, per-file/per-call/disk caps, GET with `If-Match`, ETag,
+  Content-Length and byte-count checks, zip CRC checks, `.part` files never left behind,
+  a `<name>.amf.json` sidecar (sha256, ETag, citation) and a per-call manifest, none of
+  them holding the identity or emails.
+- `AmeriFluxClient.post_download` (the one POST; not retried once sent) and
+  `stream_to_file`.
+- A manual `live-download` workflow (protected environment) and
+  `tests/live/test_live_download.py`.
+- Docs: the Downloads page; the identity guide gains the download flow.
+
 - `amf_list_files` (build step 6, stdio only): AmeriFlux and FLUXNET files in the download
   directory and `local.roots`, with archive members classified by family, kind (data,
   ERA, BIFVARINFO, BIF, aux table), site, resolution, years and version, and unsafe
@@ -25,6 +44,10 @@ All notable changes to ameriflux-mcp are documented here. The format follows
 - Docs: the Local files page.
 
 ### Changed
+
+- `amf_preview_data` reports `stepMinutes` for DD and WW files from the resolution
+  (they have a single `TIMESTAMP` column).
+- FLUXNET2015/FLUXNET-CH4 download errors point to `ameriflux://guide/fluxnet2015-access`.
 
 - `limits.tools_list_max_bytes` is 80 000 (59 945 B measured with 11 stdio tools).
 - NOTICE credits the FLUXNET Shuttle file-name pattern and the vendored US-CRT sample.

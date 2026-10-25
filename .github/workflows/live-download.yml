@@ -1,0 +1,49 @@
+name: live download (manual)
+
+# The only workflow that POSTs to AmeriFlux: one consented data_download request with the
+# maintainer's identity (DESIGN.md D11-D17). Manual dispatch only, never on a schedule or a
+# pull request. The `live-download` environment must be protected with required reviewers
+# and hold the identity secrets (Settings -> Environments); without it the job cannot run.
+
+on:
+  workflow_dispatch:
+    inputs:
+      is_test:
+        description: "Send as a test request (identity.is_test). Choose deliberately."
+        type: boolean
+        required: true
+        default: true
+      site:
+        description: "AmeriFlux site with a small FLUXNET product"
+        type: string
+        required: true
+        default: "AR-Bal"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-download
+  cancel-in-progress: false
+
+jobs:
+  live-download:
+    name: live download (one consented request)
+    runs-on: ubuntu-latest
+    environment: live-download
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.13"
+      - run: uv sync --all-extras
+      - run: uv run pytest -q -s -m live_download tests/live/test_live_download.py
+        env:
+          AMERIFLUX_MCP_LIVE_DOWNLOAD: "1"
+          AMERIFLUX_MCP_LIVE_SITE: ${{ inputs.site }}
+          AMERIFLUX_MCP_IDENTITY__IS_TEST: ${{ inputs.is_test }}
+          AMERIFLUX_USER_ID: ${{ secrets.AMERIFLUX_USER_ID }}
+          AMERIFLUX_USER_EMAIL: ${{ secrets.AMERIFLUX_USER_EMAIL }}
+          AMERIFLUX_INTENDED_USE: ${{ secrets.AMERIFLUX_INTENDED_USE }}
+          AMERIFLUX_DESCRIPTION: ${{ secrets.AMERIFLUX_DESCRIPTION }}

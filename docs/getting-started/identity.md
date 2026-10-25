@@ -39,11 +39,11 @@ exist, describing variables, getting citations and previewing files you already 
 all work anonymously. Only **downloading data from AmeriFlux** needs an identity, and
 this page explains why, what is disclosed, and how to configure it.
 
-!!! info "Available from build step 7"
+!!! info "Used by amf_download_data"
 
-    The download tool (`amf_download_data`) is the seventh build step, and it ships only
-    once AmeriFlux confirms that third-party clients may use its download request. Until
-    then you can store an identity with the installer, but nothing uses it.
+    The download tool (build step 7) is the only part of ameriflux-mcp that uses the
+    identity. [Downloads](../tools/downloads.md) walks through the plan, the consent
+    call and what is written to disk.
 
 ## What a download discloses, and to whom
 
@@ -69,7 +69,10 @@ ameriflux-mcp therefore follows four rules:
 
 ameriflux-mcp never builds download links itself and never uses unofficial mirrors: every
 file comes through AmeriFlux's logged route, so PIs are notified as they are for
-downloads from the AmeriFlux website.
+downloads from the AmeriFlux website. The links AmeriFlux returns end in a
+`?=<user ID>` tag; ameriflux-mcp strips it before fetching, so only the logged request
+carries your identity, and nothing it writes to disk (files, checksum sidecars,
+manifests) contains your user ID, email, name or description.
 
 ## Create an AmeriFlux account
 

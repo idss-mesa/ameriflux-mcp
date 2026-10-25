@@ -6,8 +6,10 @@ goes through :class:`AmeriFluxClient`. Rules (DESIGN.md D15, D21, D22, D24):
 * **Allow-list.** Each request's host and path prefix is checked against
   :data:`ALLOWED` before any socket opens; ``/.fluxnet_downloads_67934/paper_test/``
   is denied outright (E27). https only.
-* **Methods.** GET and HEAD. (The one consented ``data_download`` POST arrives with
-  the download tool in build step 7.) No request body, ever.
+* **Methods.** GET and HEAD, without a body. The one exception is
+  :meth:`AmeriFluxClient.post_download`: the consented ``POST v1/data_download`` of
+  ``amf_download_data`` (DESIGN.md D11, D13), refused for any other path, sent once
+  (retried only when the connection never opened) and never cached.
 * **Redirects are never followed**: a 3xx is an error, so a redirect cannot lead
   off the allow-list.
 * **Politeness.** A per-host token bucket and one semaphore
@@ -25,7 +27,9 @@ goes through :class:`AmeriFluxClient`. Rules (DESIGN.md D15, D21, D22, D24):
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
+import os
 import random
 import time
 from collections.abc import Awaitable, Callable, Mapping
@@ -40,6 +44,7 @@ import structlog
 from ameriflux_mcp import __version__
 from ameriflux_mcp.ameriflux.cache import CacheFamily, CacheStats, TTLCache, cache_key
 from ameriflux_mcp.ameriflux.endpoints import Endpoint, unwrap
+from ameriflux_mcp.ameriflux.ledger import Ledger
 from ameriflux_mcp.ameriflux.privacy import EMAIL_RE
 from ameriflux_mcp.ameriflux.ratelimit import RateLimiter
 from ameriflux_mcp.config import CacheConfig
@@ -64,6 +69,10 @@ ALLOWED: dict[str, tuple[str, ...]] = {
 #: Path fragments refused on every host (the unofficial FLUXNET2015 index, E27).
 DENIED_FRAGMENTS: tuple[str, ...] = ("/paper_test/",)
 ALLOWED_METHODS = frozenset({"GET", "HEAD"})
+#: The only path ever POSTed to, below the API base (DESIGN.md D11).
+DATA_DOWNLOAD_PATH = "v1/data_download"
+#: Where data files from a logged download request may live (D15): narrower than ALLOWED.
+DOWNLOAD_FILES: dict[str, tuple[str, ...]] = {"ftp.fluxdata.org": ("/.ameriflux_downloads/",)}
 SERVICES: dict[str, str] = {
     "amfcdn.lbl.gov": "The AmeriFlux API",
     "ftp.fluxdata.org": "The AmeriFlux file server",
@@ -89,6 +98,18 @@ def endpoint_label(method: str, url: str) -> str:
     """``GET host/path``: what ``source.endpoints`` shows (no scheme, query or fragment)."""
     parts = urlsplit(url)
     return f"{method} {(parts.hostname or '').lower()}{parts.path}"
+
+
+@dataclass(frozen=True)
+class Streamed:
+    """A body streamed to disk by :meth:`AmeriFluxClient.stream_to_file`."""
+
+    path: Path
+    bytes: int
+    sha256: str
+    etag: str | None
+    content_length: int | None
+    seconds: float
 
 
 @dataclass
@@ -134,6 +155,8 @@ class AmeriFluxClient:
         self.cache = TTLCache(
             cache_config or CacheConfig(), disk_dir=disk_dir, clock=clock, wall_clock=wall_clock
         )
+        #: URLs handed out by logged download requests: the only files fetched (D15).
+        self.ledger = Ledger()
         self.limiter = RateLimiter(
             requests_per_second=upstream.requests_per_second,
             max_concurrency=upstream.max_concurrency,
@@ -190,6 +213,18 @@ class AmeriFluxClient:
                 details=details,
             )
 
+    def check_download_link(self, url: str) -> None:
+        """A data file link from ``data_download``: allow-listed and on the file server."""
+        self.check_request("GET", url)
+        parts = urlsplit(url)
+        prefixes = DOWNLOAD_FILES.get((parts.hostname or "").lower(), ())
+        if not any(parts.path.startswith(p) for p in prefixes):
+            raise ToolError(
+                "download_denied",
+                "Data files are fetched only from ftp.fluxdata.org/.ameriflux_downloads/.",
+                details={"host": parts.hostname, "path": parts.path},
+            )
+
     # ------------------------------------------------------------------ sending
 
     async def _backoff(self, attempt: int) -> None:
@@ -206,12 +241,14 @@ class AmeriFluxClient:
                 pass
         return self.config.retries.retry_after_default_s
 
-    def _error(self, status: int, detail: str, url: str, **kw: Any) -> AmeriFluxApiError:
+    def _error(
+        self, status: int, detail: str, url: str, *, method: str = "GET", **kw: Any
+    ) -> AmeriFluxApiError:
         clean = EMAIL_RE.sub("[email]", redact(detail, registered_secrets()))
         return AmeriFluxApiError(
             status,
             clean.strip()[:300] or "no detail",
-            endpoint_label("GET", url),
+            endpoint_label(method, url),
             service=self.service(url),
             **kw,
         )
@@ -225,9 +262,13 @@ class AmeriFluxClient:
         accept: str | None,
         stats: UpstreamStats,
         read_timeout_s: float | None = None,
+        headers: Mapping[str, str] | None = None,
     ) -> httpx.Response:
         """One request with pacing and retries; returns an open (streamed) response."""
         self.check_request(method, url)
+        extra = dict(headers or {})
+        if accept:
+            extra["Accept"] = accept
         host = (urlsplit(url).hostname or "").lower()
         attempts = self.config.retries.max_attempts
         attempt = 0
@@ -240,7 +281,7 @@ class AmeriFluxClient:
                         method,
                         url,
                         params=dict(params) if params else None,
-                        headers={"Accept": accept} if accept else None,
+                        headers=extra or None,
                     )
                     if read_timeout_s:
                         request.extensions["timeout"] = httpx.Timeout(
@@ -330,6 +371,157 @@ class AmeriFluxClient:
             return Fetched(b"", status, content_type, label, headers)
         body = await self._read(response, url, max_bytes or self.config.max_response_bytes)
         return Fetched(body, status, content_type, label, headers)
+
+    # ------------------------------------------------------------------ downloads
+
+    async def post_download(self, body: Mapping[str, Any], *, stats: UpstreamStats) -> Any:
+        """The one POST: ``v1/data_download`` with the user's consented request body.
+
+        It carries the download identity, so it is sent once: a retry is made only when
+        the connection could not be opened (nothing reached AmeriFlux). A 5xx or a
+        timeout after sending is not retried, because AmeriFlux may already have
+        notified the site PIs. Errors are marked ``identity_sent``.
+        """
+        url = self.url(DATA_DOWNLOAD_PATH)
+        parts = urlsplit(url)
+        host = (parts.hostname or "").lower()
+        if parts.scheme != "https" and host not in ("127.0.0.1", "localhost"):
+            raise ToolError("download_denied", "Only https URLs are used.")
+        label = endpoint_label("POST", url)
+        stats.record_endpoint(label)
+        attempts = self.config.retries.max_attempts
+        attempt = 0
+        while True:
+            attempt += 1
+            try:
+                async with self.limiter.slot(host):
+                    response = await self._http.post(
+                        url,
+                        json=dict(body),
+                        headers={"Accept": "application/json"},
+                    )
+            except (httpx.ConnectError, httpx.ConnectTimeout) as exc:
+                if attempt < attempts:
+                    await self._backoff(attempt)
+                    continue
+                raise self._error(
+                    0, type(exc).__name__, url, method="POST", kind="transport", identity_sent=True
+                ) from None
+            except httpx.HTTPError as exc:
+                raise self._error(
+                    0, type(exc).__name__, url, method="POST", kind="transport", identity_sent=True
+                ) from None
+            break
+        stats.requests += 1
+        stats.identity_sent = True
+        _note_backend(stats, "amfcdn")
+        log.info("upstream.download_request", endpoint=label, status=response.status_code)
+        status = response.status_code
+        content_type = _content_type(response)
+        if status >= 300:
+            raise self._error(
+                status,
+                response.text[:_ERROR_BODY_BYTES],
+                url,
+                method="POST",
+                content_type=content_type,
+                identity_sent=True,
+                retry_after_s=self._retry_after(response.headers) if status == 429 else None,
+            )
+        if len(response.content) > self.config.max_response_bytes:
+            raise self._error(
+                status, "response too large", url, method="POST", kind="decode", identity_sent=True
+            )
+        try:
+            return json.loads(response.content)
+        except ValueError:
+            raise self._error(
+                status,
+                "not JSON",
+                url,
+                method="POST",
+                kind="decode",
+                content_type=content_type,
+                identity_sent=True,
+            ) from None
+
+    async def stream_to_file(
+        self,
+        url: str,
+        dest: Path,
+        *,
+        stats: UpstreamStats,
+        max_bytes: int,
+        headers: Mapping[str, str] | None = None,
+    ) -> Streamed:
+        """GET ``url`` into ``dest`` (written as given, normally a ``.part`` file).
+
+        Hashes with sha256 while writing and stops past ``max_bytes``. On any failure
+        the partial file is removed. The caller compares the result with HEAD.
+        """
+        started = self._clock()
+        label = endpoint_label("GET", url)
+        stats.record_endpoint(label)
+        # No transfer encoding, so the count and hash are of the file and match Content-Length.
+        response = await self._send(
+            "GET",
+            url,
+            None,
+            accept=None,
+            stats=stats,
+            read_timeout_s=self.config.download_read_timeout_s,
+            headers={**(headers or {}), "Accept-Encoding": "identity"},
+        )
+        digest = hashlib.sha256()
+        total = 0
+        try:
+            status = response.status_code
+            if status >= 300:
+                body = b"" if status < 400 else await self._read(response, url, _ERROR_BODY_BYTES)
+                raise self._error(
+                    status,
+                    body.decode("utf-8", "replace") or "redirect not followed",
+                    url,
+                    content_type=_content_type(response),
+                )
+            encoding = (response.headers.get("content-encoding") or "identity").lower()
+            if encoding != "identity":
+                raise ToolError(
+                    "checksum_mismatch",
+                    f"The file server sent {dest.name.removesuffix('.part')} with "
+                    f"Content-Encoding {encoding}; ameriflux-mcp stores files byte for byte.",
+                    details={"reason": "content_encoding", "contentEncoding": encoding},
+                )
+            length = response.headers.get("content-length")
+            etag = response.headers.get("etag")
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            with dest.open("wb") as handle:
+                async for chunk in response.aiter_bytes():
+                    total += len(chunk)
+                    if total > max_bytes:
+                        raise ToolError(
+                            "download_limit_exceeded",
+                            f"{dest.name.removesuffix('.part')} is larger than the per-file "
+                            f"limit of {max_bytes} bytes.",
+                            details={"maxFileBytes": max_bytes},
+                        )
+                    digest.update(chunk)
+                    handle.write(chunk)
+                handle.flush()
+                os.fsync(handle.fileno())
+        except BaseException:
+            dest.unlink(missing_ok=True)
+            raise
+        finally:
+            await response.aclose()
+        return Streamed(
+            path=dest,
+            bytes=total,
+            sha256=digest.hexdigest(),
+            etag=etag,
+            content_length=int(length) if length and length.isdigit() else None,
+            seconds=round(self._clock() - started, 3),
+        )
 
     # ------------------------------------------------------------------ the API
 
@@ -433,10 +625,13 @@ def _content_type(response: httpx.Response) -> str | None:
 __all__ = [
     "ALLOWED",
     "BACKENDS",
+    "DATA_DOWNLOAD_PATH",
     "DENIED_FRAGMENTS",
+    "DOWNLOAD_FILES",
     "REPO_URL",
     "AmeriFluxClient",
     "Fetched",
+    "Streamed",
     "endpoint_label",
     "user_agent",
 ]

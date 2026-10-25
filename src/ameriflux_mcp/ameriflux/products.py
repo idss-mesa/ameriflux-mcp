@@ -196,8 +196,9 @@ def download_request(product: Product, sites: Sequence[str]) -> DownloadRequest:
             "feature_unavailable",
             f"{product} files are downloaded through fluxnet.org's login-protected form, which "
             "ameriflux-mcp does not automate.",
-            details={"product": product, "guide": "ameriflux://guide/identity"},
-            hint="Download the zips yourself and read them with the local file tools.",
+            details={"product": product, "guide": "ameriflux://guide/fluxnet2015-access"},
+            hint="Download the zips yourself from fluxnet.org and read them with the local file "
+            "tools (ameriflux://guide/fluxnet2015-access).",
         )
     ids = tuple(sites)
     if product == "BIF":

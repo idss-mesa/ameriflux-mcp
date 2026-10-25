@@ -8,7 +8,7 @@ tags:
   - generated
 generated:
   by: "process:gen_tools_reference"
-  at: "2026-10-24T00:00:00Z"
+  at: "2026-10-25T00:00:00Z"
 sources:
   - id: registry
     resource: "https://github.com/idss-mesa/ameriflux-mcp/tree/main/src/ameriflux_mcp/tools"
@@ -19,11 +19,12 @@ status: stable
 
 # Tool reference
 
-Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edit by hand. 11 tools are registered; `amf_list_files`, `amf_preview_data`, `amf_read_bif` are offered only over stdio. Inputs are snake_case and outputs camelCase. Every result also carries `resolved`, `notes`, `nextSteps` and `source` (whose `backend` says what answered: the AmeriFlux API, its file server, or nothing upstream), and failures return `structuredContent.error` with a stable `code`. Tools still to come are on the [roadmap](roadmap.md).
+Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edit by hand. 12 tools are registered; `amf_download_data`, `amf_list_files`, `amf_preview_data`, `amf_read_bif` are offered only over stdio. Inputs are snake_case and outputs camelCase. Every result also carries `resolved`, `notes`, `nextSteps` and `source` (whose `backend` says what answered: the AmeriFlux API, its file server, or nothing upstream), and failures return `structuredContent.error` with a stable `code`. Tools still to come are on the [roadmap](roadmap.md).
 
 | Tool | Title | Family | Download identity |
 | --- | --- | --- | --- |
 | [`amf_describe_variables`](#amf_describe_variables) | Describe variable names: grammar, units, QC and sites | [variables](variables.md) | no |
+| [`amf_download_data`](#amf_download_data) | Download AmeriFlux data (with consent) | [data](downloads.md) | required |
 | [`amf_get_availability`](#amf_get_availability) | Get data availability per site and product | [availability](discovery.md) | no |
 | [`amf_get_badm`](#amf_get_badm) | Get a site's BADM metadata | [metadata](citation.md) | no |
 | [`amf_get_citation`](#amf_get_citation) | Get citations and acknowledgments for sites | [citation](citation.md) | no |
@@ -61,6 +62,53 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | --- | --- | --- |
 | `variables` | array of VariableDescription |  |
 | `page` | Page |  |
+
+## amf_download_data
+
+**Download AmeriFlux data (with consent).** Download AmeriFlux BASE-BADM, FLUXNET (FULLSET) or bulk BADM (BIF: AA-Flx/AA-Net) through AmeriFlux's logged route; stdio only. confirm=false (default) returns a plan: the exact text sent to the site PIs and the download log, eligible sites and the data policy; nothing is sent. Only after the user approves it, call again with confirm=true and accept_data_policy set to the plan's policy. Files are verified (size, ETag, zip CRC; sha256 sidecar). Next: amf_preview_data on a downloaded file.
+
+| | |
+| --- | --- |
+| Surface | `data` |
+| Download identity | required (stdio only) |
+| Transports | stdio |
+| Annotations | readOnly=false, destructive=false, idempotent=false, openWorld=true |
+| Upstream endpoints | `POST amfcdn.lbl.gov/api/v1/data_download`<br>`HEAD ftp.fluxdata.org/.ameriflux_downloads/{product}/{file}`<br>`GET ftp.fluxdata.org/.ameriflux_downloads/{product}/{file}`<br>`GET amfcdn.lbl.gov/api/v1/data_availability/AmeriFlux/{product}/{policy}`<br>`GET amfcdn.lbl.gov/api/v1/DOI/{site}/{product}` |
+
+**Inputs**
+
+| Name | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `sites` | array of string | yes |  | Site IDs, NEON codes or names (up to 20); for product='BIF', AA-Flx (sites with flux data) or AA-Net (all sites). (min items 1; max items 20) |
+| `product` | string |  | `"BASE-BADM"` | BASE-BADM, FLUXNET (FLUXNET-1F, FULLSET) or BIF (bulk BADM). FLUXNET2015 and FLUXNET-CH4 come from fluxnet.org (ameriflux://guide/fluxnet2015-access). |
+| `policy` | string \\| null |  | null | CCBY4.0 or LEGACY. Default: the policy the sites require (Legacy if any selected site is Legacy). FLUXNET is CC-BY-4.0 only. |
+| `profile` | string |  | `"default"` | Name of the configured identity profile (intended use and description). (pattern `^[A-Za-z0-9_.-]{1,64}$`) |
+| `accept_data_policy` | string \\| null |  | null | With confirm=true: the policy code the plan showed (CCBY4.0 or LEGACY), meaning the user accepts it. |
+| `confirm` | boolean |  | false | false: return the plan only. true: send the request, only after the user approved the plan. |
+| `if_exists` | `skip` \\| `replace` |  | `"skip"` | A file already downloaded: skip keeps it; replace fetches it again unless it is identical. |
+
+**Result fields** (besides the common envelope)
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `mode` | `plan` \\| `download` |  |
+| `product` | string |  |
+| `dataProduct` | string | The product AmeriFlux receives (BIF goes as BASE-BADM). |
+| `policy` | PolicyOut |  |
+| `eligible` | array of SiteChoice |  |
+| `ineligible` | array of IneligibleSite |  |
+| `disclosure` | DisclosureOut |  |
+| `identity` | IdentityOut |  |
+| `ready` | boolean | Whether confirm=true would send the request now. |
+| `blockers` | array of string | What must change first. |
+| `localCopies` | array of LocalCopy |  |
+| `downloadDir` | string |  |
+| `files` | array of FileOut |  |
+| `skipped` | array of SkippedLink |  |
+| `manifest` | ManifestOut \\| null |  |
+| `piContactCount` | integer \\| null | PI contact emails AmeriFlux returned (never stored or shown). |
+| `citations` | array of CitationRef |  |
+| `totals` | Totals \\| null |  |
 
 ## amf_get_availability
 

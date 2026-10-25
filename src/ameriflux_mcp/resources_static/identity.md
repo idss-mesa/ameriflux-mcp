@@ -45,6 +45,19 @@ stores them in each agent's server configuration. A YAML config may define named
 `identity.profiles` (intended use + description per project), chosen per download with
 `profile=`.
 
+## The download flow (amf_download_data)
+
+1. Call without `confirm`: the plan lists `disclosure` (identity masked; intended use and
+   description in full), `eligible`/`ineligible` sites, `policy` with its obligations,
+   `blockers` and `localCopies`. Nothing is sent.
+2. Show the user the disclosure and the obligations. If `localCopies` are current,
+   prefer reading them: every confirmed call notifies the PIs again.
+3. Only when the user agrees: call again with `confirm=true` and
+   `accept_data_policy` equal to `policy.code`.
+4. Files land in `<downloads.directory>/<product>/`, each with a `<name>.amf.json`
+   sidecar (sha256, ETag, citation); a manifest goes to `manifests/`. Neither holds the
+   identity, and the `?=<user ID>` tag on AmeriFlux's links is stripped before fetching.
+
 ## Checking it
 
 Call `amf_ping`: `identity` reports which fields are configured, as booleans and profile

@@ -13,11 +13,12 @@ years exist, understand FLUXNET variable names and QC flags, cite data under the
 data policy, and preview files: AmeriFlux BASE and BADM, the AmeriFlux FLUXNET
 (FLUXNET-1F) product, and FLUXNET2015 FULLSET and SUBSET.
 
-> **Status: under construction (build step 6 of 8).** Site search (`amf_search_sites`),
+> **Status: under construction (build step 7 of 8).** Site search (`amf_search_sites`),
 > site details (`amf_get_site`), availability (`amf_get_availability`), variables
 > (`amf_search_variables`, `amf_describe_variables`), citations (`amf_get_citation`),
-> BADM (`amf_get_badm`) and local files (`amf_list_files`, `amf_preview_data`,
-> `amf_read_bif`) work; downloads arrive in step 7. See [DESIGN.md](DESIGN.md) for
+> BADM (`amf_get_badm`), local files (`amf_list_files`, `amf_preview_data`,
+> `amf_read_bif`) and consented downloads (`amf_download_data`, stdio only) work;
+> prompts, Docker and the v0.1.0 release arrive in step 8. See [DESIGN.md](DESIGN.md) for
 > decisions, [RESEARCH.md](RESEARCH.md) for verified API facts, and
 > `research/2026-10-22-plan.md` for the build plan.
 

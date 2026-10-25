@@ -38,7 +38,9 @@ Subject: Third-party MCP client for the AmeriFlux API (ameriflux-mcp)
 >    `site_ids` AA-Flx/AA-Net the supported route for bulk BADM? Is
 >    `data_variant="SUBSET"` still accepted for the FLUXNET (v1.3) product?
 > 4. **(Q4)** What is the exact response shape of `data_download`, including error
->    responses? Do the returned URLs expire?
+>    responses? Do the returned URLs expire? The file links end in `?=<user_id>`; our
+>    client strips that tag before fetching (the request itself is already logged) so no
+>    identity reaches the file server. Would you rather we keep it?
 > 5. **(Q5)** Are there rate limits or terms of use for automated GET access to
 >    `amfcdn.lbl.gov/api`? Is there a deprecation plan for v1 relative to v2?
 >
