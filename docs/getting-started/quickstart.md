@@ -35,9 +35,8 @@ the same way once connected ([Clients](clients.md)).
 
     The tools below arrive in build steps 2–7 ([roadmap](../tools/roadmap.md)); the
     arguments and results follow the design[^design] and may change in detail before
-    v0.1.0. Steps 2–5 and 7 below (`amf_ping`, site search, availability, variables,
-    citations) work today; in step 6 the preview works on files you already have, and
-    the download tool arrives in build step 7.
+    v0.1.0. Every step below works in the current build; step 6 needs a
+    [download identity](identity.md) before `confirm=true` sends anything.
 
 ## 1. Register the server
 
@@ -97,7 +96,8 @@ temperature in each day.
 → a **plan**, not a download: the exact user ID (masked), email (masked), intended use
 and description that would be sent to the US-Ha1 PIs, the data policy (`CCBY4.0`) and
 what it asks of you. Only `confirm=true` with `accept_data_policy="CCBY4.0"` sends the
-request; the files land in `~/ameriflux-downloads` with a checksum record. Then
+request; the files land in `~/ameriflux-downloads/FLUXNET/` with a checksum record
+(see [Downloads](../tools/downloads.md)). Then
 `amf_preview_data(site="US-Ha1", product="FLUXNET", resolution="DD")` summarizes the
 daily file without loading it all.
 

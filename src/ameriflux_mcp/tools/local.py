@@ -448,7 +448,10 @@ class FileInfo(AmfOutput):
     site_id: str | None = None
     resolution: str | None = None
     version: str | None = None
-    step_minutes: int | None = Field(None, description="From the timestamps: 30, 60, 1440 …")
+    step_minutes: int | None = Field(
+        None,
+        description="From TIMESTAMP_START/END (30, 60 …), else the resolution's (DD 1440).",
+    )
     time_range: TimeRange | None = Field(None, description="Of the rows scanned in the window.")
     header_lines: list[str] = Field(default_factory=list, description="Leading # lines.")
     columns_total: int
@@ -780,9 +783,10 @@ async def amf_preview_data(args: PreviewIn, ctx: ToolContext) -> PreviewResult:
                     notes.append(
                         "The site's UTC offset changed over time; each row uses the one in force."
                     )
-    step = result.step_minutes
     expected = timestamps.STEP_MINUTES.get(res or "")
-    if step and expected and step != expected:
+    # DD, MM and YY files have one TIMESTAMP column: their step is the resolution's.
+    step = result.step_minutes or expected
+    if result.step_minutes and expected and step != expected:
         if res == "HH" and step == 60:
             notes.append("Hourly data in an HH file: ONEFlux v1.3 names the finest step HH.")
         else:

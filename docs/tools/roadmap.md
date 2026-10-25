@@ -38,8 +38,8 @@ descriptions here.
 | 4 | Site discovery and availability tools | done |
 | 5 | Variable, citation and BADM tools | done |
 | 6 | Local file readers and previews | done |
-| 7 | The download tool (merged only after AmeriFlux confirms third-party use) | next |
-| 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | planned |
+| 7 | The download tool (merged only after AmeriFlux confirms third-party use) | done |
+| 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | next |
 
 The [tool reference](reference.md) is generated from the server's registry and lists
 exactly the tools the current build offers.

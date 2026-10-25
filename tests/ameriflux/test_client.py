@@ -300,3 +300,83 @@ async def test_error_text_never_carries_emails(
         await client.get_json("v1/fp_var", stats=UpstreamStats())
     assert "someone@example.edu" not in exc.value.detail
     assert "[email]" in json.dumps(exc.value.detail)
+
+
+# ---------------------------------------------------------------------- the download POST
+
+DOWNLOAD_KEY = "POST amfcdn.lbl.gov/api/v1/data_download"
+
+
+async def test_post_download_goes_only_to_data_download(
+    client: AmeriFluxClient, router: FixtureRouter
+) -> None:
+    router.add(DOWNLOAD_KEY, Reply.json({"data_urls": []}))
+    stats = UpstreamStats()
+    body = await client.post_download({"site_ids": ["AR-Bal"]}, stats=stats)
+    assert body == {"data_urls": []}
+    (call,) = router.calls
+    assert call.method == "POST" and call.path == "/api/v1/data_download"
+    assert json.loads(call.body) == {"site_ids": ["AR-Bal"]}
+    assert stats.identity_sent is True and stats.endpoints == [DOWNLOAD_KEY]
+    # Every other method stays GET/HEAD only.
+    with pytest.raises(ToolError):
+        client.check_request("POST", "https://amfcdn.lbl.gov/api/v1/data_download")
+
+
+async def test_post_download_is_not_retried_once_sent(
+    client: AmeriFluxClient, router: FixtureRouter
+) -> None:
+    router.inject(Reply(503, b"busy", "text/plain"), times=1)
+    router.add(DOWNLOAD_KEY, Reply.json({"data_urls": []}))
+    with pytest.raises(AmeriFluxApiError) as exc:
+        await client.post_download({}, stats=UpstreamStats())
+    assert exc.value.status == 503 and exc.value.identity_sent is True
+    assert len(router.calls) == 1
+    router.inject(httpx.ReadTimeout, times=1)
+    with pytest.raises(AmeriFluxApiError) as exc:
+        await client.post_download({}, stats=UpstreamStats())
+    assert exc.value.kind == "transport" and len(router.calls) == 2
+
+
+async def test_post_download_retries_a_connection_that_never_opened(
+    client: AmeriFluxClient, router: FixtureRouter
+) -> None:
+    router.add(DOWNLOAD_KEY, Reply.json({"data_urls": []}))
+    router.inject(httpx.ConnectError, times=1)
+    assert await client.post_download({}, stats=UpstreamStats()) == {"data_urls": []}
+    assert len(router.calls) == 2
+
+
+async def test_post_download_errors_are_scrubbed(
+    client: AmeriFluxClient, router: FixtureRouter
+) -> None:
+    router.inject(Reply(403, b"denied for pi.person@example.edu", "text/plain"))
+    with pytest.raises(AmeriFluxApiError) as exc:
+        await client.post_download({}, stats=UpstreamStats())
+    mapped = map_api_error(exc.value)
+    assert mapped.code == "upstream_forbidden"
+    assert "@" not in exc.value.detail
+    router.inject(Reply(200, b"<html>", "text/html"))
+    with pytest.raises(AmeriFluxApiError) as exc:
+        await client.post_download({}, stats=UpstreamStats())
+    assert exc.value.kind == "decode"
+
+
+async def test_stream_to_file_refuses_encoded_bodies(
+    client: AmeriFluxClient, router: FixtureRouter, tmp_path: Path
+) -> None:
+    url = "https://ftp.fluxdata.org/.ameriflux_downloads/FLUXNET/AMF_AR-Bal.zip"
+    router.inject(Reply(200, b"x" * 10, "application/zip", {"content-encoding": "br"}))
+    part = tmp_path / "f.zip.part"
+    with pytest.raises(ToolError) as exc:
+        await client.stream_to_file(url, part, stats=UpstreamStats(), max_bytes=100)
+    assert exc.value.code == "checksum_mismatch" and not part.exists()
+    router.inject(Reply(200, b"x" * 10, "application/zip"))
+    with pytest.raises(ToolError) as exc:
+        await client.stream_to_file(url, part, stats=UpstreamStats(), max_bytes=5)
+    assert exc.value.code == "download_limit_exceeded" and not part.exists()
+    router.inject(Reply(404, b"gone", "text/plain"))
+    with pytest.raises(AmeriFluxApiError):
+        await client.stream_to_file(url, part, stats=UpstreamStats(), max_bytes=5)
+    assert not part.exists()
+    assert router.calls[0].headers["accept-encoding"] == "identity"

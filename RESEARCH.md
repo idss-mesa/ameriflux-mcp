@@ -89,6 +89,7 @@ Build steps 4 and 5 (2026-10-24; GET only):
 | E64 | ONEFlux README (version 20260106): FLUXMET, BIFVARINFO and ERA5 files per resolution and one BIF file, named `[N]_[CC-###]_FLUXNET_<KIND>_[T]_[YS]-[YE]_[V]_[R].csv`; "comma delimited, with first row as header", missing -9999, local standard time without DST; BIF and BIFVARINFO follow the BIF standard (Pastorello et al. 2020, Table SM8). |
 | E65 | fluxnet.org FULLSET and SUBSET pages: AUXMETEO holds ERA-Interim downscaling results for TA, PA, VPD, WS, P, SW_IN, LW_IN, LW_IN_JSB (ERA_SLOPE, ERA_INTERCEPT, ERA_RMSE, ERA_CORRELATION); AUXNEE holds USTAR results (USTAR_MP_METHOD, USTAR_CP_METHOD, NEE_USTAR50_[UT], NEE_[UT]_REF …). The column layout is not documented, so both are read as plain tables (D31). |
 | E66 | Preview throughput (stdio, one core): a 95 MB BASE HH file (64 columns, 210 240 rows) summarizes 2 columns in 0.73 s and all 64 in 4.3 s; a one-month window stops after reading 84 MB (0.52 s). |
+| E67 | Re-read 2026-10-24 (GET of public sources, no POST): ameriflux.lbl.gov `datadownload/js/datadownload.js` builds the `data_download` body as `user_id`, `user_email`, `site_ids` (picked sites plus any AA-Flx/AA-Net), `intended_use` (the option label or null), `description` (or null), `data_product` (the website sends `BIF` literally for BADM), `data_variant: "FULLSET"` (every product), `data_policy` and `is_test` as a JSON boolean (false only when served from ameriflux.lbl.gov); anonymous users get `user_id='friendlyfluxnetwork'` plus optional `user_name`. It reads `data_urls[{site_id, url, data_product, download_size}]` (AA-Flx/AA-Net arrive as ordinary `data_urls` entries; `aa_urls` is a client-side variable, not a response key, correcting §5), `manifest{download_timestamp, number_of_sites_downloaded, data_files[{site_id, filename, start_year, end_year, version, file_type, timestamp}]}` and `pi_contact_emails[]`; empty `data_urls` under a non-CC-BY policy shows "not found". amerifluxr master: `amf_download_base` sends `is_test` as `""` (`is_test <- FALSE`), `amf_download_fluxnet` hard-codes `is_test <- TRUE` ("used only while code developments") and defaults `data_variant='SUBSET'`; both strip everything after `?=` from link names. The response is still unobserved on the wire (Q4). |
 
 ## 1. The amfcdn.lbl.gov API (verified 2026-10-22)
 
@@ -192,8 +193,9 @@ FLUXNET2015 site also has a DataCite DOI under 10.18140/FLX (212 in total).
 - **Response** (datadownload.js; UNVERIFIED): `data_urls[{site_id, url, data_product,
   download_size}]`, `manifest{download_timestamp, number_of_sites_downloaded,
   data_files[{site_id, filename, start_year, end_year, version, file_type, timestamp}]}`,
-  `pi_contact_emails[]`; for AA-* requests, `aa_urls`. amerifluxr drops `FLUXNET-BIF`
-  links (E44).
+  `pi_contact_emails[]`. AA-Flx/AA-Net links come back as ordinary `data_urls` entries
+  (the website's `aa_urls` is a client-side variable, E67). amerifluxr drops
+  `FLUXNET-BIF` links (E44).
 - **Files** are static objects on `ftp.fluxdata.org/.ameriflux_downloads/{BASE-BADM,
   FLUXNET}/…` with ETags, Last-Modified and Range support; `?=<user_id>` is only a tag
   (E23). We never construct these URLs (D11, D15).

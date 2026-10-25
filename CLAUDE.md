@@ -20,7 +20,7 @@ privacy + recorded fixtures ✅ → 4 discovery tools (`amf_search_sites`, `amf_
 (`amf_search_variables`, `amf_describe_variables`, `amf_get_citation`, `amf_get_badm`,
 policy/grammar guides, FP/FLUXNET/acknowledgment references) ✅ → 6 local readers
 (`amf_list_files`, `amf_preview_data`, `amf_read_bif`, file-formats and FLUXNET2015-access
-guides) ✅ → 7 downloads (merge
+guides) ✅ → 7 downloads (`amf_download_data`, ledger, verified transfers; built, merge
 gated on AmeriFlux support answering Q1 and Q4; see `research/questions.md`) → 8
 prompts, docs, server.json, Docker, v0.1.0.
 
@@ -91,7 +91,10 @@ builds citations from the DOI API (FLUXNET2015 constructed, DataCite fallback) a
 `ameriflux/acknowledgments.py` holds the verbatim policy texts; tools:
 `tools/sites.py` (search, get_site, shared product/years models),
 `tools/availability.py`, `tools/variables.py`, `tools/citation.py`, `tools/badm.py`,
-`tools/local.py` (stdio-only file tools); `ameriflux/files/` holds the file-name grammar
+`tools/local.py` (stdio-only file tools), `tools/download.py` (`amf_download_data`: plan,
+consent checks, the one POST, transfers, manifest); `ameriflux/ledger.py` keeps the URLs
+logged requests returned (the only files fetched; `?=` tag stripped) and
+`ameriflux/downloads.py` does the HEAD/GET/verify/sidecar steps; `ameriflux/files/` holds the file-name grammar
 (`filenames.py`), root confinement (`paths.py`), the safe zip reader (`zipsafe.py`),
 `timestamps.py`, the streaming CSV reader (`csvstream.py`), `xlsx.py`, `bif.py` and the
 root walker (`inventory.py`); `transport/` holds stdio and stateless HTTP; `resources.py`
@@ -105,6 +108,8 @@ builds servers on `tests/fixture_router.py` (recorded fixtures in `tests/fixture
 15 fixture sites: never assert network-wide counts); `tests/helpers` has `IDENTITY_ENV`,
 `PRIVATE_VALUES` (must never appear in output), `call_ok`/`call_err` and the ASGI
 harness; `tests/archives.py` builds the synthetic local archives (only
-`tests/data/AMF_US-CRT_BASE_HH_2-5.csv` is real). Also `scripts/probe_api.py` (GET/HEAD-only probe), `scripts/install.sh`, the
+`tests/data/AMF_US-CRT_BASE_HH_2-5.csv` is real); `tests/test_tools_download.py` fakes
+the POST and the file server (`FileServer`); the only real POST is
+`tests/live/test_live_download.py`, run by the manual `live-download` workflow. Also `scripts/probe_api.py` (GET/HEAD-only probe), `scripts/install.sh`, the
 docs site (`docs/`, `zensical.toml`) and its generators. The target layout is in
 `research/2026-10-22-plan.md` ("Architecture and port map").

@@ -106,6 +106,11 @@ def _profiles(config: Config) -> dict[str, Profile]:
     }
 
 
+def configured_profile(config: Config, name: str) -> Profile | None:
+    """A profile from configuration alone (shown in a download plan before the identity is set)."""
+    return _profiles(config).get(name)
+
+
 def resolve_identity(config: Config, *, transport: Literal["stdio", "http"]) -> Identity | None:
     """The identity this call may act with: stdio only, and only with user ID and email."""
     if transport != "stdio":
@@ -167,6 +172,7 @@ __all__ = [
     "Identity",
     "IdentityStatus",
     "Profile",
+    "configured_profile",
     "identity_status",
     "resolve_identity",
 ]

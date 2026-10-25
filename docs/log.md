@@ -1,6 +1,8 @@
 # Directory Update Log
 
 ## 2026-10-24
+* **Creation**: [Downloads](tools/downloads.md) — `amf_download_data` (build step 7): products, the plan and its disclosure, the consent call and its checks, the transfer and integrity checks, what is written to disk.
+* **Update**: [Download identity](getting-started/identity.md) — the tool now exists; the `?=<user ID>` tag is stripped and nothing written holds the identity; [Tool reference](tools/reference.md) regenerated (12 tools); [Roadmap](tools/roadmap.md) — step 7 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
 * **Creation**: [Local files](tools/local-files.md) — `amf_list_files`, `amf_preview_data` and `amf_read_bif` (build step 6): local roots, file families, summaries, rows, QC filters, UTC offsets, the SUBSET view, BIF privacy and the archive safety rules.
 * **Update**: [Tool reference](tools/reference.md) regenerated (11 tools); [Roadmap](tools/roadmap.md) — step 6 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
 * **Creation**: [Variables](tools/variables.md) — `amf_search_variables` and `amf_describe_variables` (build step 5): the BASE and FLUXNET grammars, units and QC per resolution, the dictionaries, heights and coverage at a site.
