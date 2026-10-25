@@ -41,6 +41,19 @@ Current contents
    https://ameriflux.lbl.gov/data/data-policy/ and https://fluxnet.org/data/data-policy/
    (checked 2026-10-24) so that users reproduce them exactly.
 
+6. FLUXNET Shuttle (https://github.com/fluxnet/shuttle), BSD-3-Clause.
+   src/ameriflux_mcp/ameriflux/files/filenames.py uses the Shuttle's FLUXNET zip-name
+   pattern (_FLUXNET_ZIP_PATTERN, src/fluxnet_shuttle/shuttle.py, checked 2026-10-24)
+   verbatim; its licence is reproduced below.
+
+7. tests/data/AMF_US-CRT_BASE_HH_2-5.csv, from amerifluxr's inst/extdata, is AmeriFlux
+   data under CC-BY-4.0 (not BSD): Jiquan Chen, Housen Chu, AmeriFlux BASE US-CRT
+   Curtice Walter-Berger cropland, Ver. 2-5 (outdated; current is Ver. 5-5), AmeriFlux
+   AMP, (Dataset). https://doi.org/10.17190/AMF/1246156. Funding for the AmeriFlux data
+   service was provided by the U.S. Department of Energy Office of Science. The sample's
+   BIF workbooks are not vendored (they hold personal contact data); tests build
+   synthetic ones instead.
+
 Test fixtures in tests/fixtures/ are recorded AmeriFlux, AmeriFlux file-server, amerifluxr
 and DataCite responses, cut to a few sites and with every email address replaced by a
 synthetic example.org address (scripts/record_fixtures.py records each transform).
@@ -95,6 +108,38 @@ prepare derivative works, incorporate into other computer software,
 distribute, and sublicense such enhancements or derivative works thereof,
 in binary and source code form.
 
+FLUXNET Shuttle licence
+-----------------------
+
+BSD 3-Clause License
+
+Copyright (c) 2025, University of Tuscia, Viterbo (Italy)
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 ONEFlux licence
 ---------------
 
@@ -137,14 +182,3 @@ a non-exclusive, royalty-free perpetual license to install, use, modify,
 prepare derivative works, incorporate into other computer software,
 distribute, and sublicense such enhancements or derivative works thereof,
 in binary and source code form.
-
-Planned entries
----------------
-
-- FLUXNET Shuttle (https://github.com/fluxnet/shuttle), BSD-3-Clause: the FLUXNET v1.3+
-  zip filename pattern (step 6).
-- US-CRT sample data are AmeriFlux data under CC-BY-4.0, not BSD: Jiquan Chen, Housen Chu,
-  AmeriFlux BASE US-CRT Curtice Walter-Berger cropland, Ver. 2-5 (outdated; current is
-  Ver. 5-5), AmeriFlux AMP, (Dataset). https://doi.org/10.17190/AMF/1246156. Funding for
-  the AmeriFlux data service was provided by the U.S. Department of Energy Office of
-  Science. They come from amerifluxr's inst/extdata (step 6).

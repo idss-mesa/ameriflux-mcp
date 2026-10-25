@@ -37,6 +37,7 @@ FAMILY_PAGES: dict[str, str] = {
     "variables": "variables.md",
     "citation": "citation.md",
     "metadata": "citation.md",
+    "local": "local-files.md",
 }
 
 

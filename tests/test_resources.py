@@ -44,6 +44,8 @@ def test_listing_is_sorted_and_tagged() -> None:
     assert uris == sorted(uris)
     assert uris == [
         "ameriflux://guide/data-policy",
+        "ameriflux://guide/file-formats",
+        "ameriflux://guide/fluxnet2015-access",
         "ameriflux://guide/identity",
         "ameriflux://guide/variable-grammar",
         "ameriflux://reference/acknowledgments",
@@ -111,6 +113,8 @@ async def test_variable_and_policy_references(server: AmeriFluxServer) -> None:
     for uri, phrases in {
         "ameriflux://guide/data-policy": ("CC-BY + Legacy = Legacy", "Tier Two", "RU-Sam"),
         "ameriflux://guide/variable-grammar": ("_H_V_R", "GPP_NT_VUT_REF", "gC m-2 d-1"),
+        "ameriflux://guide/file-formats": ("-9999", "UTC_OFFSET_DATE_START", "200:1"),
+        "ameriflux://guide/fluxnet2015-access": ("AMERIFLUX_MCP_LOCAL__ROOTS", "never automates"),
     }.items():
         text = (await read_resource(uri, ctx)).text
         for phrase in phrases:

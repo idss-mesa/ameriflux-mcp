@@ -8,6 +8,27 @@ All notable changes to ameriflux-mcp are documented here. The format follows
 
 ### Added
 
+- `amf_list_files` (build step 6, stdio only): AmeriFlux and FLUXNET files in the download
+  directory and `local.roots`, with archive members classified by family, kind (data,
+  ERA, BIFVARINFO, BIF, aux table), site, resolution, years and version, and unsafe
+  members flagged.
+- `amf_preview_data`: summaries (count, missing, min, max, mean, units, out-of-range) and
+  row pages of BASE, AmeriFlux FLUXNET and FLUXNET2015 CSVs read inside their zips, with
+  time windows, QC filters, UTC timestamps from the site's BIF, the SUBSET view, aux
+  tables and a byte and time budget.
+- `amf_read_bif`: BIF workbooks and CSVs (also inside archives) by group, with UTC
+  offsets, the recorded DOI citation and funding acknowledgments; personal data withheld
+  by default.
+- `ameriflux/files/`: file-name grammar, a safe zip reader (zip slip, symlinks, bombs,
+  overruns), timestamps, a streaming CSV reader, a minimal xlsx reader and the BIF parser.
+- Resources: `ameriflux://guide/file-formats` and `ameriflux://guide/fluxnet2015-access`.
+- Docs: the Local files page.
+
+### Changed
+
+- `limits.tools_list_max_bytes` is 80 000 (59 945 B measured with 11 stdio tools).
+- NOTICE credits the FLUXNET Shuttle file-name pattern and the vendored US-CRT sample.
+
 - `amf_search_variables` (build step 5): the FP Standard list (live, with QA/QC ranges)
   and the FLUXNET dictionaries (AmeriFlux FLUXNET from ONEFlux v1.3; FLUXNET2015 FULLSET
   and SUBSET) by words, category and resolution, with units per resolution and SUBSET

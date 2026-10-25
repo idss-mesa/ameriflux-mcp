@@ -1,6 +1,8 @@
 # Directory Update Log
 
 ## 2026-10-24
+* **Creation**: [Local files](tools/local-files.md) — `amf_list_files`, `amf_preview_data` and `amf_read_bif` (build step 6): local roots, file families, summaries, rows, QC filters, UTC offsets, the SUBSET view, BIF privacy and the archive safety rules.
+* **Update**: [Tool reference](tools/reference.md) regenerated (11 tools); [Roadmap](tools/roadmap.md) — step 6 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
 * **Creation**: [Variables](tools/variables.md) — `amf_search_variables` and `amf_describe_variables` (build step 5): the BASE and FLUXNET grammars, units and QC per resolution, the dictionaries, heights and coverage at a site.
 * **Creation**: [Citations and BADM](tools/citation.md) — `amf_get_citation` (versioned citations, effective policy, verbatim acknowledgments, site funding, BibTeX) and `amf_get_badm`.
 * **Update**: [Citing AmeriFlux and FLUXNET data](about/citing-ameriflux.md) — the FLUXNET2015 citation form and the FLUXNET2015 obligations as the policy page words them; [Tool reference](tools/reference.md) regenerated (8 tools); [Roadmap](tools/roadmap.md) — step 5 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
