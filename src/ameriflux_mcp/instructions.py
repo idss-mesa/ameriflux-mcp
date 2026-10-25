@@ -14,6 +14,7 @@ SERVER_INSTRUCTIONS = (
     "returns auth_required. Cite every site's DOI and follow its data policy (CC-BY-4.0, "
     "AmeriFlux Legacy or FLUXNET2015 Tier 2; mixing escalates to the stricter one). Results are "
     "compact and paginated (page.nextOffset), carry notes, and end with nextSteps. Call amf_ping "
-    "to see which tools this build offers and whether downloads are set up; read "
-    "ameriflux://guide/identity before any download."
+    "to see which tools this build offers and whether downloads are set up. Read "
+    "ameriflux://guide/agent-workflow for worked examples and ameriflux://guide/identity "
+    "before any download."
 )

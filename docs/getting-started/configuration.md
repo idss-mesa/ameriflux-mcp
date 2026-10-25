@@ -46,9 +46,7 @@ mistyped email does not end up in a log). ameriflux-mcp does not load `.env` fil
 itself; export the variables (`set -a; . ./.env; set +a`) before starting it.
 
 The table at the end is generated from the code[^config-module]
-(`scripts/gen_config_reference.py`); CI fails if it drifts. Some settings configure
-tools that arrive in later build steps (previews, downloads, the cache); they are
-accepted now so configuration files do not need to change later.
+(`scripts/gen_config_reference.py`); CI fails if it drifts.
 
 ## The download identity
 
@@ -154,7 +152,7 @@ commit.
 | `limits.preview_scan_max_bytes` | `AMERIFLUX_MCP_LIMITS__PREVIEW_SCAN_MAX_BYTES` | int | `268435456` | Most bytes a preview scans (256 MiB). |
 | `limits.preview_time_budget_s` | `AMERIFLUX_MCP_LIMITS__PREVIEW_TIME_BUDGET_S` | float | `20.0` | Wall-clock budget for one preview scan. |
 | `limits.zip_member_max_bytes` | `AMERIFLUX_MCP_LIMITS__ZIP_MEMBER_MAX_BYTES` | int | `1073741824` | Largest zip member read (uncompressed). |
-| `limits.tools_list_max_bytes` | `AMERIFLUX_MCP_LIMITS__TOOLS_LIST_MAX_BYTES` | int | `80000` | Conformance bound on the serialized tools/list result (67,948 B with the 12 stdio tools of step 7; reset to measured x1.25 in step 8, as in neon-mcp). |
+| `limits.tools_list_max_bytes` | `AMERIFLUX_MCP_LIMITS__TOOLS_LIST_MAX_BYTES` | int | `85000` | Conformance bound on the serialized tools/list result: 67,948 B measured with the 12 stdio tools of v0.1.0, x1.25 (as neon-mcp). |
 | `downloads.enabled` | `AMERIFLUX_MCP_DOWNLOADS__ENABLED` | bool \| null | unset | Offer the download tool. Unset: true on stdio; never available over http. |
 | `downloads.directory` | `AMERIFLUX_MCP_DOWNLOADS__DIRECTORY` | Path | `~/ameriflux-downloads` | Directory every download is confined to (created on first use). |
 | `downloads.max_files_per_call` | `AMERIFLUX_MCP_DOWNLOADS__MAX_FILES_PER_CALL` | int | `50` | Most files one download call transfers. |

@@ -6,8 +6,29 @@ All notable changes to ameriflux-mcp are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0] - unreleased
+
+First release.
+
 ### Added
 
+- Prompts (build step 8): `find_flux_sites`, `plan_site_analysis` (the download plan is
+  shown to the user and confirmed only on their explicit yes) and `cite_flux_data`, with
+  validated arguments and recipes that name only existing tools and resources.
+- Resources: `ameriflux://guide/agent-workflow` and `ameriflux://guide/products`; the
+  server instructions point to the workflow guide.
+- Release: `server.json` for the MCP registry (schema 2025-12-11, PyPI package, the
+  environment variables the server reads), a `Dockerfile` (pinned uv, non-root uid 10001,
+  HTTP on 8080, health check; runs with `--read-only`), `docker-compose.yml`, and a
+  release workflow that checks the tag, package and `server.json` versions and publishes
+  to PyPI with trusted publishing.
+- Tests: prompts, release metadata (README `mcp-name`, versions, schema, Docker and
+  workflow rules), generated docs, endpoint/allow-list and per-tool test coverage,
+  an end-to-end trace, and GET-only live smoke tests of every networked tool.
+- Docs: Prompts, resources and status; Sync downloads to CyVerse.
+- NOTICE credits amerifluxr (BSD-3), the FLUXNET Shuttle file-name pattern, ONEFlux, the
+  FLUXNET2015 variable dictionaries and the vendored US-CRT sample, and ships in the
+  wheel and sdist.
 - `amf_download_data` (build step 7, stdio only, behind `downloads.enabled`): BASE-BADM,
   AmeriFlux FLUXNET (FULLSET) and bulk BADM (BIF as BASE-BADM for AA-Flx/AA-Net) through
   AmeriFlux's logged `data_download` route. `confirm=false` returns a plan with the exact
@@ -26,7 +47,6 @@ All notable changes to ameriflux-mcp are documented here. The format follows
 - A manual `live-download` workflow (protected environment) and
   `tests/live/test_live_download.py`.
 - Docs: the Downloads page; the identity guide gains the download flow.
-
 - `amf_list_files` (build step 6, stdio only): AmeriFlux and FLUXNET files in the download
   directory and `local.roots`, with archive members classified by family, kind (data,
   ERA, BIFVARINFO, BIF, aux table), site, resolution, years and version, and unsafe
@@ -42,16 +62,6 @@ All notable changes to ameriflux-mcp are documented here. The format follows
   overruns), timestamps, a streaming CSV reader, a minimal xlsx reader and the BIF parser.
 - Resources: `ameriflux://guide/file-formats` and `ameriflux://guide/fluxnet2015-access`.
 - Docs: the Local files page.
-
-### Changed
-
-- `amf_preview_data` reports `stepMinutes` for DD and WW files from the resolution
-  (they have a single `TIMESTAMP` column).
-- FLUXNET2015/FLUXNET-CH4 download errors point to `ameriflux://guide/fluxnet2015-access`.
-
-- `limits.tools_list_max_bytes` is 80 000 (59 945 B measured with 11 stdio tools).
-- NOTICE credits the FLUXNET Shuttle file-name pattern and the vendored US-CRT sample.
-
 - `amf_search_variables` (build step 5): the FP Standard list (live, with QA/QC ranges)
   and the FLUXNET dictionaries (AmeriFlux FLUXNET from ONEFlux v1.3; FLUXNET2015 FULLSET
   and SUBSET) by words, category and resolution, with units per resolution and SUBSET
@@ -79,16 +89,6 @@ All notable changes to ameriflux-mcp are documented here. The format follows
 - Nightly live tests for the new sources, the webdoc ETags and every verbatim policy
   sentence.
 - Docs: the Variables and Citations and BADM pages.
-
-### Changed
-
-- FLUXNET2015 obligations follow the FLUXNET policy page's wording (list sites by ID or
-  DOI, in a table for Tier Two; contact providers when research begins); the Data
-  Availability sentence is required when a paper has that section.
-- `source.backend` is `mixed` when one call reads several services.
-- NOTICE credits amerifluxr, ONEFlux and the FLUXNET2015 dictionaries, and ships in the
-  wheel and sdist.
-
 - `amf_search_sites` (build step 4): AmeriFlux, FLUXNET2015 and FLUXNET-CH4 sites by
   words, collection, product and policy, IGBP, Köppen, country, state, status, member
   network, bounding box or distance, data years, measured variables and gas species; years
@@ -106,12 +106,6 @@ All notable changes to ameriflux-mcp are documented here. The format follows
   `ameriflux://reference/lter-crosswalk` (curated draft, EDI scopes verified) and the
   `ameriflux://site/{site_id}` template.
 - Docs: the Discovery and availability page.
-
-### Changed
-
-- Test servers use the largest rate-limit burst, so replayed fixtures never sleep (the
-  suite runs in about 7 s).
-
 - The full upstream client (build step 3): host and path allow-list (D21; `paper_test/`
   and `..` refused with `download_denied` before any connection), GET/HEAD only, no
   redirects, per-host rate limiting (2 req/s; 1 per 15 s to ameriflux.lbl.gov), retries
@@ -131,7 +125,6 @@ All notable changes to ameriflux-mcp are documented here. The format follows
   example.org) with `scripts/record_fixtures.py record|check` and a router that fails on
   unrecorded requests, POSTs, off-list hosts, `paper_test/` and identity sent upstream;
   nightly live smoke tests (GET only) in CI.
-
 - Core server ported from edi-mcp (build step 2): tool registry with result-size budget
   and MRTR continuations, MCP 2026-07-28 adapter (structured results, cache hints,
   `server/discover`), stdio and stateless Streamable HTTP transports with `/healthz` and
@@ -154,7 +147,6 @@ All notable changes to ameriflux-mcp are documented here. The format follows
 - Generated documentation: the tool reference and the configuration table, drift-checked
   in CI; CI runs ruff, mypy --strict, tests with coverage on Python 3.11–3.13, macOS and an
   MCP 2026-07-28 conformance job.
-
 - Documentation site (Zensical, OKF v0.2) modelled on gbif-mcp's and ported from
   edi-mcp: installation for macOS, Linux and Windows, quickstart, download identity,
   clients, configuration, roadmap, agent guide, citing AmeriFlux and FLUXNET data, and
@@ -177,3 +169,13 @@ All notable changes to ameriflux-mcp are documented here. The format follows
   only, to an allow-list of hosts and paths, and scrubs email addresses from its output.
 - `tests/test_probe_no_post.py`: the probe never names POST, never sends a request body
   and refuses other methods, hosts and paths before opening a connection.
+
+### Known limitations
+
+- The `data_download` response has not been observed on the wire; it is parsed from the
+  AmeriFlux website's own code, and anything unexpected is reported as drift
+  (RESEARCH.md §12). AmeriFlux support has not yet answered Q1 and Q4
+  (`research/questions.md`); `downloads.enabled=false` turns downloads off.
+- FLUXNET-CH4 is discoverable only: citations and readers arrive in 0.2.
+- FLUXNET2015 files are never downloaded by the server (fluxnet.org login).
+- The AUXMETEO/AUXNEE layout is undocumented, so they are read as plain tables.

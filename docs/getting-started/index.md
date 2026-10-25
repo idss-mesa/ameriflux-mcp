@@ -7,3 +7,4 @@ Install ameriflux-mcp on macOS, Linux or Windows, connect an MCP client, set up 
 * [Download identity](identity.md) - What AmeriFlux downloads disclose, how to create an account, and how to give ameriflux-mcp your user ID, email and intended use.
 * [Clients](clients.md) - Register ameriflux-mcp with Claude Code, Claude Desktop, Codex CLI, Gemini CLI, Goose, OpenCode and VS Code, or a hosted server over HTTP.
 * [Configuration](configuration.md) - Configure ameriflux-mcp with a YAML file, AMERIFLUX_MCP_ environment variables or flags; precedence rules and every setting with its default.
+* [Sync downloads to CyVerse](sync-cyverse.md) - Mirror the ameriflux-mcp download folder to the CyVerse Data Store with a GoCommands sync script that launchd (macOS) or cron (Linux) runs hourly.

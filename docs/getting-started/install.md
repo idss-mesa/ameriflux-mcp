@@ -37,20 +37,13 @@ stale_after: "2027-04-23T00:00:00Z"
 ameriflux-mcp is a Python 3.11+ package with one command, `ameriflux-mcp`, that MCP
 clients start over stdio. These instructions cover macOS, Linux and Windows.
 
-!!! warning "Under construction: build step 7 of 8"
-
-    ameriflux-mcp is being built in eight steps (see the [roadmap](../tools/roadmap.md)).
-    The server installs and starts on every client below, and site search, site details,
-    data availability, variables, citations, BADM, local file previews and consented
-    downloads work today; prompts, Docker and the release arrive in step 8. The [tool reference](../tools/reference.md) always lists what the
-    current build offers. Every step on this page works as written today.
-
-!!! note "Private repository and no PyPI release yet"
+!!! note "Private repository; PyPI from the v0.1.0 tag"
 
     The repository is private for now, so you need read access to
     [idss-mesa/ameriflux-mcp](https://github.com/idss-mesa/ameriflux-mcp){target=_blank}[^repo]
-    and git credentials (see [Access the repository](#access-the-repository)). The first
-    PyPI release, as `ameriflux-mcp`, is the last build step.
+    and git credentials (see [Access the repository](#access-the-repository)). The
+    package is published to PyPI as `ameriflux-mcp` when v0.1.0 is tagged; until then,
+    install from the repository.
 
 ## Prerequisites
 
@@ -265,7 +258,7 @@ that also run inside WSL, it works as on Linux.)
     # or: pipx install ameriflux-mcp
     ```
 
-    Not published yet; the PyPI release is build step 8.
+    Available once v0.1.0 is tagged and published; until then use the repository.
 
 Then find the executable's absolute path, which is what desktop apps need:
 
@@ -308,10 +301,11 @@ block with your identity ([Download identity](identity.md#give-it-to-ameriflux-m
 [Clients](clients.md) has the entries for Claude Desktop, Codex CLI, Gemini CLI, Goose,
 OpenCode, VS Code and hosted servers.
 
-## Option 3: Docker (from build step 8)
+## Option 3: Docker
 
-The repository will ship a `Dockerfile` that serves stateless Streamable HTTP on port
-8080 as a non-root user, with a `/healthz` health check:
+The repository ships a `Dockerfile` that serves stateless Streamable HTTP on port 8080
+as a non-root user (uid 10001), with `/healthz` and `/readyz` and a container health
+check:
 
 ```bash
 git clone https://github.com/idss-mesa/ameriflux-mcp.git && cd ameriflux-mcp
@@ -319,9 +313,12 @@ docker build -t ameriflux-mcp .
 docker run --rm --read-only --tmpfs /tmp -p 127.0.0.1:8080:8080 ameriflux-mcp
 ```
 
-Point an HTTP-capable client at `http://127.0.0.1:8080/mcp`. Over HTTP the server
-offers the eight discovery, variable and citation tools; downloads and local file tools
-are stdio only, and no identity is ever accepted over HTTP.
+Or `docker compose up -d` with the repository's `docker-compose.yml` (bound to
+127.0.0.1; set `PUBLIC_BASE_URL` and `ALLOWED_HOSTS` behind a TLS proxy). Point an
+HTTP-capable client at `http://127.0.0.1:8080/mcp`; `curl -s localhost:8080/healthz`
+answers `200`. Over HTTP the server offers the eight discovery, variable, citation and
+BADM tools and the prompts; downloads and local file tools are stdio only, and no
+identity is ever accepted over HTTP.
 
 ## Verify the installation
 

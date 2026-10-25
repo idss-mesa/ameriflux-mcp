@@ -15,6 +15,7 @@ If you want AmeriFlux or FLUXNET data rather than documentation, connect to the 
 - [Download identity](https://idss-mesa.github.io/ameriflux-mcp/getting-started/identity/): What AmeriFlux downloads disclose, how to create an account, and how to give ameriflux-mcp your user ID, email and intended use. (draft)
 - [Install ameriflux-mcp](https://idss-mesa.github.io/ameriflux-mcp/getting-started/install/): Install ameriflux-mcp on macOS, Linux or Windows with uv and the install script, register it by hand, verify, upgrade or remove it. (draft)
 - [Quickstart](https://idss-mesa.github.io/ameriflux-mcp/getting-started/quickstart/): A first session with ameriflux-mcp: register it with Claude Code, check it with amf_ping, find a tower, check its data and get a citation. (draft)
+- [Sync downloads to CyVerse](https://idss-mesa.github.io/ameriflux-mcp/getting-started/sync-cyverse/): Mirror the ameriflux-mcp download folder to the CyVerse Data Store with a GoCommands sync script that launchd (macOS) or cron (Linux) runs hourly. (draft)
 
 ## Tools
 
@@ -22,6 +23,7 @@ If you want AmeriFlux or FLUXNET data rather than documentation, connect to the 
 - [Discovery and availability](https://idss-mesa.github.io/ameriflux-mcp/tools/discovery/): Find flux tower sites with amf_search_sites, read one with amf_get_site, and check which years exist per product and policy with amf_get_availability.
 - [Downloads](https://idss-mesa.github.io/ameriflux-mcp/tools/downloads/): Download AmeriFlux BASE-BADM, FLUXNET and bulk BADM with amf_download_data: a plan first, consent with confirm=true, verified files and sidecars. (draft)
 - [Local files](https://idss-mesa.github.io/ameriflux-mcp/tools/local-files/): Find, preview and read AmeriFlux and FLUXNET files on your computer with amf_list_files, amf_preview_data and amf_read_bif, inside their zips and offline.
+- [Prompts, resources and status](https://idss-mesa.github.io/ameriflux-mcp/tools/prompts-and-resources/): The three ameriflux-mcp prompts, the guide and reference resources agents read, the site card template, and the amf_ping status report. (draft)
 - [Tool reference](https://idss-mesa.github.io/ameriflux-mcp/tools/reference/): Every ameriflux-mcp tool with its inputs, result fields, upstream endpoints and annotations, generated from the tool registry.
 - [Roadmap](https://idss-mesa.github.io/ameriflux-mcp/tools/roadmap/): The twelve planned ameriflux-mcp tools, the build step that delivers each, and which work over HTTP or need a download identity. (draft)
 - [Variables](https://idss-mesa.github.io/ameriflux-mcp/tools/variables/): Find and decode AmeriFlux BASE and FLUXNET variable names with amf_search_variables and amf_describe_variables: qualifiers, units per resolution, QC, heights.

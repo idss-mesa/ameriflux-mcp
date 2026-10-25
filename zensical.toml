@@ -18,8 +18,8 @@ extra_css = ["stylesheets/extra.css"]
 
 nav = [
   { "Home" = "index.md" },
-  { "Getting started" = [ { "Contents" = "getting-started/index.md" }, "getting-started/install.md", "getting-started/quickstart.md", "getting-started/identity.md", "getting-started/clients.md", "getting-started/configuration.md" ] },
-  { "Tools" = [ { "Contents" = "tools/index.md" }, "tools/reference.md", "tools/discovery.md", "tools/variables.md", "tools/citation.md", "tools/downloads.md", "tools/local-files.md", "tools/roadmap.md" ] },
+  { "Getting started" = [ { "Contents" = "getting-started/index.md" }, "getting-started/install.md", "getting-started/quickstart.md", "getting-started/identity.md", "getting-started/clients.md", "getting-started/configuration.md", "getting-started/sync-cyverse.md" ] },
+  { "Tools" = [ { "Contents" = "tools/index.md" }, "tools/reference.md", "tools/discovery.md", "tools/variables.md", "tools/citation.md", "tools/downloads.md", "tools/local-files.md", "tools/prompts-and-resources.md", "tools/roadmap.md" ] },
   { "About" = [ { "Contents" = "about/index.md" }, "about/ai-agents.md", "about/citing-ameriflux.md", "about/license.md", { "Changelog" = "log.md" } ] },
 ]
 

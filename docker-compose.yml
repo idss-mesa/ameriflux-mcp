@@ -1,0 +1,17 @@
+# Local or single-host deployment of the read-only HTTP server. Put a TLS-terminating
+# reverse proxy in front for anything beyond localhost and set PUBLIC_BASE_URL (its host
+# joins the DNS-rebinding allow-lists). No identity is configured or accepted over HTTP.
+services:
+  ameriflux-mcp:
+    build: .
+    image: ameriflux-mcp:local
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      AMERIFLUX_MCP_SERVER__PUBLIC_BASE_URL: "${PUBLIC_BASE_URL:-}"
+      AMERIFLUX_MCP_SERVER__ALLOWED_HOSTS: "${ALLOWED_HOSTS:-}"
+      # Optional disk cache on a volume (off over HTTP otherwise):
+      # AMERIFLUX_MCP_CACHE__DISK_DIR: /cache
+    # volumes:
+    #   - ameriflux-cache:/cache
+    restart: unless-stopped

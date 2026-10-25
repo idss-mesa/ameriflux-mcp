@@ -1,0 +1,40 @@
+name: Release
+
+# Publishes to PyPI with trusted publishing when a v* tag is pushed. The `pypi`
+# environment must exist (Settings -> Environments) and PyPI must trust this workflow.
+# The MCP registry entry (server.json) is published separately with mcp-publisher.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  id-token: write   # PyPI trusted publishing
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.12"
+      - run: uv sync --all-extras
+      - name: The tag, the package and server.json agree on the version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          project=$(uv run python -c "import ameriflux_mcp; print(ameriflux_mcp.__version__)")
+          server=$(uv run python -c "import json; d=json.load(open('server.json')); print(d['version']); assert all(p['version']==d['version'] for p in d['packages'])")
+          echo "tag=$tag package=$project server.json=$server"
+          test "$tag" = "$project" && test "$tag" = "$server"
+      - name: CHANGELOG has a dated entry for this version
+        run: grep -Eq "^## \[${GITHUB_REF_NAME#v}\] - [0-9]{4}-[0-9]{2}-[0-9]{2}$" CHANGELOG.md
+      - run: uv run pytest -q
+      - run: uv build
+      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Attach the wheel and sdist to the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${GITHUB_REF_NAME}" dist/* --generate-notes --verify-tag

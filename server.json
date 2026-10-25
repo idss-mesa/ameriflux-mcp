@@ -1,0 +1,78 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.idss-mesa/ameriflux-mcp",
+  "title": "AmeriFlux and FLUXNET",
+  "description": "AmeriFlux and FLUXNET flux tower data: sites, availability, variables, citations and previews.",
+  "repository": {
+    "url": "https://github.com/idss-mesa/ameriflux-mcp",
+    "source": "github"
+  },
+  "websiteUrl": "https://idss-mesa.github.io/ameriflux-mcp/",
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "ameriflux-mcp",
+      "version": "0.1.0",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "AMERIFLUX_USER_ID",
+          "description": "AmeriFlux username, sent to site PIs with a consented download (downloads only).",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AMERIFLUX_USER_EMAIL",
+          "description": "Email registered with AmeriFlux, sent with a consented download (downloads only).",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AMERIFLUX_USER_NAME",
+          "description": "Optional name shown to site PIs with a download.",
+          "isRequired": false,
+          "isSecret": true,
+          "format": "string"
+        },
+        {
+          "name": "AMERIFLUX_INTENDED_USE",
+          "description": "Intended-use category: 1 synthesis, 2 model, 3 remote sensing, 4 other research, 5 education, 6 other.",
+          "isRequired": false,
+          "format": "string",
+          "choices": ["1", "2", "3", "4", "5", "6"]
+        },
+        {
+          "name": "AMERIFLUX_DESCRIPTION",
+          "description": "How you will use the data, in your own words (20-1000 characters); sent to site PIs.",
+          "isRequired": false,
+          "format": "string"
+        },
+        {
+          "name": "AMERIFLUX_MCP_IDENTITY__IS_TEST",
+          "description": "true for test download requests, false for real ones; downloads refuse until set.",
+          "isRequired": false,
+          "format": "boolean"
+        },
+        {
+          "name": "AMERIFLUX_MCP_DOWNLOADS__DIRECTORY",
+          "description": "Directory downloads are confined to (default ~/ameriflux-downloads).",
+          "isRequired": false,
+          "format": "filepath"
+        },
+        {
+          "name": "AMERIFLUX_MCP_LOCAL__ROOTS",
+          "description": "Comma-separated extra folders the local file tools may read (e.g. FLUXNET2015 zips).",
+          "isRequired": false,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}

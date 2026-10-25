@@ -134,7 +134,8 @@ never stored or shown.
 
 `amf_preview_data(file=…)` reads the zip in place, `amf_read_bif(file=…)` reads the
 site's BADM, and `amf_get_citation` gives the citations and obligations for the
-reference list. See [Local files](local-files.md).
+reference list. See [Local files](local-files.md). To mirror the download folder to the
+CyVerse Data Store, see [Sync downloads to CyVerse](../getting-started/sync-cyverse.md).
 
 [^amf-policy]: AmeriFlux Data Policy. <https://ameriflux.lbl.gov/data/data-policy/>
 [^research]: ameriflux-mcp verified research. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md>

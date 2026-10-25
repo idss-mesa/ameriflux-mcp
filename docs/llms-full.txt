@@ -275,9 +275,7 @@ mistyped email does not end up in a log). ameriflux-mcp does not load `.env` fil
 itself; export the variables (`set -a; . ./.env; set +a`) before starting it.
 
 The table at the end is generated from the code[^config-module]
-(`scripts/gen_config_reference.py`); CI fails if it drifts. Some settings configure
-tools that arrive in later build steps (previews, downloads, the cache); they are
-accepted now so configuration files do not need to change later.
+(`scripts/gen_config_reference.py`); CI fails if it drifts.
 
 ## The download identity
 
@@ -383,7 +381,7 @@ commit.
 | `limits.preview_scan_max_bytes` | `AMERIFLUX_MCP_LIMITS__PREVIEW_SCAN_MAX_BYTES` | int | `268435456` | Most bytes a preview scans (256 MiB). |
 | `limits.preview_time_budget_s` | `AMERIFLUX_MCP_LIMITS__PREVIEW_TIME_BUDGET_S` | float | `20.0` | Wall-clock budget for one preview scan. |
 | `limits.zip_member_max_bytes` | `AMERIFLUX_MCP_LIMITS__ZIP_MEMBER_MAX_BYTES` | int | `1073741824` | Largest zip member read (uncompressed). |
-| `limits.tools_list_max_bytes` | `AMERIFLUX_MCP_LIMITS__TOOLS_LIST_MAX_BYTES` | int | `80000` | Conformance bound on the serialized tools/list result (67,948 B with the 12 stdio tools of step 7; reset to measured x1.25 in step 8, as in neon-mcp). |
+| `limits.tools_list_max_bytes` | `AMERIFLUX_MCP_LIMITS__TOOLS_LIST_MAX_BYTES` | int | `85000` | Conformance bound on the serialized tools/list result: 67,948 B measured with the 12 stdio tools of v0.1.0, x1.25 (as neon-mcp). |
 | `downloads.enabled` | `AMERIFLUX_MCP_DOWNLOADS__ENABLED` | bool \| null | unset | Offer the download tool. Unset: true on stdio; never available over http. |
 | `downloads.directory` | `AMERIFLUX_MCP_DOWNLOADS__DIRECTORY` | Path | `~/ameriflux-downloads` | Directory every download is confined to (created on first use). |
 | `downloads.max_files_per_call` | `AMERIFLUX_MCP_DOWNLOADS__MAX_FILES_PER_CALL` | int | `50` | Most files one download call transfers. |
@@ -675,20 +673,13 @@ stale_after: "2027-04-23T00:00:00Z"
 ameriflux-mcp is a Python 3.11+ package with one command, `ameriflux-mcp`, that MCP
 clients start over stdio. These instructions cover macOS, Linux and Windows.
 
-!!! warning "Under construction: build step 7 of 8"
-
-    ameriflux-mcp is being built in eight steps (see the [roadmap](../tools/roadmap.md)).
-    The server installs and starts on every client below, and site search, site details,
-    data availability, variables, citations, BADM, local file previews and consented
-    downloads work today; prompts, Docker and the release arrive in step 8. The [tool reference](../tools/reference.md) always lists what the
-    current build offers. Every step on this page works as written today.
-
-!!! note "Private repository and no PyPI release yet"
+!!! note "Private repository; PyPI from the v0.1.0 tag"
 
     The repository is private for now, so you need read access to
     [idss-mesa/ameriflux-mcp](https://github.com/idss-mesa/ameriflux-mcp){target=_blank}[^repo]
-    and git credentials (see [Access the repository](#access-the-repository)). The first
-    PyPI release, as `ameriflux-mcp`, is the last build step.
+    and git credentials (see [Access the repository](#access-the-repository)). The
+    package is published to PyPI as `ameriflux-mcp` when v0.1.0 is tagged; until then,
+    install from the repository.
 
 ## Prerequisites
 
@@ -903,7 +894,7 @@ that also run inside WSL, it works as on Linux.)
     # or: pipx install ameriflux-mcp
     ```
 
-    Not published yet; the PyPI release is build step 8.
+    Available once v0.1.0 is tagged and published; until then use the repository.
 
 Then find the executable's absolute path, which is what desktop apps need:
 
@@ -946,10 +937,11 @@ block with your identity ([Download identity](identity.md#give-it-to-ameriflux-m
 [Clients](clients.md) has the entries for Claude Desktop, Codex CLI, Gemini CLI, Goose,
 OpenCode, VS Code and hosted servers.
 
-## Option 3: Docker (from build step 8)
+## Option 3: Docker
 
-The repository will ship a `Dockerfile` that serves stateless Streamable HTTP on port
-8080 as a non-root user, with a `/healthz` health check:
+The repository ships a `Dockerfile` that serves stateless Streamable HTTP on port 8080
+as a non-root user (uid 10001), with `/healthz` and `/readyz` and a container health
+check:
 
 ```bash
 git clone https://github.com/idss-mesa/ameriflux-mcp.git && cd ameriflux-mcp
@@ -957,9 +949,12 @@ docker build -t ameriflux-mcp .
 docker run --rm --read-only --tmpfs /tmp -p 127.0.0.1:8080:8080 ameriflux-mcp
 ```
 
-Point an HTTP-capable client at `http://127.0.0.1:8080/mcp`. Over HTTP the server
-offers the eight discovery, variable and citation tools; downloads and local file tools
-are stdio only, and no identity is ever accepted over HTTP.
+Or `docker compose up -d` with the repository's `docker-compose.yml` (bound to
+127.0.0.1; set `PUBLIC_BASE_URL` and `ALLOWED_HOSTS` behind a TLS proxy). Point an
+HTTP-capable client at `http://127.0.0.1:8080/mcp`; `curl -s localhost:8080/healthz`
+answers `200`. Over HTTP the server offers the eight discovery, variable, citation and
+BADM tools and the prompts; downloads and local file tools are stdio only, and no
+identity is ever accepted over HTTP.
 
 ## Verify the installation
 
@@ -1126,12 +1121,12 @@ stale_after: "2027-04-23T00:00:00Z"
 This walks through a first session in Claude Code[^claude-code-mcp]; other clients work
 the same way once connected ([Clients](clients.md)).
 
-!!! warning "A preview of the planned session"
+!!! note "Results abbreviated"
 
-    The tools below arrive in build steps 2–7 ([roadmap](../tools/roadmap.md)); the
-    arguments and results follow the design[^design] and may change in detail before
-    v0.1.0. Every step below works in the current build; step 6 needs a
-    [download identity](identity.md) before `confirm=true` sends anything.
+    The results below are shortened; the [tool reference](../tools/reference.md) lists
+    every field, following the design[^design]. Step 6 needs a
+    [download identity](identity.md) before `confirm=true` sends anything. The
+    `plan_site_analysis` prompt runs the same sequence for chosen sites.
 
 ## 1. Register the server
 
@@ -1214,6 +1209,318 @@ so agents normally chain these on their own.
 [^claude-code-mcp]: Claude Code — MCP. <https://docs.claude.com/en/docs/claude-code/mcp>
 [^amf-products]: AmeriFlux flux data products. <https://ameriflux.lbl.gov/data/flux-data-products/>
 [^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
+
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/getting-started/sync-cyverse/
+
+---
+title: "Sync downloads to CyVerse"
+description: "Mirror the ameriflux-mcp download folder to the CyVerse Data Store with a GoCommands sync script that launchd (macOS) or cron (Linux) runs hourly."
+type: Guide
+tags:
+  - getting-started
+  - downloads
+  - cyverse
+  - gocommands
+  - sync
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-24T00:00:00Z"
+sources:
+  - id: gocommands
+    resource: "https://github.com/cyverse/gocommands"
+    title: "GoCommands — iRODS command-line client"
+    author: "team:cyverse"
+  - id: cyverse-install
+    resource: "https://learning.cyverse.org/ds/gocommands/installation/"
+    title: "GoCommands Installation and Upgrade"
+    author: "team:cyverse"
+  - id: cyverse-config
+    resource: "https://learning.cyverse.org/ds/gocommands/configuration/"
+    title: "GoCommands Configuration"
+    author: "team:cyverse"
+  - id: apple-launchd
+    resource: "https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html"
+    title: "Creating Launch Daemons and Agents"
+    author: "team:apple"
+  - id: idss-mesa
+    resource: "https://idss-mesa.github.io/docs/"
+    title: "IDSS MESA documentation"
+    author: "team:idss-mesa"
+status: draft
+stale_after: "2027-04-24T00:00:00Z"
+---
+
+# Sync downloads to CyVerse
+
+[`amf_download_data`](../tools/downloads.md) writes AmeriFlux files into
+`downloads.directory` (`~/ameriflux-downloads` by default) on the machine running the
+server, one folder per product with a checksum sidecar beside each file. To keep that
+folder mirrored in the CyVerse Data Store, for the Discovery Environment, for sharing
+or as the home of a MESA project, pair it with GoCommands[^gocommands], CyVerse's
+command-line client, and a short script that runs `gocmd sync` every hour.
+
+!!! note "Adapted from neon-mcp"
+
+    The script is neon-mcp's, which was tested with GoCommands v0.12.4 on macOS (Apple
+    Silicon). This AmeriFlux variant changes the paths and adds the download-in-progress
+    check. It has been dry-run on Linux with a stand-in for `gocmd` (the lock, the log
+    and the `.part` skip work), but not yet against the Data Store, and the Linux
+    `md5sum` check and cron line have not been run.
+
+## What the sync does
+
+* **One way, local → Data Store.** Your machine is the source. New and changed files
+  upload; unchanged files are skipped by checksum, so a run with nothing new moves no
+  data. `-k` verifies each upload's checksum.
+* **It never deletes anything in the Data Store.** The script leaves out `--delete`,
+  so files that exist only in the Data Store survive, such as the
+  `.mesa/ducklake/` history of a MESA project. The flip side: deleting or renaming a
+  file locally leaves the old copy in the Data Store until you remove it with
+  `gocmd rm`.
+* **Tags (AVUs) on a file survive when sync overwrites its content.** New files arrive
+  with only the tags CyVerse adds itself (`ipc_UUID`, `ipc-filetype`). `gocmd sync`
+  moves bytes, not metadata, and does not go through MESA, so it records no DuckLake
+  history.
+* **Hidden files upload too.** gocmd has no exclude option, so the script deletes
+  macOS `.DS_Store` files before each run.
+* **Never mid-download.** While `amf_download_data` is writing a `<name>.part` file the
+  script skips the run, so a half-written file never reaches the Data Store; the next
+  hourly run picks the finished file up.
+* **Provenance travels with the data.** The `<name>.amf.json` sidecars (sha256, ETag,
+  citation) and the `manifests/` folder upload too. They hold no user ID, email or
+  description.
+
+## 1. Install GoCommands
+
+CyVerse publishes one-line installers per platform[^cyverse-install]. The steps below
+do the same for the latest release, check the download against its published MD5 and
+put `gocmd` in `~/.local/bin` (there is no Homebrew tap). Set `PLATFORM` to
+`darwin-arm64`, `darwin-amd64`, `linux-amd64` or `linux-arm64`:
+
+```bash
+GOCMD_VER=$(curl -sL https://raw.githubusercontent.com/cyverse/gocommands/main/VERSION.txt)
+PLATFORM=darwin-arm64
+URL=https://github.com/cyverse/gocommands/releases/download/${GOCMD_VER}/gocmd-${GOCMD_VER}-${PLATFORM}.tar.gz
+curl -sSL -o gocmd.tar.gz "$URL" && curl -sSL -o gocmd.tar.gz.md5 "$URL.md5"
+
+case "$(uname -s)" in
+  Darwin) SUM=$(md5 -q gocmd.tar.gz) ;;
+  *) SUM=$(md5sum gocmd.tar.gz | cut -d' ' -f1) ;;
+esac
+[ "$SUM" = "$(cat gocmd.tar.gz.md5)" ] && echo "checksum OK"
+
+mkdir -p ~/.local/bin && tar -xzf gocmd.tar.gz -C ~/.local/bin gocmd
+~/.local/bin/gocmd --version
+```
+
+## 2. Log in once
+
+Run `gocmd init` yourself, in your own terminal, and answer the prompts with your
+CyVerse account[^cyverse-config]:
+
+| Prompt | Value |
+|---|---|
+| `irods_host` | `data.cyverse.org` |
+| `irods_port` | `1247` |
+| `irods_zone_name` | `iplant` |
+| `irods_user_name` | your CyVerse username |
+| `irods_user_password` | your CyVerse password |
+
+`init` writes its configuration under `~/.irods`, and every later `gocmd` call,
+scheduled ones included, reuses it. Keep the password out of scripts, shell history
+and command lines. Check the login with `gocmd ls`, then create the destination
+collection:
+
+```bash
+~/.local/bin/gocmd mkdir -p /iplant/home/YOUR_USERNAME/ameriflux-downloads
+```
+
+## 3. Save the sync script
+
+Save this as `~/.local/bin/ameriflux-sync`, set `SRC` and `DEST`, and make it
+executable with `chmod 755 ~/.local/bin/ameriflux-sync`. Point `SRC` at one product
+folder inside the download directory (for example `~/ameriflux-downloads/FLUXNET`) to
+sync just those files, or at the download directory itself to mirror everything
+ameriflux-mcp downloads. Point `DEST` at the matching Data Store collection.
+
+```bash
+#!/bin/bash
+# ameriflux-sync: one-way upload of the local ameriflux-mcp download folder to the CyVerse
+# Data Store with GoCommands. launchd (macOS) or cron (Linux) runs it every
+# hour; run it by hand any time.
+#
+# Never add --delete: the iRODS copy holds files that exist only there
+# (.mesa/ducklake history), and those must survive every run.
+set -uo pipefail
+
+SRC="$HOME/ameriflux-downloads"
+DEST="/iplant/home/YOUR_USERNAME/ameriflux-downloads"
+GOCMD="$HOME/.local/bin/gocmd"
+STATE="$HOME/.local/state/ameriflux-sync"
+case "$(uname -s)" in
+  Darwin) LOG="$HOME/Library/Logs/ameriflux-sync.log" ;;
+  *) LOG="$STATE/ameriflux-sync.log" ;;
+esac
+MAX_LOG_BYTES=1048576
+
+mkdir -p "$STATE" "$(dirname "$LOG")"
+if [ -f "$LOG" ] && [ "$(wc -c <"$LOG")" -gt "$MAX_LOG_BYTES" ]; then
+  mv -f "$LOG" "$LOG.1"
+fi
+exec >>"$LOG" 2>&1
+
+log() { printf '%s %s\n' "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$*"; }
+
+# One run at a time: a slow upload must not overlap the next hourly start.
+LOCK="$STATE/lock"
+if ! mkdir "$LOCK" 2>/dev/null; then
+  if kill -0 "$(cat "$LOCK/pid" 2>/dev/null)" 2>/dev/null; then
+    log "skip: previous run (pid $(cat "$LOCK/pid")) still active"
+    exit 0
+  fi
+  log "removing stale lock"
+  rm -rf "$LOCK"
+  mkdir "$LOCK"
+fi
+echo $$ >"$LOCK/pid"
+trap 'rm -rf "$LOCK"' EXIT
+
+if [ ! -d "$SRC" ]; then
+  log "error: $SRC does not exist"
+  exit 1
+fi
+
+# A download in progress writes <name>.part; wait for the next run rather than upload it.
+if [ -n "$(find "$SRC" -name '*.part' -type f -print -quit)" ]; then
+  log "skip: a download is in progress"
+  exit 0
+fi
+
+# gocmd has no exclude option, so remove Finder metadata before it can upload.
+find "$SRC" -name .DS_Store -type f -print -delete | sed 's/^/deleted local /'
+
+log "sync start $SRC -> i:$DEST"
+# --no_root: sync the folder's contents into DEST, not into DEST/<name of SRC>.
+# Unchanged files are skipped by checksum; drop those per-file notices.
+"$GOCMD" sync -k --no_root "$SRC" "i:$DEST" 2>&1 |
+  grep -v 'with the same hash already exists'
+status=${PIPESTATUS[0]}
+log "sync end status=$status"
+exit "$status"
+```
+
+What the pieces do:
+
+* `--no_root` puts the *contents* of `SRC` into `DEST`. Without it, gocmd creates a
+  collection named after `SRC` inside `DEST`.
+* The lock stops a slow upload from overlapping the next hourly start, and clears
+  itself if a run was killed.
+* The `.part` check skips a run while ameriflux-mcp is still writing a file.
+* The log keeps one line at the start and end of each run plus anything gocmd
+  reports; it rolls over to `ameriflux-sync.log.1` past 1 MB.
+
+Run it once by hand before scheduling it:
+
+```bash
+~/.local/bin/ameriflux-sync; echo "exit=$?"
+tail -3 ~/Library/Logs/ameriflux-sync.log     # Linux: ~/.local/state/ameriflux-sync/ameriflux-sync.log
+```
+
+## 4. Run it every hour
+
+### macOS: launchd
+
+Save this as `~/Library/LaunchAgents/local.ameriflux-sync.plist`[^apple-launchd], replacing
+`YOUR_MAC_USER`: launchd does not expand `~` or `$HOME`, so the paths must be
+absolute.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>local.ameriflux-sync</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/bin/bash</string>
+		<string>/Users/YOUR_MAC_USER/.local/bin/ameriflux-sync</string>
+	</array>
+	<key>StartInterval</key>
+	<integer>3600</integer>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>ProcessType</key>
+	<string>Background</string>
+	<key>LowPriorityIO</key>
+	<true/>
+	<key>StandardOutPath</key>
+	<string>/Users/YOUR_MAC_USER/Library/Logs/ameriflux-sync.launchd.log</string>
+	<key>StandardErrorPath</key>
+	<string>/Users/YOUR_MAC_USER/Library/Logs/ameriflux-sync.launchd.log</string>
+</dict>
+</plist>
+```
+
+Load it. It runs straight away (`RunAtLoad`), then every hour, and loads again at
+each login:
+
+```bash
+plutil -lint ~/Library/LaunchAgents/local.ameriflux-sync.plist
+launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/local.ameriflux-sync.plist
+```
+
+macOS may show a "background item added" notice for `bash`; that is this job. After
+editing the plist, `bootout` and `bootstrap` it again. To stop it:
+
+```bash
+launchctl bootout gui/$(id -u)/local.ameriflux-sync
+rm ~/Library/LaunchAgents/local.ameriflux-sync.plist   # or it loads again at next login
+```
+
+### Linux: cron
+
+Add one line with `crontab -e`:
+
+```text
+0 * * * * $HOME/.local/bin/ameriflux-sync
+```
+
+## Check on it
+
+A failing sync is silent: if your CyVerse password changes or the network is down,
+every run fails and nothing tells you. Look for a non-zero status now and then:
+
+```bash
+grep 'sync end status=[^0]' ~/Library/Logs/ameriflux-sync.log    # any failed runs
+launchctl print gui/$(id -u)/local.ameriflux-sync | grep 'last exit code'   # macOS
+```
+
+A failed login is fixed by running `gocmd init` again.
+
+## Syncing into a MESA project
+
+If `DEST` is a MESA project, its `.mesa/ducklake/` history exists only in the Data
+Store, which is why the script must never use `--delete`. The sync carries file
+content only: to tag new files with DataCite or ontology metadata and record that in
+the project's history, use mesa-mcp; see the
+[IDSS MESA documentation](https://idss-mesa.github.io/docs/){target=_blank}[^idss-mesa].
+Sync to a copy you own, and publish curated or shared copies deliberately rather
+than syncing into them.
+
+## Data policy
+
+A shared collection passes the data on. Data under CC-BY-4.0 can be shared with
+attribution; data under the AmeriFlux Legacy policy or FLUXNET2015 Tier Two come with
+conditions on use and publication. Keep the synced copy private unless you know every
+file's policy allows sharing: each sidecar records the policy it was downloaded under,
+and `ameriflux://guide/data-policy` explains the obligations.
+
+[^gocommands]: GoCommands — iRODS command-line client. <https://github.com/cyverse/gocommands>
+[^cyverse-install]: GoCommands Installation and Upgrade. <https://learning.cyverse.org/ds/gocommands/installation/>
+[^cyverse-config]: GoCommands Configuration. <https://learning.cyverse.org/ds/gocommands/configuration/>
+[^apple-launchd]: Creating Launch Daemons and Agents. <https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html>
+[^idss-mesa]: IDSS MESA documentation. <https://idss-mesa.github.io/docs/>
 
 ---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/citation/
 
@@ -1621,7 +1928,8 @@ never stored or shown.
 
 `amf_preview_data(file=…)` reads the zip in place, `amf_read_bif(file=…)` reads the
 site's BADM, and `amf_get_citation` gives the citations and obligations for the
-reference list. See [Local files](local-files.md).
+reference list. See [Local files](local-files.md). To mirror the download folder to the
+CyVerse Data Store, see [Sync downloads to CyVerse](../getting-started/sync-cyverse.md).
 
 [^amf-policy]: AmeriFlux Data Policy. <https://ameriflux.lbl.gov/data/data-policy/>
 [^research]: ameriflux-mcp verified research. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/RESEARCH.md>
@@ -1762,6 +2070,88 @@ a member decompresses past its declared size.
 [^design]: ameriflux-mcp design. <https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md>
 [^oneflux-readme]: ONEFlux FLUXNET data product README. <https://github.com/fluxnet/ONEFlux/blob/main/oneflux/metadata/fluxnet_data_docs/README.txt>
 
+---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/prompts-and-resources/
+
+---
+title: "Prompts, resources and status"
+description: "The three ameriflux-mcp prompts, the guide and reference resources agents read, the site card template, and the amf_ping status report."
+type: Guide
+tags:
+  - tools
+  - prompts
+  - resources
+  - agents
+generated:
+  by: "claude/opus-5.5"
+  at: "2026-10-24T00:00:00Z"
+sources:
+  - id: mcp-prompts
+    resource: "https://modelcontextprotocol.io/specification/2026-07-28/server/prompts"
+    title: "MCP specification: prompts"
+    author: "team:modelcontextprotocol"
+  - id: design
+    resource: "https://github.com/idss-mesa/ameriflux-mcp/blob/main/DESIGN.md"
+    title: "ameriflux-mcp design"
+    author: "team:idss-mesa"
+status: draft
+stale_after: "2027-04-24T00:00:00Z"
+---
+
+# Prompts, resources and status
+
+Besides its tools, ameriflux-mcp offers **prompts** (task recipes a client can show as
+commands[^mcp-prompts]) and **resources** (guides and reference tables an agent reads on
+demand). Both work over stdio and HTTP and need no account.
+
+## Prompts
+
+| Prompt | Arguments | What it asks the agent to do |
+| --- | --- | --- |
+| `find_flux_sites` | `question` (required), `region`, `ecosystem`, `years`, `variables` | Search towers with the filters the question implies, read the best candidates, check their years and policy, and end with a table. It downloads nothing. |
+| `plan_site_analysis` | `sites` (required, up to 20), `product`, `variables`, `years` | Availability, variable meanings and BADM; then local files first, or a download **plan** shown to the user, confirmed only after they agree; a preview; citations. For FLUXNET2015 it explains the fluxnet.org route instead. |
+| `cite_flux_data` | `sites` (required, up to 50), `product` | Every citation as returned, the acknowledgments verbatim, Legacy site funding, the data-availability sentence, the processing references and the obligations. |
+
+Arguments are checked before a recipe is returned: site lists are capped, products are
+normalized (`FLUXNET-1F` → `FLUXNET`), and years must read as `2012` or `2010-2015`. A
+recipe names only tools and resources the server has.
+
+## Guides
+
+| URI | Read it for |
+| --- | --- |
+| `ameriflux://guide/agent-workflow` | The seven-call path from a question to previewed, cited data; inputs and errors |
+| `ameriflux://guide/products` | BASE-BADM, BIF, FLUXNET, FLUXNET2015 and FLUXNET-CH4: which to use, FULLSET vs SUBSET, bulk BADM, versions |
+| `ameriflux://guide/data-policy` | CC-BY-4.0, Legacy, Tier One and Tier Two, and why mixing escalates |
+| `ameriflux://guide/variable-grammar` | How BASE and FLUXNET variable names are built |
+| `ameriflux://guide/identity` | What a download discloses, how the user configures it, the download flow |
+| `ameriflux://guide/file-formats` | File names and contents, timestamps, UTC offsets, previews, safety rules |
+| `ameriflux://guide/fluxnet2015-access` | Getting FLUXNET2015 zips from fluxnet.org yourself |
+
+## Reference tables
+
+| URI | Content |
+| --- | --- |
+| `ameriflux://reference/vocabularies` | IGBP classes and Köppen climates in AmeriFlux's wording, the product × policy matrix, intended-use codes, networks |
+| `ameriflux://reference/fp-variables` | The FP Standard variables with units and QA/QC ranges (live, or the bundled snapshot) |
+| `ameriflux://reference/fluxnet-variables` | FLUXNET FULLSET/SUBSET and ONEFlux variables with units per resolution |
+| `ameriflux://reference/acknowledgments` | The verbatim acknowledgment and data-availability texts, with the date checked |
+| `ameriflux://reference/neon-crosswalk` | NEON site codes and their AmeriFlux IDs, from the live catalog |
+| `ameriflux://reference/lter-crosswalk` | AmeriFlux sites linked to LTER sites and EDI scopes (draft) |
+
+The template `ameriflux://site/{site_id}` returns one site's card, the same payload as
+`amf_get_site`; NEON codes and FLUXNET2015 old IDs resolve too.
+
+## amf_ping
+
+`amf_ping` reports the server version, the protocol (`2026-07-28`) and transport, which
+download-identity fields are configured (booleans and profile names only, never values),
+whether downloads are enabled and where they go, the local roots, cache statistics and,
+with `check_api=true`, whether one small AmeriFlux API request answers and how fast. Call
+it first when a tool is missing or a download refuses. `ameriflux-mcp --check` runs the
+same report offline from the command line.
+
+[^mcp-prompts]: MCP specification: prompts. <https://modelcontextprotocol.io/specification/2026-07-28/server/prompts>
+
 ---8<--- https://idss-mesa.github.io/ameriflux-mcp/tools/reference/
 
 ---
@@ -1796,7 +2186,7 @@ Generated from the tool registry by `scripts/gen_tools_reference.py`; do not edi
 | [`amf_get_citation`](#amf_get_citation) | Get citations and acknowledgments for sites | [citation](citation.md) | no |
 | [`amf_get_site`](#amf_get_site) | Get one AmeriFlux or FLUXNET site | [discovery](discovery.md) | no |
 | [`amf_list_files`](#amf_list_files) | List local AmeriFlux and FLUXNET files | [local](local-files.md) | no |
-| [`amf_ping`](#amf_ping) | Check ameriflux-mcp status | [core](roadmap.md) | no |
+| [`amf_ping`](#amf_ping) | Check ameriflux-mcp status | [core](prompts-and-resources.md) | no |
 | [`amf_preview_data`](#amf_preview_data) | Preview a local AmeriFlux or FLUXNET data file | [local](local-files.md) | no |
 | [`amf_read_bif`](#amf_read_bif) | Read a local BADM (BIF) file | [local](local-files.md) | no |
 | [`amf_search_sites`](#amf_search_sites) | Search AmeriFlux and FLUXNET sites | [discovery](discovery.md) | no |
@@ -2277,9 +2667,9 @@ stale_after: "2027-01-23T00:00:00Z"
 
 # Roadmap
 
-ameriflux-mcp is built in eight steps, one pull request each[^design]. This page lists
-what each step delivers. Once tools exist, a generated tool reference replaces the
-descriptions here.
+ameriflux-mcp v0.1.0 was built in eight steps, one pull request each[^design]. This
+page records what each step delivered and what comes next; the generated
+[tool reference](reference.md) is the authoritative list of tools.
 
 ## Build steps
 
@@ -2291,8 +2681,8 @@ descriptions here.
 | 4 | Site discovery and availability tools | done |
 | 5 | Variable, citation and BADM tools | done |
 | 6 | Local file readers and previews | done |
-| 7 | The download tool (merged only after AmeriFlux confirms third-party use) | done |
-| 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | next |
+| 7 | The download tool | done |
+| 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | done |
 
 The [tool reference](reference.md) is generated from the server's registry and lists
 exactly the tools the current build offers.
@@ -2526,8 +2916,9 @@ FLUXNET data — sites, availability, variables, citations — do not scrape the
 pages: connect to the server and call its tools. Locally, run it over `stdio`
 (`claude mcp add ameriflux -s user -- ameriflux-mcp --transport stdio`); against a
 hosted instance, use Streamable HTTP at `https://<host>/mcp`
-(`claude mcp add --transport http ameriflux https://<host>/mcp`). The server is
-under construction; the [roadmap](../tools/roadmap.md) says which tools exist. The server
+(`claude mcp add --transport http ameriflux https://<host>/mcp`). Read
+`ameriflux://guide/agent-workflow` first; the
+[prompts](../tools/prompts-and-resources.md) package the usual tasks. The server
 implements MCP 2026-07-28[^mcp-spec]: `server/discover` and `tools/list`
 return the live, authoritative tool catalogue with JSON Schema inputs and
 outputs, and every list result carries cache hints. Use this documentation
@@ -2841,6 +3232,8 @@ names belong to their respective owners; this site uses its own original artwork
 # Directory Update Log
 
 ## 2026-10-24
+* **Creation**: [Prompts, resources and status](tools/prompts-and-resources.md) — the three prompts (build step 8), every guide and reference resource, the site template and `amf_ping`; [Sync downloads to CyVerse](getting-started/sync-cyverse.md), ported from neon-mcp with the download-in-progress check.
+* **Update**: v0.1.0 — [home](index.md), [Install](getting-started/install.md) (Docker ships; PyPI from the v0.1.0 tag), [Quickstart](getting-started/quickstart.md), [For AI agents](about/ai-agents.md), [Configuration](getting-started/configuration.md) and [Roadmap](tools/roadmap.md) (all eight steps done); [Downloads](tools/downloads.md) links the CyVerse sync.
 * **Creation**: [Downloads](tools/downloads.md) — `amf_download_data` (build step 7): products, the plan and its disclosure, the consent call and its checks, the transfer and integrity checks, what is written to disk.
 * **Update**: [Download identity](getting-started/identity.md) — the tool now exists; the `?=<user ID>` tag is stripped and nothing written holds the identity; [Tool reference](tools/reference.md) regenerated (12 tools); [Roadmap](tools/roadmap.md) — step 7 done; [home](index.md), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md) — what works today.
 * **Creation**: [Local files](tools/local-files.md) — `amf_list_files`, `amf_preview_data` and `amf_read_bif` (build step 6): local roots, file families, summaries, rows, QC filters, UTC offsets, the SUBSET view, BIF privacy and the archive safety rules.

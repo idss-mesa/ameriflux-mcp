@@ -293,10 +293,10 @@ class LimitsConfig(_Section):
         1024**3, ge=1024, description="Largest zip member read (uncompressed)."
     )
     tools_list_max_bytes: int = Field(
-        80_000,
+        85_000,
         ge=1000,
-        description="Conformance bound on the serialized tools/list result (67,948 B with the 12 "
-        "stdio tools of step 7; reset to measured x1.25 in step 8, as in neon-mcp).",
+        description="Conformance bound on the serialized tools/list result: 67,948 B measured "
+        "with the 12 stdio tools of v0.1.0, x1.25 (as neon-mcp).",
     )
 
 

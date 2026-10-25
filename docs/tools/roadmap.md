@@ -24,9 +24,9 @@ stale_after: "2027-01-23T00:00:00Z"
 
 # Roadmap
 
-ameriflux-mcp is built in eight steps, one pull request each[^design]. This page lists
-what each step delivers. Once tools exist, a generated tool reference replaces the
-descriptions here.
+ameriflux-mcp v0.1.0 was built in eight steps, one pull request each[^design]. This
+page records what each step delivered and what comes next; the generated
+[tool reference](reference.md) is the authoritative list of tools.
 
 ## Build steps
 
@@ -38,8 +38,8 @@ descriptions here.
 | 4 | Site discovery and availability tools | done |
 | 5 | Variable, citation and BADM tools | done |
 | 6 | Local file readers and previews | done |
-| 7 | The download tool (merged only after AmeriFlux confirms third-party use) | done |
-| 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | next |
+| 7 | The download tool | done |
+| 8 | Prompts, resources, full documentation, Docker image, PyPI release v0.1.0 | done |
 
 The [tool reference](reference.md) is generated from the server's registry and lists
 exactly the tools the current build offers.
