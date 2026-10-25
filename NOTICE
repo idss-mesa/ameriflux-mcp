@@ -54,6 +54,13 @@ Current contents
    BIF workbooks are not vendored (they hold personal contact data); tests build
    synthetic ones instead.
 
+8. tests/data/server.schema.2025-12-11.json is an unmodified copy of the MCP registry's
+   server.json schema (https://static.modelcontextprotocol.io/schemas/2025-12-11/
+   server.schema.json, fetched 2026-10-24), from the Model Context Protocol project
+   (https://github.com/modelcontextprotocol/registry), licensed under the Apache License,
+   Version 2.0 (contributions not yet relicensed remain under the MIT License). It is
+   used only to validate server.json in tests.
+
 Test fixtures in tests/fixtures/ are recorded AmeriFlux, AmeriFlux file-server, amerifluxr
 and DataCite responses, cut to a few sites and with every email address replaced by a
 synthetic example.org address (scripts/record_fixtures.py records each transform).
