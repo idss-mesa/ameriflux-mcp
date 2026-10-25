@@ -12,6 +12,9 @@ First release.
 
 ### Added
 
+- Downloads are **off by default** until AmeriFlux confirms third-party use of its
+  download request: `AMERIFLUX_MCP_DOWNLOADS__ENABLED=true` or `--downloads` turns them
+  on, and `amf_ping` says how.
 - Prompts (build step 8): `find_flux_sites`, `plan_site_analysis` (the download plan is
   shown to the user and confirmed only on their explicit yes) and `cite_flux_data`, with
   validated arguments and recipes that name only existing tools and resources.
@@ -175,7 +178,7 @@ First release.
 - The `data_download` response has not been observed on the wire; it is parsed from the
   AmeriFlux website's own code, and anything unexpected is reported as drift
   (RESEARCH.md §12). AmeriFlux support has not yet answered Q1 and Q4
-  (`research/questions.md`); `downloads.enabled=false` turns downloads off.
+  (`research/questions.md`), so downloads are off by default.
 - FLUXNET-CH4 is discoverable only: citations and readers arrive in 0.2.
 - FLUXNET2015 files are never downloaded by the server (fluxnet.org login).
 - The AUXMETEO/AUXNEE layout is undocumented, so they are read as plain tables.

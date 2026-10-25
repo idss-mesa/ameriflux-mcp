@@ -61,9 +61,14 @@ def test_server_json_lists_only_names_the_server_reads() -> None:
     }
     assert secrets == set(IDENTITY_ENV_FALLBACKS.values())
     # Every namespaced name maps onto a real setting (no unknown-key warning).
-    env = {n: "x" for n in names if n.startswith("AMERIFLUX_MCP_") and "IS_TEST" not in n}
-    env["AMERIFLUX_MCP_IDENTITY__IS_TEST"] = "true"
-    load_config(env=env)
+    sample = {"boolean": "true", "filepath": "/tmp/amf", "string": "x"}
+    env = {
+        v["name"]: sample[v.get("format", "string")]
+        for v in SERVER_JSON["packages"][0]["environmentVariables"]
+        if v["name"].startswith("AMERIFLUX_MCP_")
+    }
+    config = load_config(env=env)
+    assert config.downloads.enabled is True and config.identity.is_test is True
 
 
 def test_dockerfile_is_pinned_and_unprivileged() -> None:

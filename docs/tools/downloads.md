@@ -31,9 +31,14 @@ stale_after: "2027-01-24T00:00:00Z"
 
 `amf_download_data` downloads AmeriFlux data through the route the AmeriFlux website
 uses: one request that tells the site PIs who is downloading and why[^amf-policy]. It
-runs only over **stdio**, needs a [download identity](../getting-started/identity.md),
-and can be switched off with `downloads.enabled=false` (or `--no-downloads`). Inputs and
-result fields are in the [Tool reference](reference.md).
+runs only over **stdio** and needs a [download identity](../getting-started/identity.md).
+Inputs and result fields are in the [Tool reference](reference.md).
+
+!!! warning "Off by default"
+
+    Downloads are **off by default** until AmeriFlux confirms that third-party clients may use its download request (question Q1 in the project's [support questions](https://github.com/idss-mesa/ameriflux-mcp/blob/main/research/questions.md){target=_blank}). Until then the tool is not listed. To use it anyway, set
+    `AMERIFLUX_MCP_DOWNLOADS__ENABLED=true` in the server's environment (or start it
+    with `--downloads`); `amf_ping` reports `downloadsEnabled`.
 
 | Product | `sites` | What arrives |
 | --- | --- | --- |

@@ -81,7 +81,9 @@ AmeriFlux downloads go through a request that sends your name, email and stated 
 to the site's principal investigators and to the AmeriFlux download log. ameriflux-mcp
 never invents that information or lets a model write it: it comes only from your own
 configuration, every download shows you the exact text first, and nothing is sent until
-you confirm. `downloads.enabled=false` (or `--no-downloads`) removes the download tool. Discovery, availability, variables and citations need no identity at all.
+you confirm. Downloads are **off by default** until AmeriFlux confirms third-party use
+of its download request; `AMERIFLUX_MCP_DOWNLOADS__ENABLED=true` (or `--downloads`)
+turns them on. Discovery, availability, variables and citations need no identity at all.
 
 ## Data policy
 

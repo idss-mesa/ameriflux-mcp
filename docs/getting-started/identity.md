@@ -39,11 +39,12 @@ exist, describing variables, getting citations and previewing files you already 
 all work anonymously. Only **downloading data from AmeriFlux** needs an identity, and
 this page explains why, what is disclosed, and how to configure it.
 
-!!! info "Used by amf_download_data"
+!!! info "Used by amf_download_data, which is off by default"
 
-    The download tool (build step 7) is the only part of ameriflux-mcp that uses the
-    identity. [Downloads](../tools/downloads.md) walks through the plan, the consent
-    call and what is written to disk.
+    The download tool is the only part of ameriflux-mcp that uses the identity.
+    Downloads are **off by default** until AmeriFlux confirms that third-party clients may use its download request (question Q1 in the project's [support questions](https://github.com/idss-mesa/ameriflux-mcp/blob/main/research/questions.md){target=_blank}). Turn it on with `AMERIFLUX_MCP_DOWNLOADS__ENABLED=true`.
+    [Downloads](../tools/downloads.md) walks through the plan, the consent call and what
+    is written to disk.
 
 ## What a download discloses, and to whom
 
@@ -148,7 +149,7 @@ downloads for your work), the download tool refuses with `auth_required` and
 === "Install script"
 
     ```bash
-    scripts/install.sh --with-identity
+    scripts/install.sh --with-identity --env AMERIFLUX_MCP_DOWNLOADS__ENABLED=true
     ```
 
     The script reads the variables from your environment or asks for each missing one,
@@ -164,6 +165,7 @@ downloads for your work), the download tool refuses with `auth_required` and
       -e AMERIFLUX_INTENDED_USE=4 \
       -e AMERIFLUX_DESCRIPTION="Comparing drought responses of semi-arid grassland GPP." \
       -e AMERIFLUX_MCP_IDENTITY__IS_TEST=false \
+      -e AMERIFLUX_MCP_DOWNLOADS__ENABLED=true \
       -- ameriflux-mcp
     ```
 
@@ -180,7 +182,8 @@ downloads for your work), the download tool refuses with `auth_required` and
             "AMERIFLUX_USER_EMAIL": "you@example.edu",
             "AMERIFLUX_INTENDED_USE": "4",
             "AMERIFLUX_DESCRIPTION": "Comparing drought responses of semi-arid grassland GPP.",
-            "AMERIFLUX_MCP_IDENTITY__IS_TEST": "false"
+            "AMERIFLUX_MCP_IDENTITY__IS_TEST": "false",
+            "AMERIFLUX_MCP_DOWNLOADS__ENABLED": "true"
           }
         }
       }

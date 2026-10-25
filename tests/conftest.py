@@ -31,7 +31,8 @@ def _isolate() -> Iterator[None]:
 def config(tmp_path: Path) -> Config:
     return Config.model_validate(
         {
-            "downloads": {"directory": str(tmp_path / "downloads")},
+            # Downloads are off by default (D18); tests enable them and check the default apart.
+            "downloads": {"directory": str(tmp_path / "downloads"), "enabled": True},
             "cache": {"disk_dir": str(tmp_path / "cache")},
             # Replayed fixtures need no politeness: the largest burst and rate keep tests from
             # sleeping (the limiter has its own tests with a fake clock).

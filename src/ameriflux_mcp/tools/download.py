@@ -596,7 +596,11 @@ async def amf_download_data(args: DownloadIn, ctx: ToolContext) -> DownloadResul
             "Downloads act with the user's identity and write to their disk: stdio only.",
         )
     if not ctx.config.effective_downloads_enabled(ctx.transport):
-        raise ToolError("feature_unavailable", "Downloads are disabled (downloads.enabled=false).")
+        raise ToolError(
+            "feature_unavailable",
+            "Downloads are off (downloads.enabled is false, the default).",
+            hint="The user enables them with AMERIFLUX_MCP_DOWNLOADS__ENABLED=true or --downloads.",
+        )
     started = time.monotonic()
     product = normalize_product(args.product)
     bulk = _bulk_ids(args.sites) if product == "BIF" else None

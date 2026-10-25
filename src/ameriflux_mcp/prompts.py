@@ -198,8 +198,10 @@ def _plan(v: Mapping[str, str]) -> str:
             "proceed. Only if the user explicitly agrees, call it again with "
             "accept_data_policy=<the plan's policy.code> and confirm=true. If the plan has "
             "blockers, ask the user to configure the identity (ameriflux://guide/identity); "
-            "never write the intended use or description for them. Over HTTP the tool does not "
-            "exist: point the user to the AmeriFlux website instead."
+            "never write the intended use or description for them. If amf_download_data is not "
+            "listed, downloads are off (the default; the user enables them with "
+            "AMERIFLUX_MCP_DOWNLOADS__ENABLED=true) or the server is remote: point the user to "
+            "the AmeriFlux website and read their files with amf_list_files afterwards."
         )
     return (
         f"Plan an analysis of {product} data for sites {v['sites']}"

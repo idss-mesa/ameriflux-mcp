@@ -71,7 +71,8 @@ public (free plan).
 - Contact emails are stripped by default and never persisted (D19).
 - Validate the product × policy matrix client-side: the AmeriFlux network answers bad
   enums with 200 and empty rows (D6).
-- Read-mostly v1; downloads stdio-only, confined, behind `downloads.enabled` (D18).
+- Read-mostly v1; downloads stdio-only, confined, behind `downloads.enabled`, which is
+  **off by default** until AmeriFlux answers Q1 and Q4 (D18).
 - Config: `AMERIFLUX_MCP_<SECTION>__<FIELD>`; precedence flag > env > YAML > defaults;
   `.env` is not auto-loaded.
 - MIT, Copyright (c) 2026 The Regents of the University of New Mexico.

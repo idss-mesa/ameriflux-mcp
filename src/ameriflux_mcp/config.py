@@ -303,9 +303,10 @@ class LimitsConfig(_Section):
 class DownloadsConfig(_Section):
     """Local downloads (stdio only, DESIGN.md D18)."""
 
-    enabled: bool | None = Field(
-        None,
-        description="Offer the download tool. Unset: true on stdio; never available over http.",
+    enabled: bool = Field(
+        False,
+        description="Offer the download tool (stdio only; never over http). Off by default until "
+        "AmeriFlux confirms third-party use of its download request (research/questions.md Q1).",
     )
     directory: Path = Field(
         Path("~/ameriflux-downloads"),
@@ -406,8 +407,8 @@ class Config(BaseModel):
         return data
 
     def effective_downloads_enabled(self, transport: str) -> bool:
-        """Downloads exist only on stdio, and only unless explicitly disabled."""
-        return transport == "stdio" and self.downloads.enabled is not False
+        """Downloads exist only on stdio, and only when explicitly enabled (DESIGN.md D18)."""
+        return transport == "stdio" and self.downloads.enabled
 
     def effective_disk_cache(self, transport: str) -> Path | None:
         """The disk cache directory: configured, else the default on stdio, else none."""

@@ -18,7 +18,10 @@ From a question to previewed, cited flux data. Every result is compact JSON with
    `amf_describe_variables(names=['GPP_NT_VUT_REF','TA_F_MDS_QC'], resolution='DD')`:
    units at that resolution, QC meaning, sign convention, heights at a site.
 5. **Get the data (stdio)** — first `amf_list_files(site=...)`: files already on disk are
-   read in place. Otherwise `amf_download_data(sites=[...], product='FLUXNET')` returns a
+   read in place. `amf_download_data` is off by default (listed only when the user sets
+   `AMERIFLUX_MCP_DOWNLOADS__ENABLED=true`); without it, the user downloads from the
+   AmeriFlux website into the download directory. When it is listed,
+   `amf_download_data(sites=[...], product='FLUXNET')` returns a
    **plan** and sends nothing. Show the user `disclosure` (what AmeriFlux sends to the site
    PIs), `ineligible` and `policy.obligations`, and ask. Only after an explicit yes call
    again with `accept_data_policy=<policy.code>` and `confirm=true`. If `blockers` is not

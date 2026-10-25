@@ -299,6 +299,7 @@ server logs a warning, without the value, when one is set. See
 | `--bind-address`, `--bind-port` | `server.bind_address`, `server.bind_port` |
 | `--log-level` | `server.log_level` |
 | `--download-dir PATH` | `downloads.directory` |
+| `--downloads` | `downloads.enabled = true` (stdio only) |
 | `--no-downloads` | `downloads.enabled = false` |
 | `--print-config` | print the effective configuration as YAML (identity shown as `***`) and exit |
 | `--check` | load the configuration, call `amf_ping` in-process (no network request), print a JSON report, exit 0 or 1 |
@@ -328,8 +329,10 @@ commit.
 
 ## Automatic values
 
-* `downloads.enabled`: the download tool exists only on stdio; over HTTP it is never
-  listed, whatever this says. `--no-downloads` (or `false`) removes it on stdio too.
+* `downloads.enabled`: **off by default** until AmeriFlux confirms third-party use of
+  its download request. Set it to `true` (or pass `--downloads`) to list the download
+  tool on stdio; over HTTP it is never listed, whatever this says. `--no-downloads`
+  forces it off.
 * `cache.disk_dir`: the on-disk cache is on for stdio and off for HTTP unless a
   directory is configured, so containers without a writable home still start.
 * `privacy.allow_contact_emails`: off on every transport. Contact emails of tower teams
@@ -382,7 +385,7 @@ commit.
 | `limits.preview_time_budget_s` | `AMERIFLUX_MCP_LIMITS__PREVIEW_TIME_BUDGET_S` | float | `20.0` | Wall-clock budget for one preview scan. |
 | `limits.zip_member_max_bytes` | `AMERIFLUX_MCP_LIMITS__ZIP_MEMBER_MAX_BYTES` | int | `1073741824` | Largest zip member read (uncompressed). |
 | `limits.tools_list_max_bytes` | `AMERIFLUX_MCP_LIMITS__TOOLS_LIST_MAX_BYTES` | int | `85000` | Conformance bound on the serialized tools/list result: 67,948 B measured with the 12 stdio tools of v0.1.0, x1.25 (as neon-mcp). |
-| `downloads.enabled` | `AMERIFLUX_MCP_DOWNLOADS__ENABLED` | bool \| null | unset | Offer the download tool. Unset: true on stdio; never available over http. |
+| `downloads.enabled` | `AMERIFLUX_MCP_DOWNLOADS__ENABLED` | bool | `false` | Offer the download tool (stdio only; never over http). Off by default until AmeriFlux confirms third-party use of its download request (research/questions.md Q1). |
 | `downloads.directory` | `AMERIFLUX_MCP_DOWNLOADS__DIRECTORY` | Path | `~/ameriflux-downloads` | Directory every download is confined to (created on first use). |
 | `downloads.max_files_per_call` | `AMERIFLUX_MCP_DOWNLOADS__MAX_FILES_PER_CALL` | int | `50` | Most files one download call transfers. |
 | `downloads.max_bytes_per_call` | `AMERIFLUX_MCP_DOWNLOADS__MAX_BYTES_PER_CALL` | int | `2147483648` | Most bytes one download call transfers (2 GiB). |
@@ -449,11 +452,12 @@ exist, describing variables, getting citations and previewing files you already 
 all work anonymously. Only **downloading data from AmeriFlux** needs an identity, and
 this page explains why, what is disclosed, and how to configure it.
 
-!!! info "Used by amf_download_data"
+!!! info "Used by amf_download_data, which is off by default"
 
-    The download tool (build step 7) is the only part of ameriflux-mcp that uses the
-    identity. [Downloads](../tools/downloads.md) walks through the plan, the consent
-    call and what is written to disk.
+    The download tool is the only part of ameriflux-mcp that uses the identity.
+    Downloads are **off by default** until AmeriFlux confirms that third-party clients may use its download request (question Q1 in the project's [support questions](https://github.com/idss-mesa/ameriflux-mcp/blob/main/research/questions.md){target=_blank}). Turn it on with `AMERIFLUX_MCP_DOWNLOADS__ENABLED=true`.
+    [Downloads](../tools/downloads.md) walks through the plan, the consent call and what
+    is written to disk.
 
 ## What a download discloses, and to whom
 
@@ -558,7 +562,7 @@ downloads for your work), the download tool refuses with `auth_required` and
 === "Install script"
 
     ```bash
-    scripts/install.sh --with-identity
+    scripts/install.sh --with-identity --env AMERIFLUX_MCP_DOWNLOADS__ENABLED=true
     ```
 
     The script reads the variables from your environment or asks for each missing one,
@@ -574,6 +578,7 @@ downloads for your work), the download tool refuses with `auth_required` and
       -e AMERIFLUX_INTENDED_USE=4 \
       -e AMERIFLUX_DESCRIPTION="Comparing drought responses of semi-arid grassland GPP." \
       -e AMERIFLUX_MCP_IDENTITY__IS_TEST=false \
+      -e AMERIFLUX_MCP_DOWNLOADS__ENABLED=true \
       -- ameriflux-mcp
     ```
 
@@ -590,7 +595,8 @@ downloads for your work), the download tool refuses with `auth_required` and
             "AMERIFLUX_USER_EMAIL": "you@example.edu",
             "AMERIFLUX_INTENDED_USE": "4",
             "AMERIFLUX_DESCRIPTION": "Comparing drought responses of semi-arid grassland GPP.",
-            "AMERIFLUX_MCP_IDENTITY__IS_TEST": "false"
+            "AMERIFLUX_MCP_IDENTITY__IS_TEST": "false",
+            "AMERIFLUX_MCP_DOWNLOADS__ENABLED": "true"
           }
         }
       }
@@ -960,7 +966,7 @@ identity is ever accepted over HTTP.
 
 ```bash
 ameriflux-mcp --version     # ameriflux-mcp 0.1.0
-ameriflux-mcp --check       # {"ok": true, "version": "0.1.0", "protocolVersion": "2026-07-28", "transport": "stdio", "identityConfigured": false, "downloadsEnabled": true}
+ameriflux-mcp --check       # {"ok": true, "version": "0.1.0", "protocolVersion": "2026-07-28", "transport": "stdio", "identityConfigured": false, "downloadsEnabled": false}
 ```
 
 `--check` loads your configuration, calls `amf_ping` in-process and prints a one-line
@@ -998,7 +1004,7 @@ Nothing is required. The settings most people touch:
 AMERIFLUX_MCP_SERVER__LOG_LEVEL=info           # debug | info | warning | error | critical (stderr)
 AMERIFLUX_MCP_DOWNLOADS__DIRECTORY=            # where downloads go (default ~/ameriflux-downloads)
 AMERIFLUX_MCP_LOCAL__ROOTS=                    # extra folders the file tools may read (e.g. FLUXNET2015 zips)
-AMERIFLUX_MCP_DOWNLOADS__ENABLED=false         # turn the download tool off entirely
+AMERIFLUX_MCP_DOWNLOADS__ENABLED=true          # offer the download tool (off by default)
 ```
 
 ameriflux-mcp does not read `.env` files on its own. See [Configuration](configuration.md)
@@ -1124,7 +1130,8 @@ the same way once connected ([Clients](clients.md)).
 !!! note "Results abbreviated"
 
     The results below are shortened; the [tool reference](../tools/reference.md) lists
-    every field, following the design[^design]. Step 6 needs a
+    every field, following the design[^design]. Step 6 needs downloads turned on
+    (`AMERIFLUX_MCP_DOWNLOADS__ENABLED=true`; they are off by default) and a
     [download identity](identity.md) before `confirm=true` sends anything. The
     `plan_site_analysis` prompt runs the same sequence for chosen sites.
 
@@ -1825,9 +1832,14 @@ stale_after: "2027-01-24T00:00:00Z"
 
 `amf_download_data` downloads AmeriFlux data through the route the AmeriFlux website
 uses: one request that tells the site PIs who is downloading and why[^amf-policy]. It
-runs only over **stdio**, needs a [download identity](../getting-started/identity.md),
-and can be switched off with `downloads.enabled=false` (or `--no-downloads`). Inputs and
-result fields are in the [Tool reference](reference.md).
+runs only over **stdio** and needs a [download identity](../getting-started/identity.md).
+Inputs and result fields are in the [Tool reference](reference.md).
+
+!!! warning "Off by default"
+
+    Downloads are **off by default** until AmeriFlux confirms that third-party clients may use its download request (question Q1 in the project's [support questions](https://github.com/idss-mesa/ameriflux-mcp/blob/main/research/questions.md){target=_blank}). Until then the tool is not listed. To use it anyway, set
+    `AMERIFLUX_MCP_DOWNLOADS__ENABLED=true` in the server's environment (or start it
+    with `--downloads`); `amf_ping` reports `downloadsEnabled`.
 
 | Product | `sites` | What arrives |
 | --- | --- | --- |
@@ -3232,6 +3244,7 @@ names belong to their respective owners; this site uses its own original artwork
 # Directory Update Log
 
 ## 2026-10-24
+* **Update**: downloads are off by default until AmeriFlux answers — [Downloads](tools/downloads.md), [Download identity](getting-started/identity.md), [Configuration](getting-started/configuration.md) (`--downloads`), [Install](getting-started/install.md) and [Quickstart](getting-started/quickstart.md).
 * **Creation**: [Prompts, resources and status](tools/prompts-and-resources.md) — the three prompts (build step 8), every guide and reference resource, the site template and `amf_ping`; [Sync downloads to CyVerse](getting-started/sync-cyverse.md), ported from neon-mcp with the download-in-progress check.
 * **Update**: v0.1.0 — [home](index.md), [Install](getting-started/install.md) (Docker ships; PyPI from the v0.1.0 tag), [Quickstart](getting-started/quickstart.md), [For AI agents](about/ai-agents.md), [Configuration](getting-started/configuration.md) and [Roadmap](tools/roadmap.md) (all eight steps done); [Downloads](tools/downloads.md) links the CyVerse sync.
 * **Creation**: [Downloads](tools/downloads.md) — `amf_download_data` (build step 7): products, the plan and its disclosure, the consent call and its checks, the transfer and integrity checks, what is written to disk.

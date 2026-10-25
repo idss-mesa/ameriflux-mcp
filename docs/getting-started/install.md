@@ -324,7 +324,7 @@ identity is ever accepted over HTTP.
 
 ```bash
 ameriflux-mcp --version     # ameriflux-mcp 0.1.0
-ameriflux-mcp --check       # {"ok": true, "version": "0.1.0", "protocolVersion": "2026-07-28", "transport": "stdio", "identityConfigured": false, "downloadsEnabled": true}
+ameriflux-mcp --check       # {"ok": true, "version": "0.1.0", "protocolVersion": "2026-07-28", "transport": "stdio", "identityConfigured": false, "downloadsEnabled": false}
 ```
 
 `--check` loads your configuration, calls `amf_ping` in-process and prints a one-line
@@ -362,7 +362,7 @@ Nothing is required. The settings most people touch:
 AMERIFLUX_MCP_SERVER__LOG_LEVEL=info           # debug | info | warning | error | critical (stderr)
 AMERIFLUX_MCP_DOWNLOADS__DIRECTORY=            # where downloads go (default ~/ameriflux-downloads)
 AMERIFLUX_MCP_LOCAL__ROOTS=                    # extra folders the file tools may read (e.g. FLUXNET2015 zips)
-AMERIFLUX_MCP_DOWNLOADS__ENABLED=false         # turn the download tool off entirely
+AMERIFLUX_MCP_DOWNLOADS__ENABLED=true          # offer the download tool (off by default)
 ```
 
 ameriflux-mcp does not read `.env` files on its own. See [Configuration](configuration.md)

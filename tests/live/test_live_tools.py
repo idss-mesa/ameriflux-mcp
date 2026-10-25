@@ -30,7 +30,7 @@ pytestmark = [
 async def live(tmp_path: Path) -> AsyncIterator[AmeriFluxServer]:
     config = Config.model_validate(
         {
-            "downloads": {"directory": str(tmp_path / "downloads")},
+            "downloads": {"directory": str(tmp_path / "downloads"), "enabled": True},
             "cache": {"disk_dir": str(tmp_path / "cache")},
         }
     )

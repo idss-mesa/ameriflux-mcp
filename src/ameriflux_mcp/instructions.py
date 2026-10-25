@@ -6,7 +6,7 @@ SERVER_INSTRUCTIONS = (
     "ameriflux-mcp exposes AmeriFlux and FLUXNET eddy-covariance flux tower data: AmeriFlux BASE "
     "and BADM, the AmeriFlux FLUXNET product and FLUXNET2015. Sites are IDs such as US-Ha1 "
     "(country-code, three characters). Typical flow: amf_search_sites -> amf_get_availability "
-    "-> amf_describe_variables -> amf_download_data (stdio only: it first returns a plan showing "
+    "-> amf_describe_variables -> amf_download_data (stdio only, off by default; it first returns a plan showing "
     "exactly what AmeriFlux will send to the site PIs; only confirm=true sends it) -> "
     "amf_preview_data -> amf_get_citation. Discovery, availability, variables and citations need "
     "no account. Downloads need the user's own download identity from the server's environment; "

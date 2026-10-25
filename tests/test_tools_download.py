@@ -697,3 +697,20 @@ def test_the_one_post_has_one_caller() -> None:
         ]
     assert posts == ["ameriflux/client.py"]
     assert callers == ["tools/download.py"]
+
+
+async def test_downloads_are_off_by_default(
+    make_server: Callable[..., AmeriFluxServer], config: Config
+) -> None:
+    """D18: until AmeriFlux answers Q1, the tool is listed only when the user enables it."""
+    cfg = config.model_copy(deep=True)
+    cfg.downloads = type(cfg.downloads)(directory=cfg.downloads.directory)
+    assert cfg.downloads.enabled is False
+    server = make_server(config=cfg)
+    assert "amf_download_data" not in {t.name for t in server.tool_definitions()}
+    ping = await call_ok(server, "amf_ping", {})
+    assert ping["downloadsEnabled"] is False
+    assert any("AMERIFLUX_MCP_DOWNLOADS__ENABLED=true" in n for n in ping["notes"])
+    error = await failure(server, {"sites": ["AR-Bal"]})
+    assert error["code"] == "feature_unavailable"
+    assert "AMERIFLUX_MCP_DOWNLOADS__ENABLED=true" in error.get("hint", "")

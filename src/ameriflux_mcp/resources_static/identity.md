@@ -47,6 +47,11 @@ stores them in each agent's server configuration. A YAML config may define named
 
 ## The download flow (amf_download_data)
 
+Downloads are off by default until AmeriFlux confirms third-party use of its download
+request: `amf_download_data` is listed only when the user sets
+`AMERIFLUX_MCP_DOWNLOADS__ENABLED=true` (or starts the server with `--downloads`).
+`amf_ping` reports `downloadsEnabled`. Never enable it for the user.
+
 1. Call without `confirm`: the plan lists `disclosure` (identity masked; intended use and
    description in full), `eligible`/`ineligible` sites, `policy` with its obligations,
    `blockers` and `localCopies`. Nothing is sent.

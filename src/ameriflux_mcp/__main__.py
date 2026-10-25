@@ -41,7 +41,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--download-dir", type=Path, default=None, help="Directory downloads are confined to."
     )
-    parser.add_argument("--no-downloads", action="store_true", help="Disable the download tool.")
+    downloads = parser.add_mutually_exclusive_group()
+    downloads.add_argument(
+        "--downloads",
+        action="store_true",
+        help="Enable the download tool (stdio; off by default; same as "
+        "AMERIFLUX_MCP_DOWNLOADS__ENABLED=true).",
+    )
+    downloads.add_argument("--no-downloads", action="store_true", help="Disable the download tool.")
     parser.add_argument(
         "--print-config",
         action="store_true",
@@ -68,7 +75,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         "bind_port": args.bind_port,
         "log_level": args.log_level,
         "download_dir": str(args.download_dir) if args.download_dir else None,
-        "downloads_enabled": False if args.no_downloads else None,
+        "downloads_enabled": False if args.no_downloads else (True if args.downloads else None),
     }
     try:
         config = load_config(args.config, flag_overrides=overrides)

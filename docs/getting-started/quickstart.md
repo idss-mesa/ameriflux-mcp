@@ -34,7 +34,8 @@ the same way once connected ([Clients](clients.md)).
 !!! note "Results abbreviated"
 
     The results below are shortened; the [tool reference](../tools/reference.md) lists
-    every field, following the design[^design]. Step 6 needs a
+    every field, following the design[^design]. Step 6 needs downloads turned on
+    (`AMERIFLUX_MCP_DOWNLOADS__ENABLED=true`; they are off by default) and a
     [download identity](identity.md) before `confirm=true` sends anything. The
     `plan_site_analysis` prompt runs the same sequence for chosen sites.
 

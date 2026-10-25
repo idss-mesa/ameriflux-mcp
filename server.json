@@ -46,7 +46,14 @@
           "description": "Intended-use category: 1 synthesis, 2 model, 3 remote sensing, 4 other research, 5 education, 6 other.",
           "isRequired": false,
           "format": "string",
-          "choices": ["1", "2", "3", "4", "5", "6"]
+          "choices": [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6"
+          ]
         },
         {
           "name": "AMERIFLUX_DESCRIPTION",
@@ -57,6 +64,12 @@
         {
           "name": "AMERIFLUX_MCP_IDENTITY__IS_TEST",
           "description": "true for test download requests, false for real ones; downloads refuse until set.",
+          "isRequired": false,
+          "format": "boolean"
+        },
+        {
+          "name": "AMERIFLUX_MCP_DOWNLOADS__ENABLED",
+          "description": "true to offer the consented download tool; off by default.",
           "isRequired": false,
           "format": "boolean"
         },
